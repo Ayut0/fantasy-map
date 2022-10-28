@@ -5,11 +5,9 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import SearchIcon from "@mui/icons-material/Search";
 import { MdSearch } from "react-icons/md";
+import { Grid } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -27,47 +25,76 @@ const Search = styled("div")(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
+  color: "black",
   "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
+    // padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    // paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       width: "12ch",
       "&:focus": {
-        width: "20ch",
+        width: "12ch",
       },
     },
   },
 }));
 
-
 export const Header: React.FC = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          ></IconButton>
-          <Typography variant="h3" component="div" sx={{ display: "flex" }}>
-            Fantasy map
-          </Typography>
-          <Search>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-            <MdSearch />
-          </Search>
-          <Button color="inherit">Login</Button>
-          <Button color="inherit">Register</Button>
+          <Grid container spacing={2}>
+            <Grid
+              item
+              xs={6}
+              sx={{
+                display: "flex",
+                alignItems: "flex-end",
+              }}
+            >
+              <Box component="div">
+                <Typography variant="h4" component="div">
+                  Fantasy map
+                </Typography>
+              </Box>
+              <Box component="div">
+                <Search
+                  sx={{
+                    borderRadius: 5,
+                    height: 30,
+                  }}
+                >
+                  <StyledInputBase
+                    placeholder="Search…"
+                    inputProps={{ "aria-label": "search" }}
+                  />
+                  <MdSearch
+                    style={{
+                      color: "#232946",
+                      paddingTop: 3,
+                      paddingRight: 3,
+                    }}
+                    size="30px"
+                  />
+                </Search>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "right",
+                  alignItems: "flex-end",
+                }}
+              >
+                <Button color="inherit">Login</Button>
+                <Button color="inherit">Register</Button>
+              </Box>
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
     </Box>

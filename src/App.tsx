@@ -3,7 +3,7 @@ import "./App.css";
 import { Header } from "./components/Header";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Route, Routes } from "react-router-dom";
-import Lists from "./pages/Lists";
+import Lists from "./pages/Lists/Lists";
 
 const theme = createTheme({
   palette: {

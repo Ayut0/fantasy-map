@@ -63,11 +63,14 @@ const DUMMY_PLACES: places = [
 
 const Lists: React.FC = () => {
   return (
-      <Stack direction="row"
+    <Stack
+      direction="row"
       justifyContent="center"
       alignItems="center"
-      spacing={2} sx={{ backgroundColor: "#F9F6F0" }}>
-      <Box sx={{width: "50%"}}>
+      spacing={2}
+      sx={{ backgroundColor: "#F9F6F0" }}
+    >
+      <Box sx={{ width: "50%" }}>
         <Typography variant="h2" fontFamily="Merriweather">
           User&#39;s Lists
         </Typography>
@@ -96,7 +99,7 @@ const Lists: React.FC = () => {
           </Box>
         </motion.div>
       </Box>
-      <Box sx={{gridRow: '1', width: "45%"}}>Map is supposed to be here</Box>
+      <Box sx={{ gridRow: "1", width: "45%" }}>Map is supposed to be here</Box>
     </Stack>
   );
 };

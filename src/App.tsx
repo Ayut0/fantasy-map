@@ -2,6 +2,8 @@ import React from "react";
 import "./App.css";
 import { Header } from "./components/Header";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Route, Routes } from "react-router-dom";
+import Lists from "./pages/Lists";
 
 const theme = createTheme({
   palette: {
@@ -25,6 +27,11 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <Header />
+        <Routes>
+          <Route path="/lists" element={<Lists />} />
+          <Route path="/place" />
+          <Route path="/profile" />
+        </Routes>
       </ThemeProvider>
     </div>
   );

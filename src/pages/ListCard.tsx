@@ -1,4 +1,4 @@
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Card,
   CardContent,
@@ -20,21 +20,31 @@ type places = {
 
 const ListCard: React.FC<places> = ({ name, description, picture }) => {
   return (
-    <Card sx={{ display: "flex", mb: 8 }}>
-      <CardMedia
-        component="img"
-        sx={{ width: "35%" }}
-        image={picture}
-        alt="description"
-      ></CardMedia>
-      <Box sx={{ display: "flex" }}>
-        <CardContent sx={{ display: "1 0 auto" }}>
-          <Typography variant="h6">{name}</Typography>
-          <Typography variant="subtitle1">{description}</Typography>
-          <Rating name="read-only" value={1} readOnly />
-        </CardContent>
-      </Box>
-    </Card>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 1.5,
+      }}
+      whileHover={{ scale: 1.2 }}
+      whileTap={{ scale: 2 }}
+    >
+      <Card sx={{ display: "flex", mb: 8 }}>
+        <CardMedia
+          component="img"
+          sx={{ width: "35%" }}
+          image={picture}
+          alt="description"
+        ></CardMedia>
+        <Box sx={{ display: "flex" }}>
+          <CardContent sx={{ display: "1 0 auto" }}>
+            <Typography variant="h6">{name}</Typography>
+            <Typography variant="subtitle1">{description}</Typography>
+            <Rating name="read-only" value={1} readOnly />
+          </CardContent>
+        </Box>
+      </Card>
+    </motion.div>
   );
 };
 

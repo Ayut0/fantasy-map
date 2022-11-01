@@ -82,26 +82,15 @@ const Lists: React.FC = () => {
           <Box>
             {DUMMY_PLACES.map((place, index) => {
               return (
-                <motion.div
+                <ListCard
                   key={index}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    duration: 1.5,
-                  }}
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 2 }}
-                >
-                  <ListCard
-                    key={index}
-                    name={place.name}
-                    address={place.address}
-                    description={place.description}
-                    picture={place.picture}
-                    categoryId={place.categoryId}
-                    userId={place.userId}
-                  />
-                </motion.div>
+                  name={place.name}
+                  address={place.address}
+                  description={place.description}
+                  picture={place.picture}
+                  categoryId={place.categoryId}
+                  userId={place.userId}
+                />
               );
             })}
           </Box>

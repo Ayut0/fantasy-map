@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
 import { Header } from "./components/Header";
-import { Hero } from "./Hero";
-import { Lists } from "./Lists";
-import { Categories } from "./Categories";
+import { Hero } from "./pages/home/Hero";
+import { Lists } from "./pages/home/Lists";
+import { Categories } from "./pages/home/Categories";
 import { Footer } from "./components/Footer";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -29,10 +29,10 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <Header />
-        <Hero/>
-        <Lists/>
-        <Categories/>
-        <Footer/>
+        <Hero />
+        <Lists />
+        <Categories />
+        <Footer />
       </ThemeProvider>
     </div>
   );

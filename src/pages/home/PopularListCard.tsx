@@ -1,7 +1,7 @@
 import React from "react";
 import { Buttons } from "./Buttons";
 
-export const ListCard: React.FC = () => {
+export const PopularListCard: React.FC = () => {
   return (
     <>
       <div>

@@ -17,7 +17,6 @@ const categoriesDummy: Category[] = [
   { id: 7, name: "Sports" },
   { id: 8, name: "Nightlife" },
 ];
-console.log(categoriesDummy[0].name);
 
 export const CategoryCard: React.FC = () => {
   // useEffect(() => {

@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 export const Footer: React.FC = () => {
   return (
     <Box
+    component="footer"
       sx={{
         backgroundColor: "#232946",
         height: "65px",

@@ -1,6 +1,5 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import lake_ppl from "../../lake_ppl.jpg";
 import Typography from "@mui/material/Typography";
 
 export const Hero: React.FC = () => {
@@ -8,7 +7,7 @@ export const Hero: React.FC = () => {
     <>
       <Box
         sx={{
-          backgroundImage: `url(${lake_ppl})`,
+          backgroundImage: "url('images/lake_ppl.jpg')",
           backgroundSize: "cover",
           height: "100vh",
           display: "flex",

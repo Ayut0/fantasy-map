@@ -7,10 +7,9 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { MdSearch } from "react-icons/md";
 import { Grid } from "@mui/material";
+import Container from "@mui/material/Container";
 
-const handleInputChange = (
-  event: any
-) => {
+const handleInputChange = (event: any) => {
   console.log(event.target.value);
 };
 
@@ -24,8 +23,8 @@ const handleClickRegister = (event: any) => {
 
 export const Header: React.FC = () => {
   return (
-    <Box>
-      <AppBar position="static" sx={{ py: 1.5 }}>
+    <Container maxWidth="lg">
+      <AppBar position="fixed" sx={{ py: 1.5 }}>
         <Toolbar>
           <Grid container spacing={2}>
             <Grid
@@ -87,6 +86,6 @@ export const Header: React.FC = () => {
           </Grid>
         </Toolbar>
       </AppBar>
-    </Box>
+    </Container>
   );
 };

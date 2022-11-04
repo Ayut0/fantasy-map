@@ -1,5 +1,10 @@
 import axios from "axios";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Grid from "@mui/material/Grid";
 import React, { useState, useEffect } from "react";
+import Typography from "@mui/material/Typography";
 
 interface Category {
   id: number;
@@ -26,15 +31,33 @@ export const CategoryCard: React.FC = () => {
   // }, []);
 
   return (
-    <>
+    <Grid
+      container
+      rowSpacing={6}
+      columnSpacing={{ xs: 6, sm: 2, md: 3 }}
+    >
       {categoriesDummy.map((category) => {
         return (
-          <div key={category.id}>
-            <span>category icon</span>
-            <p>{category.name}</p>
-          </div>
+          <Grid key={category.id} item xs={3}>
+            <Card
+              sx={{
+                width: "250px",
+                height: "250px",
+                borderRadius: "4px",
+                display:"flex", 
+                alignItems:"center",
+                justifyContent:"center",
+              }}
+            >
+              <CardContent>
+                <Typography variant="h4" component="div">
+                  {category.name}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         );
       })}
-    </>
+    </Grid>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import Container from "@mui/material/Container";
 import { Header } from "./components/Header";
 import { Hero } from "./pages/home/Hero";
 import { PopularLists } from "./pages/home/PopularLists";
@@ -16,7 +17,6 @@ const theme = createTheme({
       main: "#232946",
       // dark: will be calculated from palette.primary.main,
       // contrastText: will be calculated to contrast with palette.primary.main
-      
     },
     secondary: {
       light: "#0066ff",
@@ -33,8 +33,10 @@ function App() {
       <ThemeProvider theme={theme}>
         <Header />
         <Hero />
+        <Container maxWidth="lg"> 
         <PopularLists />
-        <Categories />
+        <Categories/>
+        </Container>
         <Routes>
           <Route path="/lists" element={<Lists />} />
           <Route path="/place" />

@@ -78,11 +78,14 @@ const popularListsDummy: PopularLists[] = [
 
 export const PopularListCard: React.FC = () => {
   return (
-    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+    <Grid container rowSpacing={6} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       {popularListsDummy.map((list) => {
         return (
           <Grid key={list.id} item xs={4}>
-            <Card sx={{ width: "335px", height: "461px" }}>
+            <Card sx={{
+               width: "335px", 
+               height: "461px",
+               borderRadius: "4px" }}>
               <CardContent>
                 <Typography variant="h4" component="div">
                   {list.name}
@@ -99,7 +102,7 @@ export const PopularListCard: React.FC = () => {
                 <Buttons />
                 <br />
                 <img src="#" alt="profile icon" />
-                <Typography>{list.userName}</Typography>
+                <Typography sx={{display: "inline"}}>{list.userName}</Typography>
               </CardContent>
             </Card>
           </Grid>

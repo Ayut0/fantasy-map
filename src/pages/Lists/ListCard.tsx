@@ -24,15 +24,15 @@ const ListCard: React.FC<places> = ({ name, description, picture }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{
-        duration: 1.5,
+        duration: 1
       }}
-      whileHover={{ scale: 1.2 }}
-      whileTap={{ scale: 2 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 1.1 }}
     >
       <Card sx={{ display: "flex", mb: 8 }}>
         <CardMedia
           component="img"
-          sx={{ width: "35%" }}
+          sx={{ width: "30%" }}
           image={picture}
           alt="description"
         ></CardMedia>

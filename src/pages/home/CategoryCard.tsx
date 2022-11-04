@@ -11,24 +11,13 @@ interface Category {
   name: string;
 }
 
-const categoriesDummy: Category[] = [
-  //delete this variable once real data available
-  { id: 1, name: "Shopping" },
-  { id: 2, name: "Restaurant" },
-  { id: 3, name: "Beauty & Spas" },
-  { id: 4, name: "Nature" },
-  { id: 5, name: "Cafe" },
-  { id: 6, name: "Hotel" },
-  { id: 7, name: "Sports" },
-  { id: 8, name: "Nightlife" },
-];
-
 export const CategoryCard: React.FC = () => {
-  // useEffect(() => {
-  //   axios.get("http://localhost:3000/test").then((res) => {
-  //     console.log(res.data);
-  //   });
-  // }, []);
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    axios.get("/api/categories").then((res) => {
+      setCategories(res.data);
+    });
+  }, []);
 
   return (
     <Grid
@@ -36,7 +25,7 @@ export const CategoryCard: React.FC = () => {
       rowSpacing={6}
       columnSpacing={{ xs: 6, sm: 2, md: 3 }}
     >
-      {categoriesDummy.map((category) => {
+      {categories.map((category:any) => {
         return (
           <Grid key={category.id} item xs={3}>
             <Card
@@ -50,6 +39,7 @@ export const CategoryCard: React.FC = () => {
               }}
             >
               <CardContent>
+                <img src={category.picture}/>
                 <Typography variant="h4" component="div">
                   {category.name}
                 </Typography>

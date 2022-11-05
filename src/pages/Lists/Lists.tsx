@@ -119,21 +119,26 @@ const Lists: React.FC = () => {
       name: place.name,
     })
   );
-  console.log(markers);
-
-  markers.forEach((place) => {
-    console.log(place.location.lat, place.location.lng)
-  });
 
   const handleApiLoaded = (map: any, maps: any): void => {
     //Create the markers
     const bounds = new maps.LatLngBounds();
+    const infoWindow = new maps.InfoWindow();
     markers.forEach((place) => {
-      console.log(place.location.lat, place.location.lng)
+      console.log(place)
       const marker = new maps.Marker({
         position: {lat: place.location.lat, lng:place.location.lng },
         map: map,
+        label:`${place.index + 1}`,
+        title: place.name,
+        tooltip: place.name
       });
+
+      marker.addListener('mouseover', () => {
+        infoWindow.close();
+        infoWindow.setContent(marker.getTitle());
+        infoWindow.open(marker.getMap(), marker);
+      })
       bounds.extend(marker.position);
     });
     //Prevent the map and pins from overflowing

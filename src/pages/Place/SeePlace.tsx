@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Buttons } from "../Home/Buttons";
 import {
   Avatar,
   Box,
@@ -16,44 +17,22 @@ import { FiEdit } from "react-icons/fi";
 import { HiPaperAirplane } from "react-icons/hi";
 import { MdFavoriteBorder } from "react-icons/md";
 
-const dummyPlaces: object[] =  [
-        {
-          name: 'Kitsilano Beach Basketball Courts',
-          address: '1499 Arbutus St, Vancouver, BC V6J 5N2',
-          description: 'Public court in front of the ocean',
-          picture:
-            'https://kitsfest.com/wp-content/uploads/2013/05/brempong-sm.jpg',
-          categoryId: 1,
-          userId: 2,
-        },
-        {
-          name: 'Chinatown craaazy court',
-          address: '1200 Hastings St., Vancouver, BC 3M3 5N2',
-          description: 'The craziest court in Chinatown',
-          picture:
-            'https://kitsfest.com/wp-content/uploads/2013/05/brempong-sm.jpg',
-          categoryId: 1,
-          userId: 2,
-        },
-        {
-          name: 'Costco Basketball Court',
-          address: '1000 Main St, Vancouver, BC V66 5NN',
-          description: 'You can play and then have some cheap hotdogs...',
-          picture:
-            'https://kitsfest.com/wp-content/uploads/2013/05/brempong-sm.jpg',
-          categoryId: 1,
-          userId: 2,
-        },
-        {
-          name: 'Eri Wine Store',
-          address: '123 Sherbrooke, Vancouver, BC 3M3 Y67',
-          description: 'Best wine store in town',
-          picture:
-            'https://kitsfest.com/wp-content/uploads/2013/05/brempong-sm.jpg',
-          categoryId: 7,
-          userId: 1,
-        },
-      ];
+interface Places {
+  name: string;
+  address: string;
+  description: string;
+  picture: string;
+  categoryId: number;
+  userId: number;
+}
+const dummyPlaces: Places = {
+  name: "Kitsilano Beach Basketball Courts",
+  address: "1499 Arbutus St, Vancouver, BC V6J 5N2",
+  description: "Public court in front of the ocean",
+  picture: "https://kitsfest.com/wp-content/uploads/2013/05/brempong-sm.jpg",
+  categoryId: 1,
+  userId: 2,
+};
 
 const dummyReviews: object[] = [
   {
@@ -93,45 +72,58 @@ const dummyReviews: object[] = [
 ];
 
 export const SeePlace: React.FC = () => {
- 
   return (
     <>
       <Container>
-        <Box sx={{ display: "flex", justifyContent: "right" }}>
+        <CardMedia
+          component="img"
+          height="600"
+          image={dummyPlaces.picture}
+          alt="place image"
+        />
+        <Box sx={{ display: "flex", justifyContent: "right", mt: "30px" }}>
           <Button>
-            <MdFavoriteBorder />
+            <MdFavoriteBorder size={20} />
           </Button>
-          <Button>Get direction</Button>
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: "#2CA58D", borderRadius: "20px" }}
+          >
+            Get direction
+          </Button>
         </Box>
         <Box sx={{ display: "flex" }}>
-          <Typography variant="h3">Place name</Typography>
+          <Typography variant="h3">{dummyPlaces.name}</Typography>
           <Button>
-            <FiEdit />
+            <FiEdit size={32} />
           </Button>
         </Box>
         <Grid container className="wrap__address__description">
           <Grid item xs={6} sx={{ textAlign: "left", my: 6 }}>
-            <Typography variant="h4">
-              <HiPaperAirplane />
+            <Typography variant="h4" mb="15px">
+              <HiPaperAirplane
+                size={20}
+                style={{ transform: "rotate(55deg)" }}
+              />
               Address
             </Typography>
             <Typography variant="body1" sx={{ fontSize: "20px" }}>
-              Detail address
+              {dummyPlaces.address}
             </Typography>
           </Grid>
           <Grid item xs={6} sx={{ textAlign: "left", my: 6 }}>
-            <Typography variant="h4">
+            <Typography variant="h4" mb="15px">
               Description
               <Button>
-                <FiEdit />
+                <FiEdit size={20} />
               </Button>
             </Typography>
             <Typography variant="body1" sx={{ fontSize: "20px" }}>
-              Detail description
+              {dummyPlaces.description}
             </Typography>
           </Grid>
         </Grid>
-        <Typography variant="h4" sx={{ textAlign: "left" }}>
+        <Typography variant="h4" sx={{ textAlign: "left", my: "40px" }}>
           Last reviews
         </Typography>
         <Grid container rowSpacing={6} columnSpacing={{ xs: 6, sm: 2, md: 3 }}>
@@ -143,32 +135,25 @@ export const SeePlace: React.FC = () => {
                     width: "180px",
                     height: "210px",
                     borderRadius: "4px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
                   }}
                 >
-                  <CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexFlow: "column",
-                        justifyContent: "space-around",
-                      }}
-                    >
-                      <Avatar sx={{ margin: "0 auto" }} />
-                      <Typography>User Name</Typography>
-                      <Rating name="read-only" value={review.stars} readOnly />
-                      <Typography>{review.content}</Typography>
+                  <CardContent sx={{ textOverflow: "ellipsis" }}>
+                    <Box>
+                      <Avatar sx={{ margin: "10px auto" }} />
                     </Box>
+                    <Typography>User Name</Typography>
+                    <Rating name="read-only" value={review.stars} readOnly />
+                    <Typography variant="body2" color="text.secondary">
+                      {review.content}
+                    </Typography>
                   </CardContent>
                 </Card>
               </Grid>
             );
           })}
         </Grid>
-        <Box sx={{display: "flex", justifyContent: "right"}}>
-          <Button>
+        <Box sx={{ display: "flex", justifyContent: "right", mt: "20px" }}>
+          <Button sx={{ color: "red" }}>
             Delete
             <RiDeleteBin6Line />
           </Button>

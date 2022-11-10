@@ -9,7 +9,7 @@ import { Footer } from "./components/Footer";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Route, Routes } from "react-router-dom";
 import Lists from "./pages/Lists/Lists";
-import { SeePlace } from "./pages/Place/SeePlace";
+import { Place } from "./pages/Place/Place";
 
 const theme = createTheme({
   palette: {
@@ -40,7 +40,7 @@ function App() {
         </Container>
         <Routes>
           <Route path="/lists" element={<Lists />} />
-          <Route path="/place" element={<SeePlace/>}/>
+          <Route path="/place" element={<Place/>}/>
           <Route path="/profile" />
         </Routes>
         <Footer />

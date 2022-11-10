@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Buttons } from "../Home/Buttons";
+import { useState } from "react";
 import {
   Avatar,
   Box,
@@ -16,6 +16,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import { HiPaperAirplane } from "react-icons/hi";
 import { MdFavoriteBorder } from "react-icons/md";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
 
 interface Places {
   name: string;
@@ -25,6 +26,7 @@ interface Places {
   categoryId: number;
   userId: number;
 }
+
 const dummyPlaces: Places = {
   name: "Kitsilano Beach Basketball Courts",
   address: "1499 Arbutus St, Vancouver, BC V6J 5N2",
@@ -72,8 +74,23 @@ const dummyReviews: object[] = [
 ];
 
 export const SeePlace: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const msg = `You are about to delete this place.
+              Once you delete the place, you are not able to restore....
+              If you are good, click the button below.`;
+  const btnMsg = "Delete this place";
+  
   return (
     <>
+      <ConfirmationModal
+        open={open}
+        handleClose={handleClose}
+        msg={msg}
+        btnMsg={btnMsg}
+      />
       <Container>
         <CardMedia
           component="img"
@@ -153,7 +170,7 @@ export const SeePlace: React.FC = () => {
           })}
         </Grid>
         <Box sx={{ display: "flex", justifyContent: "right", mt: "20px" }}>
-          <Button sx={{ color: "red" }}>
+          <Button sx={{ color: "red" }} onClick={handleOpen}>
             Delete
             <RiDeleteBin6Line />
           </Button>

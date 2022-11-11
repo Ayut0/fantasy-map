@@ -2,15 +2,19 @@ import React from "react";
 import "./App.css";
 import Container from "@mui/material/Container";
 import { Header } from "./components/Header";
-import { Hero } from "./pages/home/Hero";
-import { PopularLists } from "./pages/home/PopularLists";
-import { Categories } from "./pages/home/Categories";
+import { Hero } from "./pages/Home/Hero";
+import { PopularLists } from "./pages/Home/PopularLists";
+import { Categories } from "./pages/Home/Categories";
 import { Footer } from "./components/Footer";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Route, Routes } from "react-router-dom";
 import Lists from "./pages/Lists/Lists";
+
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
+
+import { Place } from "./pages/Place/Place";
+
 
 const theme = createTheme({
   palette: {
@@ -43,7 +47,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp /> } />
           <Route path="/lists" element={<Lists />} />
-          <Route path="/place" />
+          <Route path="/place" element={<Place/>}/>
           <Route path="/profile" />
         </Routes>
         <Footer />

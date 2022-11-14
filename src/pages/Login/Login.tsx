@@ -13,9 +13,9 @@ const Login: React.FC = () => {
   const [disable, setDisable] = useState<boolean>(true);
 
   useEffect(() => {
-    const oneOfFieldsIsEmpty =
+    const oneOfFieldsIsEmpty:boolean =
       !emailRef.current?.value.length || !passwordRef.current?.value.length;
-    const hasError = emailError || passwordError;
+    const hasError:boolean = emailError || passwordError;
 
     setDisable(hasError || oneOfFieldsIsEmpty);
 
@@ -52,7 +52,6 @@ const Login: React.FC = () => {
     rAtZ = /[A-Z]/,
     r0t9 = /[0-9]/;
   const isPasswordValid = (password: string) => {
-    //Create a new state to check if the button is available?
     if (!ratz.test(password)) {
       setPasswordError(true);
       setPasswordErrorMsg("Please include at least one lowercase letter");

@@ -13,8 +13,8 @@ type places = {
   name: string;
   address: string;
   description: string;
-  picture: string;
-  categoryId: number;
+  picture?: string;
+  categoryId?: number;
   userId: number;
 };
 

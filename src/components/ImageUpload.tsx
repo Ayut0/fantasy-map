@@ -62,9 +62,9 @@ const ImageUpload: React.FC = () => {
           mb: 2,
           pt: 2,
           pb: 2,
-          fontSize: 20,
+          fontSize: {sm: "13px", lg: 20},
           backgroundColor: "#2CA58D",
-          width: "30%",
+          width: {sm: "70%", lg: "30%"},
         }}
         onClick={pickImageHandler}
       >

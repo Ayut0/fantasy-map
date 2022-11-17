@@ -75,6 +75,7 @@ export const Header: React.FC = () => {
               }}
             >
               <Box>
+                {/* Could be replaced by react-router-dom Link component */}
                 <Button color="inherit" onClick={handleClickLogin}>
                   Login
                 </Button>

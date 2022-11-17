@@ -10,7 +10,7 @@ type Props = {
     variant?: "text" | "outlined" | "contained" | undefined
 }
 
-const ActionButton = ({children,sx, variant}:Props) => {
+const ActionButton = ({children,type, disabled, onClick, sx, variant}:Props) => {
   return (
       <Button variant={variant} sx={sx}>{ children }</Button>
   )

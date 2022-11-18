@@ -14,6 +14,8 @@ import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 
 import { Place } from "./pages/Place/Place";
+import Profile from "./pages/Profile/Profile";
+import ProfileEdit from "./pages/Profile/ProfileEdit";
 
 
 const theme = createTheme({
@@ -31,6 +33,12 @@ const theme = createTheme({
       contrastText: "#ffcc00",
     },
   },
+  typography: {
+    fontFamily: [
+      'Merriweather',
+      'serif'
+    ].join(',')
+  }
 });
 
 function App() {
@@ -39,7 +47,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Header />
         <Hero />
-        <Container maxWidth="lg"> 
+        <Container maxWidth="lg">
         <PopularLists />
         <Categories/>
         </Container>
@@ -47,8 +55,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/lists" element={<Lists />} />
-          <Route path="/place" element={<Place />} />
-          <Route path="/profile" />
+          <Route path="/place" element={<Place/>}/>
+          <Route path="/profile/:uid" element={<Profile />} />
+          <Route path="/profile/:uid/edit" element={<ProfileEdit />} />
         </Routes>
         <Footer />
       </ThemeProvider>

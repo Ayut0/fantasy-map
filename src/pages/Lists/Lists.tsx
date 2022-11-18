@@ -11,7 +11,7 @@ interface Location {
   lng: number;
 }
 
-type places = {
+export type places = {
   name: string;
   address: string;
   description: string;
@@ -35,7 +35,7 @@ export interface Marker {
   name: string;
 }
 
-const DUMMY_PLACES: places = [
+export const DUMMY_PLACES: places = [
   {
     name: "Mauricios Wine Shop",
     address: "Vancouver, BC, Canada",

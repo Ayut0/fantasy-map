@@ -7,7 +7,7 @@ export const Place: React.FC = () => {
   return(
     <>
     <CreatePlace/>
-    <SeePlace/>
+    {/* <SeePlace/> */}
     </>
   );
 }

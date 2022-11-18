@@ -17,7 +17,7 @@ import { Place } from "./pages/Place/Place";
 import Profile from "./pages/Profile/Profile";
 import ProfileEdit from "./pages/Profile/ProfileEdit";
 import CreateList from "./pages/Lists/CreateList";
-
+import { SeeList } from "./pages/Lists/SeeList";
 
 const theme = createTheme({
   palette: {
@@ -49,15 +49,16 @@ function App() {
         <Header />
         <Hero />
         <Container maxWidth="lg">
-        <PopularLists />
-        <Categories/>
+          <PopularLists />
+          <Categories />
         </Container>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/lists" element={<Lists />} />
           <Route path="/list/create" element={<CreateList />} />
-          <Route path="/place" element={<Place/>}/>
+          <Route path="/list/see" element={<SeeList />} />
+          <Route path="/place" element={<Place />} />
           <Route path="/profile/" element={<Profile />} />
           <Route path="/profile/edit" element={<ProfileEdit />} />
         </Routes>

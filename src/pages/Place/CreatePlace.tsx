@@ -12,25 +12,10 @@ import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import ImageUpload from "../../components/ImageUpload";
 
 export const CreatePlace: React.FC = () => {
-  const [isPlaceNameFilledOut, setIsPlaceNameFilledOut] = useState(false);
-  const [isAddressFilledOut, setIsAddressFilledOut] = useState(false);
-
-  const isPlaceNameValid = (placeName:string) => {
-   if (placeName.length >= 1) {
-      setIsPlaceNameFilledOut(!isPlaceNameFilledOut);
-   } else {
-      setIsPlaceNameFilledOut(isPlaceNameFilledOut);
-   }
-  }
-
-  const isAddressValid = (addressName: string) => {
-    if (addressName.length >= 1) {
-      console.log(addressName);
-      setIsAddressFilledOut(!isAddressFilledOut);
-    } else {
-      setIsAddressFilledOut(isAddressFilledOut);
-    }
-  };
+  const [uploadImg, setUploadImg] = useState("");
+  const [inputPlaceName, setInputPlaceName] = useState("");
+  const [inputAddress, setInputAddress] = useState("");
+  const [inputDescription, setInputDescription] = useState("");
 
   const handleSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
@@ -59,7 +44,7 @@ export const CreatePlace: React.FC = () => {
           label="Place name"
           required
           sx={{ my: "1rem", width: "70%" }}
-          onChange={(event) => isPlaceNameValid(event.target.value)}
+          onChange={(event) => setInputPlaceName(event.target.value)}
         />
         <Box sx={{ width: "70%" }}>
           <GooglePlacesAutocomplete
@@ -74,10 +59,9 @@ export const CreatePlace: React.FC = () => {
                   ...provided,
                   textAlign: "left",
                 }),
-                // onChange: (event:any)=>{isAddressValid(event.target.value)},
-                onChange: (event: any) => {
-                  console.log(event.target.value);
-                },
+              },
+              onChange: (address: any) => {
+                setInputAddress(address.label);
               },
             }}
           />
@@ -88,30 +72,41 @@ export const CreatePlace: React.FC = () => {
           multiline
           rows={4}
           sx={{ my: "1rem", width: "70%" }}
+          onChange={(event) => setInputDescription(event.target.value)}
         />
-        {/* If name & address value.lengh >= 1
-        render nomal Button
-        else render disabled button*/}
-        {isPlaceNameFilledOut && isAddressFilledOut ? (
-          <Box>both OK</Box>
+
+        {inputPlaceName && inputAddress ? (
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{
+              backgroundColor: "#2CA58D",
+              color: "#FFFFFF",
+              width: "200px",
+              display: "block",
+              py: "15px",
+              margin: "30px auto",
+            }}
+          >
+            Register
+          </Button>
         ) : (
-          <Box>both are NOT ok</Box>
+          <Button
+            variant="contained"
+            type="submit"
+            disabled
+            sx={{
+              backgroundColor: "#2CA58D",
+              color: "#FFFFFF",
+              width: "200px",
+              display: "block",
+              py: "15px",
+              margin: "30px auto",
+            }}
+          >
+            Register
+          </Button>
         )}
-        <Button
-          variant="contained"
-          type="submit"
-          disabled
-          sx={{
-            backgroundColor: "#2CA58D",
-            color: "#FFFFFF",
-            width: "200px",
-            display: "block",
-            py: "15px",
-            margin: "30px auto",
-          }}
-        >
-          Register
-        </Button>
       </Container>
     </>
   );

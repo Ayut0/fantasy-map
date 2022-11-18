@@ -16,6 +16,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import { Place } from "./pages/Place/Place";
 import Profile from "./pages/Profile/Profile";
 import ProfileEdit from "./pages/Profile/ProfileEdit";
+import CreateList from "./pages/Lists/CreateList";
 
 
 const theme = createTheme({
@@ -55,9 +56,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp /> } />
           <Route path="/lists" element={<Lists />} />
+          <Route path="/list/create" element={<CreateList />} />
           <Route path="/place" element={<Place/>}/>
-          <Route path="/profile/:uid" element={<Profile />} />
-          <Route path="/profile/:uid/edit" element={<ProfileEdit />} />
+          <Route path="/profile/" element={<Profile />} />
+          <Route path="/profile/edit" element={<ProfileEdit />} />
         </Routes>
         <Footer />
       </ThemeProvider>

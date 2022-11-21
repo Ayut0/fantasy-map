@@ -44,6 +44,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/lists" element={<Lists />} />
           <Route path="/list/create" element={<CreateList />} />
+          <Route path="/list/:lid" element={<CreateList />} />
           <Route path="/list/see" element={<SeeList />} />
           <Route path="/place" element={<Place />} />
           <Route path="/place/create" element={<CreatePlace />} />

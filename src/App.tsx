@@ -2,9 +2,9 @@ import React from "react";
 import "./App.css";
 import Container from "@mui/material/Container";
 import { Header } from "./components/Header";
-import { Hero } from "./pages/Home/Hero";
-import { PopularLists } from "./pages/Home/PopularLists";
-import { Categories } from "./pages/Home/Categories";
+import { Hero } from "./pages/home/Hero";
+import { PopularLists } from "./pages/home/PopularLists";
+import { Categories } from "./pages/home/Categories";
 import { Footer } from "./components/Footer";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Route, Routes } from "react-router-dom";
@@ -57,8 +57,9 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/lists" element={<Lists />} />
           <Route path="/list/create" element={<CreateList />} />
+          <Route path="/list/:lid" element={<CreateList />} />
           <Route path="/list/see" element={<SeeList />} />
-          <Route path="/place" element={<Place />} />
+          <Route path="/place" element={<Place/>}/>
           <Route path="/profile/" element={<Profile />} />
           <Route path="/profile/edit" element={<ProfileEdit />} />
         </Routes>

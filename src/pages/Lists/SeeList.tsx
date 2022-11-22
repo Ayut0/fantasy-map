@@ -7,6 +7,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import AppTemplate from "../../templates/AppTemplate";
 
 export const SeeList: React.FC = () => {
   const handleClickList = () => console.log("To edit list");
@@ -55,8 +56,8 @@ export const SeeList: React.FC = () => {
   ];
 
   return (
-    <>
-      <Container maxWidth="lg">
+    <AppTemplate>
+      <Container maxWidth="lg" sx={{backgroundColor: "#F9F6F0", paddingTop: '10rem'}}>
         <Grid container pt="150px" alignItems="center">
           <Grid item xs={4}>
             <Typography variant="h3">Your lists</Typography>
@@ -94,6 +95,6 @@ export const SeeList: React.FC = () => {
           })}
         </Container>
       </Container>
-    </>
+    </AppTemplate>
   );
 };

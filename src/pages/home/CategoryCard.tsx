@@ -4,6 +4,8 @@ import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
+import { useHttpRequest } from "../../Utils/httpRequest-hook"
+
 
 interface Category {
   id: number;
@@ -12,10 +14,18 @@ interface Category {
 
 export const CategoryCard: React.FC = () => {
   const [categories, setCategories] = useState([]);
+  const { error, sendRequest, clearError } = useHttpRequest()
   useEffect(() => {
-    axios.get("/api/categories").then((res) => {
-      setCategories(res.data);
-    });
+    // axios.get("/api/categories").then((res) => {
+    //   setCategories(res.data);
+    // });
+
+    const getCategory =  async () => {
+      const response = await sendRequest("/api/categorie", 'GET');
+      setCategories(response)
+      console.log(response);
+    }
+    getCategory();
   }, []);
 
   return (

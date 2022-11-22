@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import ImageUpload from "../../components/ImageUpload";
+import AppTemplate from "../../templates/AppTemplate";
 
 export const CreatePlace: React.FC = () => {
   const [uploadImg, setUploadImg] = useState("");
@@ -23,7 +24,7 @@ export const CreatePlace: React.FC = () => {
   };
 
   return (
-    <>
+    <AppTemplate>
       <Container
         component="form"
         sx={{
@@ -108,6 +109,6 @@ export const CreatePlace: React.FC = () => {
           </Button>
         )}
       </Container>
-    </>
+    </AppTemplate>
   );
 };

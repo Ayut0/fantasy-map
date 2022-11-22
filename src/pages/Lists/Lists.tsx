@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
 import ListCard from "./ListCard";
-
+import AppTemplate from "../../templates/AppTemplate";
 
 interface Location {
   lat: number;
@@ -23,14 +23,14 @@ export type places = {
 
 interface MapProps {
   center: {
-    lat: number,
-    lng: number
+    lat: number;
+    lng: number;
   };
-  zoom : number
+  zoom: number;
 }
 
 export interface Marker {
-  index: number
+  index: number;
   location: Location;
   name: string;
 }
@@ -104,41 +104,39 @@ export const DUMMY_PLACES: places = [
 ];
 
 const Lists: React.FC = () => {
-  const initialProps:MapProps = {
+  const initialProps: MapProps = {
     center: {
       lat: 49.2809671,
-    lng: -123.120904,
+      lng: -123.120904,
     },
-    zoom: 16
-  }
+    zoom: 16,
+  };
 
-  const markers: Marker[] = DUMMY_PLACES.map(
-    (place, index) => ({
-      index: index,
-      location: place.location,
-      name: place.name,
-    })
-  );
+  const markers: Marker[] = DUMMY_PLACES.map((place, index) => ({
+    index: index,
+    location: place.location,
+    name: place.name,
+  }));
 
   const handleApiLoaded = (map: any, maps: any): void => {
     //Create the markers
     const bounds = new maps.LatLngBounds();
     const infoWindow = new maps.InfoWindow();
     markers.forEach((place) => {
-      console.log(place)
+      console.log(place);
       const marker = new maps.Marker({
-        position: {lat: place.location.lat, lng:place.location.lng },
+        position: { lat: place.location.lat, lng: place.location.lng },
         map: map,
-        label:`${place.index + 1}`,
+        label: `${place.index + 1}`,
         title: place.name,
-        tooltip: place.name
+        tooltip: place.name,
       });
 
-      marker.addListener('mouseover', () => {
+      marker.addListener("mouseover", () => {
         infoWindow.close();
         infoWindow.setContent(marker.getTitle());
         infoWindow.open(marker.getMap(), marker);
-      })
+      });
       bounds.extend(marker.position);
     });
     //Prevent the map and pins from overflowing
@@ -146,57 +144,58 @@ const Lists: React.FC = () => {
   };
 
   return (
-    <Stack
-      direction="row"
-      justifyContent="center"
-      alignItems="center"
-      spacing={2}
-      sx={{ backgroundColor: "#F9F6F0" }}
-    >
-      <Box sx={{ width: "50%" }}>
-        <Typography variant="h2" fontFamily="Merriweather">
-          User&#39;s Lists
-        </Typography>
-        <Typography variant="h4" fontFamily="Merriweather">
-          Hope you like it...
-        </Typography>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <Box>
-            {DUMMY_PLACES.map((place, index) => {
-              return (
-                <ListCard
-                  key={index}
-                  name={place.name}
-                  address={place.address}
-                  description={place.description}
-                  picture={place.picture}
-                  categoryId={place.categoryId}
-                  userId={place.userId}
-                />
-              );
-            })}
-          </Box>
-        </motion.div>
-      </Box>
-      <Box sx={{ gridRow: "1", width: "45%", height: "100vh" }}>
-        {/* I think I should create a new component just for a google map. pass lat and lng as props. */}
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: `${process.env.REACT_APP_GOOGLE_MAP}`,
-            libraries: ["visualization"],
-          }}
-          defaultCenter={initialProps.center}
-          defaultZoom={initialProps.zoom}
-          onGoogleApiLoaded={({map, maps}) => handleApiLoaded(map, maps)}
-          yesIWantToUseGoogleMapApiInternals
-        >
-        </GoogleMapReact>
-      </Box>
-    </Stack>
+    <AppTemplate>
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+        sx={{ backgroundColor: "#F9F6F0", paddingTop: '10rem' }}
+      >
+        <Box sx={{ width: "50%" }}>
+          <Typography variant="h2" fontFamily="Merriweather">
+            User&#39;s Lists
+          </Typography>
+          <Typography variant="h4" fontFamily="Merriweather" sx={{paddingBottom: '32px'}}>
+            Hope you like it...
+          </Typography>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Box>
+              {DUMMY_PLACES.map((place, index) => {
+                return (
+                  <ListCard
+                    key={index}
+                    name={place.name}
+                    address={place.address}
+                    description={place.description}
+                    picture={place.picture}
+                    categoryId={place.categoryId}
+                    userId={place.userId}
+                  />
+                );
+              })}
+            </Box>
+          </motion.div>
+        </Box>
+        <Box sx={{ gridRow: "1", width: "45%", height: "100vh" }}>
+          {/* I think I should create a new component just for a google map. pass lat and lng as props. */}
+          <GoogleMapReact
+            bootstrapURLKeys={{
+              key: `${process.env.REACT_APP_GOOGLE_MAP}`,
+              libraries: ["visualization"],
+            }}
+            defaultCenter={initialProps.center}
+            defaultZoom={initialProps.zoom}
+            onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
+            yesIWantToUseGoogleMapApiInternals
+          ></GoogleMapReact>
+        </Box>
+      </Stack>
+    </AppTemplate>
   );
 };
 

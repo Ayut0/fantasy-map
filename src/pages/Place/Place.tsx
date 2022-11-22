@@ -17,6 +17,7 @@ import { FiEdit } from "react-icons/fi";
 import { HiPaperAirplane } from "react-icons/hi";
 import { MdFavoriteBorder } from "react-icons/md";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import AppTemplate from "../../templates/AppTemplate";
 
 interface Places {
   name: string;
@@ -84,7 +85,7 @@ export const Place: React.FC = () => {
   const btnMsg = "Delete this place";
   
   return (
-    <>
+    <AppTemplate>
       <ConfirmationModal
         open={open}
         handleClose={handleClose}
@@ -97,6 +98,7 @@ export const Place: React.FC = () => {
           height="600"
           image={dummyPlaces.picture}
           alt="place image"
+          sx={{paddingTop: '10rem'}}
         />
         <Box sx={{ display: "flex", justifyContent: "right", mt: "30px" }}>
           <Button>
@@ -176,6 +178,6 @@ export const Place: React.FC = () => {
           </Button>
         </Box>
       </Container>
-    </>
+    </AppTemplate>
   );
 };

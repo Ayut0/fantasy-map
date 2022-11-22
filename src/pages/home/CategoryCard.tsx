@@ -1,4 +1,3 @@
-import axios from "axios";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
@@ -16,12 +15,8 @@ export const CategoryCard: React.FC = () => {
   const [categories, setCategories] = useState([]);
   const { error, sendRequest, clearError } = useHttpRequest()
   useEffect(() => {
-    // axios.get("/api/categories").then((res) => {
-    //   setCategories(res.data);
-    // });
-
     const getCategory =  async () => {
-      const response = await sendRequest("/api/categorie", 'GET');
+      const response = await sendRequest("/api/categories", 'GET');
       setCategories(response)
       console.log(response);
     }

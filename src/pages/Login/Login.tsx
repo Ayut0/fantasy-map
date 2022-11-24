@@ -1,7 +1,9 @@
 import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import { useAppContext } from "../../context/AppContext";
 
 const Login: React.FC = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -11,29 +13,16 @@ const Login: React.FC = () => {
   const [emailErrorMsg, setEmailErrorMsg] = useState<string>("");
   const [passwordErrorMsg, setPasswordErrorMsg] = useState<string>("");
   const [disable, setDisable] = useState<boolean>(true);
+  const { sendRequest } = useHttpRequest();
+  const { dispatch } = useAppContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const oneOfFieldsIsEmpty:boolean =
+    const oneOfFieldsIsEmpty: boolean =
       !emailRef.current?.value.length || !passwordRef.current?.value.length;
-    const hasError:boolean = emailError || passwordError;
+    const hasError: boolean = emailError || passwordError;
 
     setDisable(hasError || oneOfFieldsIsEmpty);
-
-    //Check if one of the inputs has an error
-    // if (emailError || passwordError) {
-    //   // if ((emailRef.current?.value.length) && (passwordRef.current?.value.length)) {
-    //   //   setDisable(true)
-    //   // }
-    //   setDisable(true) //unavailable
-    // } else {
-    //   //Check if both inputs have a value
-    //   if ((emailRef.current?.value.length) && (passwordRef.current?.value.length)) {
-    //     setDisable(false) //available
-    //   } else {
-    //     setDisable(true) //unavailable
-    //   }
-
-    // }
   }, [emailError, passwordError]);
 
   //email validation
@@ -74,11 +63,23 @@ const Login: React.FC = () => {
     setPasswordErrorMsg(`You are good to go!!`);
   };
 
-  const loginHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const loginHandler = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
     e.preventDefault();
-    console.log(
-      `email: ${emailRef.current?.value}, password: ${passwordRef.current?.value}`
-    );
+    const signinResult = await sendRequest("/api/users/signin", "POST", {
+      username: emailRef.current?.value || "",
+      password: passwordRef.current?.value || "",
+    });
+    if (!signinResult) {
+      alert("Ooops... invalid user/password");
+      return;
+    }
+    dispatch({
+      type: "login",
+      payload: signinResult,
+    });
+    navigate("/");
   };
   return (
     <Grid container component="section" sx={{ height: "100vh" }}>

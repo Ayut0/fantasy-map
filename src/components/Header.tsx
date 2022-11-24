@@ -12,18 +12,22 @@ import {
 } from "@mui/material";
 import { MdSearch } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { useHttpRequest } from "../Utils/httpRequest-hook";
+import { useAppContext } from "../context/AppContext";
 
 interface Props {
   handleInputChange: (event: any)=>void
 }
 
 export const Header: React.FC<Props> = ({ handleInputChange }) => {
-  const handleClickLogin = (event: any) => {
-    console.log("Login clicked");
-  };
 
-  const handleClickRegister = (event: any) => {
-    console.log("Register clicked");
+  const { sendRequest } = useHttpRequest();
+  const { dispatch, state } = useAppContext();
+
+  const handleClickLogout: React.MouseEventHandler = () => {
+    sendRequest("/api/users/signout", "POST").then(() => {
+      dispatch({ type: "logout" });
+    });
   };
 
   return (
@@ -85,12 +89,23 @@ export const Header: React.FC<Props> = ({ handleInputChange }) => {
             >
               <Box>
                 {/* Could be replaced by react-router-dom Link component */}
-                <Button color="inherit" onClick={handleClickLogin}>
-                  Login
-                </Button>
-                <Button color="inherit" onClick={handleClickRegister}>
-                  Register
-                </Button>
+                {!state.loggedUser ? (
+                  <>
+                    <Button color="inherit" >
+                      Login
+                    </Button>
+                    <Button color="inherit" >
+                      Register
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <p>Welcome, {state.loggedUser.name}</p>
+                    <Button color="inherit" onClick={handleClickLogout}>
+                      Logout
+                    </Button>
+                  </>
+                )}
               </Box>
             </Grid>
           </Grid>

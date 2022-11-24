@@ -3,7 +3,7 @@ import { Header } from "../components/Header";
 import { useHttpRequest } from "../Utils/httpRequest-hook";
 
 interface Props {
-  children: JSX.Element[] | JSX.Element;
+  children: JSX.Element[] | JSX.Element | undefined;
 }
 
 const AppTemplate: React.FC<Props> = ({ children }) => {

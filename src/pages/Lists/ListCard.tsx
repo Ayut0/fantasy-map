@@ -8,17 +8,9 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import React from "react";
+import { ListCard as ListCardType } from '../../../typings';
 
-type places = {
-  name: string;
-  address: string;
-  description: string;
-  picture?: string;
-  categoryId?: number;
-  userId: number;
-};
-
-const ListCard: React.FC<places> = ({ name, description, picture }) => {
+const ListCard: React.FC<ListCardType> = ({ name, description, picture, averageStars }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -37,10 +29,10 @@ const ListCard: React.FC<places> = ({ name, description, picture }) => {
           alt="description"
         ></CardMedia>
         <Box sx={{ display: "flex" }}>
-          <CardContent sx={{ display: "1 0 auto" }}>
-            <Typography variant="h6">{name}</Typography>
+          <CardContent sx={{ display: "1 0 auto", textAlign: 'initial' }}>
+            <Typography variant="h6" sx={{fontWeight: 'bold'}}>{name}</Typography>
             <Typography variant="subtitle1">{description}</Typography>
-            <Rating name="read-only" value={1} readOnly />
+            <Rating name="read-only" value={averageStars} readOnly sx={{paddingTop: '52px'}} />
           </CardContent>
         </Box>
       </Card>

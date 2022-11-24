@@ -43,7 +43,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/lists" element={<Lists />} />
+            <Route path="/lists/:lid" element={<Lists />} />
             <Route path="/list/create" element={<CreateList />} />
             <Route path="/list/:lid" element={<CreateList />} />
             <Route path="/list/see" element={<SeeList />} />

@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import { MdSearch } from "react-icons/md";
 import { Grid } from "@mui/material";
 import Container from "@mui/material/Container";
+import { useHttpRequest } from "../Utils/httpRequest-hook";
+import { useAppContext } from "../context/AppContext";
 
 const handleInputChange = (event: any) => {
   console.log(event.target.value);
@@ -22,6 +24,15 @@ const handleClickRegister = (event: any) => {
 };
 
 export const Header: React.FC = () => {
+  const { sendRequest } = useHttpRequest();
+  const { dispatch, state } = useAppContext();
+
+  const handleClickLogout: React.MouseEventHandler = () => {
+    sendRequest("/api/users/signout", "POST").then(() => {
+      dispatch({ type: "logout" });
+    });
+  };
+
   return (
     <Container maxWidth="lg">
       <AppBar position="fixed" sx={{ py: 1.5 }}>
@@ -76,12 +87,23 @@ export const Header: React.FC = () => {
             >
               <Box>
                 {/* Could be replaced by react-router-dom Link component */}
-                <Button color="inherit" onClick={handleClickLogin}>
-                  Login
-                </Button>
-                <Button color="inherit" onClick={handleClickRegister}>
-                  Register
-                </Button>
+                {!state.loggedUser ? (
+                  <>
+                    <Button color="inherit" onClick={handleClickLogin}>
+                      Login
+                    </Button>
+                    <Button color="inherit" onClick={handleClickRegister}>
+                      Register
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <p>Welcome, {state.loggedUser.name}</p>
+                    <Button color="inherit" onClick={handleClickLogout}>
+                      Logout
+                    </Button>
+                  </>
+                )}
               </Box>
             </Grid>
           </Grid>

@@ -1,8 +1,9 @@
 import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import { useAppContext } from "../../context/AppContext";
 
 const Login: React.FC = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -12,6 +13,9 @@ const Login: React.FC = () => {
   const [emailErrorMsg, setEmailErrorMsg] = useState<string>("");
   const [passwordErrorMsg, setPasswordErrorMsg] = useState<string>("");
   const [disable, setDisable] = useState<boolean>(true);
+  const { sendRequest } = useHttpRequest();
+  const { dispatch } = useAppContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const oneOfFieldsIsEmpty: boolean =
@@ -63,11 +67,19 @@ const Login: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
     e.preventDefault();
-    const signinResult = await axios.post("/api/users/signin", {
+    const signinResult = await sendRequest("/api/users/signin", "POST", {
       username: emailRef.current?.value || "",
       password: passwordRef.current?.value || "",
     });
-    alert(JSON.stringify(signinResult.data));
+    if (!signinResult) {
+      alert("Ooops... invalid user/password");
+      return;
+    }
+    dispatch({
+      type: "login",
+      payload: signinResult,
+    });
+    navigate("/");
   };
   return (
     <Grid container component="section" sx={{ height: "100vh" }}>

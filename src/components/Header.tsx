@@ -1,27 +1,31 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import { useState } from "react";
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { MdSearch } from "react-icons/md";
-import { Grid } from "@mui/material";
-import Container from "@mui/material/Container";
+import { Link } from "react-router-dom";
 
-const handleInputChange = (event: any) => {
-  console.log(event.target.value);
-};
+interface Props {
+  handleInputChange: (event: any)=>void
+}
 
-const handleClickLogin = (event: any) => {
-  console.log("Login clicked");
-};
+export const Header: React.FC<Props> = ({ handleInputChange }) => {
+  const handleClickLogin = (event: any) => {
+    console.log("Login clicked");
+  };
 
-const handleClickRegister = (event: any) => {
-  console.log("Register clicked");
-};
+  const handleClickRegister = (event: any) => {
+    console.log("Register clicked");
+  };
 
-export const Header: React.FC = () => {
   return (
     <Container maxWidth="lg">
       <AppBar position="fixed" sx={{ py: 1.5 }}>
@@ -36,9 +40,14 @@ export const Header: React.FC = () => {
               }}
             >
               <Box component="div">
-                <Typography variant="h4" component="div" sx={{ pr: 4 }}>
-                  Fantasy map
-                </Typography>
+                <Link
+                  style={{ textDecoration: "none", color: "#FFFFFF" }}
+                  to="/"
+                >
+                  <Typography variant="h4" component="div" sx={{ pr: 4 }}>
+                    Fantasy map
+                  </Typography>
+                </Link>
               </Box>
               <Box component="div">
                 <TextField

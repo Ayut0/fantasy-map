@@ -1,15 +1,19 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import {Avatar, Box, Card, CardContent, CardMedia, Grid, Typography} from "@mui/material";
 import { Buttons } from "./Buttons";
+import { useHttpRequest } from "../../Utils/httpRequest-hook";
 
 export const PopularListCard: React.FC = () => {
   const [popularLists, setPopularLists] = useState([]);
+  const { error, sendRequest, clearError } = useHttpRequest();
   useEffect(() => {
-    axios.get("/api/lists/popular").then((res) => {
-      setPopularLists(res.data);
-    });
+    const getPopularList = async () => {
+      const response = await sendRequest("/api/lists/popular", "GET");
+      setPopularLists(response);
+      console.log(response);
+    };
+    getPopularList();
   }, []);
 
   return (
@@ -40,12 +44,12 @@ export const PopularListCard: React.FC = () => {
                   </Typography>
                 </Box>
                 <Buttons />
-                <Grid container pt={3} sx={{ alignItems: "center" }}>
+                <Grid container pt={2} sx={{ alignItems: "center" }}>
                   <Grid item xs={1}></Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={5}>
                     <Avatar src={list.user.profilePicture} alt="profile icon" />
                   </Grid>
-                  <Grid item xs={8}>
+                  <Grid item xs={6}>
                     <Typography sx={{ display: "inline" }}>
                       {list.user.name}
                     </Typography>

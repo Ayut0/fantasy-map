@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./App.css";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
@@ -16,6 +16,7 @@ import CreateList from "./pages/Lists/CreateList";
 import { SeeList } from "./pages/Lists/SeeList";
 import { CreatePlace } from "./pages/Place/CreatePlace";
 import { Home } from "./pages/Home/Home";
+import { Result } from "./pages/Result/Result";
 
 const theme = createTheme({
   palette: {
@@ -49,6 +50,7 @@ function App() {
           <Route path="/place/create" element={<CreatePlace />} />
           <Route path="/profile/" element={<Profile />} />
           <Route path="/profile/edit" element={<ProfileEdit />} />
+          <Route path="/result" element={<Result />} />
         </Routes>
         <Footer />
       </ThemeProvider>

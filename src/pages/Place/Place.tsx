@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect, Fragment } from "react";
 import {
   Avatar,
   Box,
@@ -18,63 +18,15 @@ import { HiPaperAirplane } from "react-icons/hi";
 import { MdFavoriteBorder } from "react-icons/md";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import AppTemplate from "../../templates/AppTemplate";
-
-interface Places {
-  name: string;
-  address: string;
-  description: string;
-  picture: string;
-  categoryId: number;
-  userId: number;
-}
-
-const dummyPlaces: Places = {
-  name: "Kitsilano Beach Basketball Courts",
-  address: "1499 Arbutus St, Vancouver, BC V6J 5N2",
-  description: "Public court in front of the ocean",
-  picture: "https://kitsfest.com/wp-content/uploads/2013/05/brempong-sm.jpg",
-  categoryId: 1,
-  userId: 2,
-};
-
-const dummyReviews: object[] = [
-  {
-    content: "Definitely the best place to play in the neighbourhood!",
-    stars: 5,
-    userId: 3,
-    placeId: 1,
-  },
-  {
-    content: "I dont like basketball... what is the point..!?",
-    stars: 2,
-    userId: 1,
-    placeId: 1,
-  },
-  {
-    content:
-      "I had so much wine, I dont remember, but probably it is nice place",
-    stars: 5,
-    userId: 3,
-    placeId: 4,
-  },
-  {
-    stars: 5,
-    userId: 1,
-    placeId: 4,
-  },
-  {
-    stars: 5,
-    userId: 2,
-    placeId: 2,
-  },
-  {
-    stars: 5,
-    userId: 2,
-    placeId: 3,
-  },
-];
+import { Place as PlaceType } from "../../../typings";
+import { Review as ReviewType } from "../../../typings";
+import { useParams } from "react-router-dom";
+import { useHttpRequest } from "../../Utils/httpRequest-hook";
 
 export const Place: React.FC = () => {
+  const params = useParams()
+  const [loadedPlace, setLoadedPlace] = useState<PlaceType>()
+  const { sendRequest } = useHttpRequest();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -84,8 +36,19 @@ export const Place: React.FC = () => {
               If you are good, click the button below.`;
   const btnMsg = "Delete this place";
   
+  useEffect(() => {
+    const getPlaceById = async () => {
+      const place = await sendRequest(`/api/places/${params.pid}`, "GET");
+      setLoadedPlace(place)
+    }
+
+    getPlaceById();
+  }, [params.pid])
+
   return (
     <AppTemplate>
+      {loadedPlace && (
+        <Fragment>
       <ConfirmationModal
         open={open}
         handleClose={handleClose}
@@ -96,7 +59,7 @@ export const Place: React.FC = () => {
         <CardMedia
           component="img"
           height="600"
-          image={dummyPlaces.picture}
+          image={loadedPlace.picture}
           alt="place image"
           sx={{paddingTop: '10rem'}}
         />
@@ -112,7 +75,7 @@ export const Place: React.FC = () => {
           </Button>
         </Box>
         <Box sx={{ display: "flex" }}>
-          <Typography variant="h3">{dummyPlaces.name}</Typography>
+          <Typography variant="h3">{loadedPlace.name}</Typography>
           <Button>
             <FiEdit size={32} />
           </Button>
@@ -125,9 +88,12 @@ export const Place: React.FC = () => {
                 style={{ transform: "rotate(55deg)" }}
               />
               Address
+              <Button>
+                <FiEdit size={20} />
+              </Button>
             </Typography>
             <Typography variant="body1" sx={{ fontSize: "20px" }}>
-              {dummyPlaces.address}
+              {loadedPlace.address}
             </Typography>
           </Grid>
           <Grid item xs={6} sx={{ textAlign: "left", my: 6 }}>
@@ -138,7 +104,7 @@ export const Place: React.FC = () => {
               </Button>
             </Typography>
             <Typography variant="body1" sx={{ fontSize: "20px" }}>
-              {dummyPlaces.description}
+              {loadedPlace.description}
             </Typography>
           </Grid>
         </Grid>
@@ -146,7 +112,7 @@ export const Place: React.FC = () => {
           Last reviews
         </Typography>
         <Grid container rowSpacing={6} columnSpacing={{ xs: 6, sm: 2, md: 3 }}>
-          {dummyReviews.map((review: any) => {
+          {loadedPlace.reviews?.map((review: ReviewType) => {
             return (
               <Grid key={1} item xs={3}>
                 <Card
@@ -178,6 +144,8 @@ export const Place: React.FC = () => {
           </Button>
         </Box>
       </Container>
+        </Fragment>
+          )}
     </AppTemplate>
   );
 };

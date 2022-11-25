@@ -13,8 +13,9 @@ const Login: React.FC = () => {
   const [emailErrorMsg, setEmailErrorMsg] = useState<string>("");
   const [passwordErrorMsg, setPasswordErrorMsg] = useState<string>("");
   const [disable, setDisable] = useState<boolean>(true);
+  const [serverError, setServerError] = useState("");
   const { sendRequest } = useHttpRequest();
-  const { dispatch } = useAppContext();
+  const { dispatch, state } = useAppContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +25,12 @@ const Login: React.FC = () => {
 
     setDisable(hasError || oneOfFieldsIsEmpty);
   }, [emailError, passwordError]);
+
+  useEffect(() => {
+    if (state.loggedUser) {
+      navigate("/");
+    }
+  }, []);
 
   //email validation
   const isEmailValid = (email: string) => {
@@ -67,12 +74,13 @@ const Login: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
     e.preventDefault();
+    setServerError("");
     const signinResult = await sendRequest("/api/users/signin", "POST", {
       username: emailRef.current?.value || "",
       password: passwordRef.current?.value || "",
     });
     if (!signinResult) {
-      alert("Ooops... invalid user/password");
+      setServerError("Invalid user and password");
       return;
     }
     dispatch({
@@ -172,6 +180,11 @@ const Login: React.FC = () => {
           >
             Login
           </Button>
+          {!!serverError && (
+            <Typography variant="body2" sx={{ color: "red" }}>
+              {serverError}
+            </Typography>
+          )}
         </Box>
       </Grid>
     </Grid>

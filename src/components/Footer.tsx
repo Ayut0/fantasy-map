@@ -12,7 +12,6 @@ export const Footer: React.FC = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        mt: "100px"
       }}
     >
       <Typography sx={{ color: "#ffffff" }}>Copyrights...</Typography>

@@ -8,6 +8,7 @@ interface LoggedUser {
 
 interface AppContextState {
   loggedUser: LoggedUser | null;
+  searchVal: string;
 }
 
 type AppContextAction =
@@ -17,6 +18,10 @@ type AppContextAction =
     }
   | {
       type: "logout";
+    }
+  | {
+      type: "search";
+      payload: string;
     };
 
 interface Props {
@@ -25,6 +30,7 @@ interface Props {
 
 const initialState: AppContextState = {
   loggedUser: null,
+  searchVal: "",
 };
 
 const context = React.createContext<{
@@ -51,6 +57,11 @@ const reducer = (
       return {
         ...state,
         loggedUser: null,
+      };
+    case "search":
+      return {
+        ...state,
+        searchVal: action.payload,
       };
     default:
       throw "Invalid action";

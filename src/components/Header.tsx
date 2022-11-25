@@ -1,36 +1,41 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import { useState } from "react";
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { MdSearch } from "react-icons/md";
-import { Grid } from "@mui/material";
-import Container from "@mui/material/Container";
+import { Link, useNavigate } from "react-router-dom";
 import { useHttpRequest } from "../Utils/httpRequest-hook";
 import { useAppContext } from "../context/AppContext";
-
-const handleInputChange = (event: any) => {
-  console.log(event.target.value);
-};
-
-const handleClickLogin = (event: any) => {
-  console.log("Login clicked");
-};
-
-const handleClickRegister = (event: any) => {
-  console.log("Register clicked");
-};
 
 export const Header: React.FC = () => {
   const { sendRequest } = useHttpRequest();
   const { dispatch, state } = useAppContext();
-
+  const [searchVal, setSearchVal] = useState("");
+  const navigate = useNavigate();
   const handleClickLogout: React.MouseEventHandler = () => {
     sendRequest("/api/users/signout", "POST").then(() => {
       dispatch({ type: "logout" });
     });
+  };
+
+  const handleInputChange: React.ChangeEventHandler = (event: any) => {
+    setSearchVal(event.target.value);
+    // dispatch({ type: "search", payload: event.target.value });
+  };
+
+  const handleKeyUp: React.KeyboardEventHandler = (event) => {
+    if (event.code === "Enter") {
+      dispatch({ type: "search", payload: searchVal });
+      navigate("/result");
+    }
   };
 
   return (
@@ -47,13 +52,19 @@ export const Header: React.FC = () => {
               }}
             >
               <Box component="div">
-                <Typography variant="h4" component="div" sx={{ pr: 4 }}>
-                  Fantasy map
-                </Typography>
+                <Link
+                  style={{ textDecoration: "none", color: "#FFFFFF" }}
+                  to="/"
+                >
+                  <Typography variant="h4" component="div" sx={{ pr: 4 }}>
+                    Fantasy map
+                  </Typography>
+                </Link>
               </Box>
               <Box component="div">
                 <TextField
                   onChange={handleInputChange}
+                  onKeyUp={handleKeyUp}
                   id="outlined-basic"
                   placeholder="Search"
                   variant="outlined"
@@ -61,6 +72,7 @@ export const Header: React.FC = () => {
                     backgroundColor: "white",
                     borderRadius: 8,
                   }}
+                  value={searchVal}
                   InputProps={{
                     endAdornment: (
                       <MdSearch
@@ -89,12 +101,8 @@ export const Header: React.FC = () => {
                 {/* Could be replaced by react-router-dom Link component */}
                 {!state.loggedUser ? (
                   <>
-                    <Button color="inherit" onClick={handleClickLogin}>
-                      Login
-                    </Button>
-                    <Button color="inherit" onClick={handleClickRegister}>
-                      Register
-                    </Button>
+                    <Button color="inherit">Login</Button>
+                    <Button color="inherit">Register</Button>
                   </>
                 ) : (
                   <>

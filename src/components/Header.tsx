@@ -11,23 +11,31 @@ import {
   Typography,
 } from "@mui/material";
 import { MdSearch } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useHttpRequest } from "../Utils/httpRequest-hook";
 import { useAppContext } from "../context/AppContext";
 
-interface Props {
-  handleInputChange: (event: any)=>void
-}
-
-export const Header: React.FC<Props> = ({ handleInputChange }) => {
-
+export const Header: React.FC = () => {
   const { sendRequest } = useHttpRequest();
   const { dispatch, state } = useAppContext();
-
+  const [searchVal, setSearchVal] = useState("");
+  const navigate = useNavigate();
   const handleClickLogout: React.MouseEventHandler = () => {
     sendRequest("/api/users/signout", "POST").then(() => {
       dispatch({ type: "logout" });
     });
+  };
+
+  const handleInputChange: React.ChangeEventHandler = (event: any) => {
+    setSearchVal(event.target.value);
+    // dispatch({ type: "search", payload: event.target.value });
+  };
+
+  const handleKeyUp: React.KeyboardEventHandler = (event) => {
+    if (event.code === "Enter") {
+      dispatch({ type: "search", payload: searchVal });
+      navigate("/result");
+    }
   };
 
   return (
@@ -56,6 +64,7 @@ export const Header: React.FC<Props> = ({ handleInputChange }) => {
               <Box component="div">
                 <TextField
                   onChange={handleInputChange}
+                  onKeyUp={handleKeyUp}
                   id="outlined-basic"
                   placeholder="Search"
                   variant="outlined"
@@ -63,6 +72,7 @@ export const Header: React.FC<Props> = ({ handleInputChange }) => {
                     backgroundColor: "white",
                     borderRadius: 8,
                   }}
+                  value={searchVal}
                   InputProps={{
                     endAdornment: (
                       <MdSearch
@@ -91,12 +101,8 @@ export const Header: React.FC<Props> = ({ handleInputChange }) => {
                 {/* Could be replaced by react-router-dom Link component */}
                 {!state.loggedUser ? (
                   <>
-                    <Button color="inherit" >
-                      Login
-                    </Button>
-                    <Button color="inherit" >
-                      Register
-                    </Button>
+                    <Button color="inherit">Login</Button>
+                    <Button color="inherit">Register</Button>
                   </>
                 ) : (
                   <>

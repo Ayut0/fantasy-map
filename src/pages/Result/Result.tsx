@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useAppContext } from "../../context/AppContext";
 import {
   Avatar,
   Box,
@@ -14,9 +15,12 @@ import {
 import AppTemplate from "../../templates/AppTemplate";
 import { Buttons } from "../Home/Buttons";
 import { FaSadTear } from "react-icons/fa";
+import { useHttpRequest } from "../../Utils/httpRequest-hook";
 
 export const Result: React.FC = () => {
-  const [getResult, setGetResult] = useState(false);
+  const { dispatch, state } = useAppContext();
+  const [getResult, setGetResult] = useState([]);
+   const { error, sendRequest, clearError } = useHttpRequest();
   const dummyResultLists = [
     {
       id: 2,
@@ -34,6 +38,18 @@ export const Result: React.FC = () => {
     },
   ];
 
+  useEffect(() => {
+    const getRequiredLists = async () => {
+      const response = await sendRequest(
+        `/api/lists/search?query=${state.searchVal}`,
+        "GET"
+      );
+      setGetResult(response);
+      console.log(getResult);
+    };
+    getRequiredLists();
+  }, [state.searchVal]);
+
   return (
     <AppTemplate>
       <Container
@@ -48,13 +64,13 @@ export const Result: React.FC = () => {
         <Typography variant="h3" pb={5}>
           Search result
         </Typography>
-        {getResult ? (
+        {getResult.length > 0 ? (
           <Grid
             container
             rowSpacing={6}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
-            {dummyResultLists.map((list: any) => {
+            {getResult.map((list: any) => {
               return (
                 <Grid key={list.id} item xs={4}>
                   <Card

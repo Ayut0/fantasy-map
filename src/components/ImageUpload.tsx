@@ -2,10 +2,10 @@ import { Button } from "@mui/material";
 import AddPhotoAlternateRoundedIcon from "@mui/icons-material/AddPhotoAlternateRounded";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 
-const ImageUpload: React.FC = () => {
+const ImageUpload = ({ file ,setFile, previewUrl, setPreviewUrl }:any) => {
   const filePickerRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState(undefined);
-  const [previewUrl, setPreviewUrl] = useState<string>();
+  // const [file, setFile] = useState(undefined);
+  // const [previewUrl, setPreviewUrl] = useState<string>();
 
   useEffect(() => {
     if (!file) {
@@ -28,9 +28,9 @@ const ImageUpload: React.FC = () => {
     let pickedImage: any;
 
     if (event.target.files && event.target.files.length === 1) {
-      console.log(event.target.files);
+      // console.log(event.target.files);
       pickedImage = event.target.files[0];
-      console.log(pickedImage);
+      // console.log(pickedImage);
       setFile(pickedImage);
     }
   };

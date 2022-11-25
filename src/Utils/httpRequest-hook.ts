@@ -16,7 +16,7 @@ export const useHttpRequest = () => {
           }
     }
   const sendRequest = useCallback(
-    async (url: string, method: Method, body = null) => {
+    async (url: string, method: Method, body: unknown = null) => {
       if (method === "GET") {
         try {
           const response = await axios.get(url);

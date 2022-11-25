@@ -12,12 +12,11 @@ export interface FavoriteList {
 }
 
 export interface Review {
-    id: string;
-    image?: string;
-    name: string;
-    content: string;
-    star?: number;
-    userId?: number;
+    id: number;
+    content?: string;
+    stars?: number;
+    userId: number;
+    placeId: number
 }
 
 interface Location {
@@ -25,16 +24,16 @@ interface Location {
     lng: number;
 }
 
-interface Place{
+export interface Place{
     address: string;
-    averageStars: number;
+    averageStars?: number;
     description: string;
     id?: number;
     name: string;
     picture?: string;
     location: Location;
-    categoryId?: number;
-    userId: number
+    userId: number;
+    reviews? : Review[]
 }
 
 export interface List{
@@ -63,5 +62,5 @@ export interface ListCard {
     name: string;
     description?: string;
     picture?: string;
-    averageStars: number
+    averageStars?: number
 }

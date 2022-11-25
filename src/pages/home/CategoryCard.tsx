@@ -5,12 +5,6 @@ import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import { useHttpRequest } from "../../Utils/httpRequest-hook"
 
-
-interface Category {
-  id: number;
-  name: string;
-}
-
 export const CategoryCard: React.FC = () => {
   const [categories, setCategories] = useState([]);
   const { error, sendRequest, clearError } = useHttpRequest()

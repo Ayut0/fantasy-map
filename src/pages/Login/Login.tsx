@@ -30,7 +30,7 @@ const Login: React.FC = () => {
     if (state.loggedUser) {
       navigate("/");
     }
-  }, []);
+  }, [state.loggedUser]);
 
   //email validation
   const isEmailValid = (email: string) => {

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Footer } from "./components/Footer";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -16,7 +16,8 @@ import { SeeList } from "./pages/Lists/SeeList";
 import { CreatePlace } from "./pages/Place/CreatePlace";
 import { Home } from "./pages/Home/Home";
 import { Result } from "./pages/Result/Result";
-import AppContext from "./context/AppContext";
+import AppContext, { LoggedUser } from "./context/AppContext";
+import { useHttpRequest } from "./Utils/httpRequest-hook";
 
 const theme = createTheme({
   palette: {
@@ -35,9 +36,23 @@ const theme = createTheme({
 });
 
 function App() {
+  const { sendRequest } = useHttpRequest();
+  const [loggedUser, setLoggedUser] = useState<LoggedUser | null>(null);
+
+  const fetchUserDataFromToken = async () => {
+    const data = await sendRequest("/api/users/jwt", "GET");
+    if (data) {
+      setLoggedUser(data);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserDataFromToken();
+  }, []);
+
   return (
     <div className="App">
-      <AppContext>
+      <AppContext initialState={{ loggedUser }}>
         <ThemeProvider theme={theme}>
           <Routes>
             <Route path="/" element={<Home />} />

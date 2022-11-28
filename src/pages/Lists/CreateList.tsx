@@ -58,6 +58,7 @@ const CreateList: React.FC = () => {
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
 
+  const [titleVal, setTitleVal] = useState("");
   const handleChange = (event: SelectChangeEvent<typeof placeName>) => {
     const {
       target: { value },
@@ -76,17 +77,27 @@ const CreateList: React.FC = () => {
     setShowConfirmationModal(false);
   };
 
+  const handleSubmit = (): void => {
+    // setTitleVal(title.value);
+    alert("test");
+};
   return (
     <AppTemplate>
       <Stack
-        sx={{ width: "100%", backgroundColor: "#F9F6F0", rowGap: "1.2rem", paddingTop: '10rem' }}
+        sx={{
+          width: "100%",
+          backgroundColor: "#F9F6F0",
+          rowGap: "1.2rem",
+          paddingTop: "10rem",
+        }}
       >
         <Typography component="h3" variant="h3" sx={{ color: "#232946" }}>
-          {lid ? "Edit list" : "Creating a new list"}
+          {isExistedList ? "Edit list" : "Creating a new list"}
         </Typography>
         <FormControl
           fullWidth
           sx={{ rowGap: "1.2rem", textAlign: "initial", alignItems: "center" }}
+          // onSubmit={handleSubmit}
         >
           <Box sx={{ width: "50%" }}>
             <TextField
@@ -98,6 +109,7 @@ const CreateList: React.FC = () => {
               name="title"
               autoComplete="title"
               autoFocus
+              value={titleVal}
             />
           </Box>
           <Box sx={{ width: "50%" }}>
@@ -194,7 +206,7 @@ const CreateList: React.FC = () => {
                   open={true}
                   handleClose={closeDeleteModalHandler}
                   msg={
-                    "You are about to delete this lis. Once you delete the list, you are not able to restore... If you are good, click the button below."
+                    "You are about to delete this list. Once you delete the list, you are not able to restore... If you are good, click the button below."
                   }
                   btnMsg={"Delete this list"}
                 />
@@ -275,6 +287,8 @@ const CreateList: React.FC = () => {
           )}
           <ActionButton
             variant="outlined"
+            type="submit"
+            onClick={handleSubmit}
             sx={{
               mt: 3,
               mb: 2,
@@ -289,7 +303,7 @@ const CreateList: React.FC = () => {
               },
             }}
           >
-            {lid ? "Update List" : "Create"}
+            {isExistedList ? "Update List" : "Create"}
           </ActionButton>
         </FormControl>
       </Stack>

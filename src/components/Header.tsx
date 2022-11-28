@@ -23,6 +23,7 @@ export const Header: React.FC = () => {
   const handleClickLogout: React.MouseEventHandler = () => {
     sendRequest("/api/users/signout", "POST").then(() => {
       dispatch({ type: "logout" });
+      navigate("/");
     });
   };
 
@@ -101,7 +102,7 @@ export const Header: React.FC = () => {
                 {/* Could be replaced by react-router-dom Link component */}
                 {!state.loggedUser ? (
                   <>
-                    <Button color="inherit">Login</Button>
+                    <Link to="/login">Login</Link>
                     <Button color="inherit">Register</Button>
                   </>
                 ) : (

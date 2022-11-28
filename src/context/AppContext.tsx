@@ -1,6 +1,6 @@
-import React, { useContext, useReducer, Dispatch } from "react";
+import React, { useContext, useReducer, Dispatch, useEffect } from "react";
 
-interface LoggedUser {
+export interface LoggedUser {
   id: number;
   email: string;
   name: string;
@@ -26,9 +26,10 @@ type AppContextAction =
 
 interface Props {
   children: JSX.Element | JSX.Element[];
+  initialState?: Partial<AppContextState>;
 }
 
-const initialState: AppContextState = {
+const defaultState: AppContextState = {
   loggedUser: null,
   searchVal: "",
 };
@@ -37,7 +38,7 @@ const context = React.createContext<{
   state: AppContextState;
   dispatch: Dispatch<AppContextAction>;
 }>({
-  state: initialState,
+  state: defaultState,
   dispatch: () => {
     // not implemented
   },
@@ -69,7 +70,8 @@ const reducer = (
 };
 
 const AppContext: React.FC<Props> = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, defaultState);
+
   return (
     <context.Provider
       value={{

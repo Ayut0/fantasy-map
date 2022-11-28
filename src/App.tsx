@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Footer } from "./components/Footer";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -16,7 +16,8 @@ import { SeeList } from "./pages/Lists/SeeList";
 import { CreatePlace } from "./pages/Place/CreatePlace";
 import { Home } from "./pages/Home/Home";
 import { Result } from "./pages/Result/Result";
-import AppContext from "./context/AppContext";
+import { useAppContext } from "./context/AppContext";
+import { useHttpRequest } from "./Utils/httpRequest-hook";
 
 const theme = createTheme({
   palette: {
@@ -35,27 +36,39 @@ const theme = createTheme({
 });
 
 function App() {
+  const { sendRequest } = useHttpRequest();
+  const { dispatch } = useAppContext();
+
+  const fetchUserDataFromToken = async () => {
+    const data = await sendRequest("/api/users/jwt", "GET");
+    if (data) {
+      dispatch({ type: "login", payload: data });
+    }
+  };
+
+  useEffect(() => {
+    fetchUserDataFromToken();
+  }, []);
+
   return (
     <div className="App">
-      <AppContext>
-        <ThemeProvider theme={theme}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/lists/:lid" element={<Lists />} />
-            <Route path="/list/create" element={<CreateList />} />
-            <Route path="/list/:lid" element={<CreateList />} />
-            <Route path="/list/see" element={<SeeList />} />
-            <Route path="/place/:pid" element={<Place />} />
-            <Route path="/place/create" element={<CreatePlace />} />
-            <Route path="/profile/" element={<Profile />} />
-            <Route path="/profile/edit" element={<ProfileEdit />} />
-            <Route path="/result" element={<Result />} />
-          </Routes>
-          <Footer />
-        </ThemeProvider>
-      </AppContext>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/lists/:lid" element={<Lists />} />
+          <Route path="/list/create" element={<CreateList />} />
+          <Route path="/list/:lid" element={<CreateList />} />
+          <Route path="/list/see" element={<SeeList />} />
+          <Route path="/place/:pid" element={<Place />} />
+          <Route path="/place/create" element={<CreatePlace />} />
+          <Route path="/profile/" element={<Profile />} />
+          <Route path="/profile/edit" element={<ProfileEdit />} />
+          <Route path="/result" element={<Result />} />
+        </Routes>
+        <Footer />
+      </ThemeProvider>
     </div>
   );
 }

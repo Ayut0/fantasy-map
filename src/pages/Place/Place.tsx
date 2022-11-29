@@ -23,7 +23,10 @@ import { Place as PlaceType } from "../../../typings";
 import { Review as ReviewType } from "../../../typings";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
-import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
+import GooglePlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-google-places-autocomplete";
 
 export const Place: React.FC = () => {
   const params = useParams();
@@ -35,9 +38,10 @@ export const Place: React.FC = () => {
   const [isNameEdit, setIsNameEdit] = useState<boolean>(false);
   const [isAddressEdit, setIsAddressEdit] = useState<boolean>(false);
   const [isDescriptionEdit, setIsDescriptionEdit] = useState<boolean>(false);
-  const [inputPlaceName, setInputPlaceName] = useState ("")
-  const [inputAddress, setInputAddress] = useState ("");
-  const [inputDescription, setInputDescription] = useState ("");
+  const [inputPlaceName, setInputPlaceName] = useState("");
+  const [inputAddress, setInputAddress] = useState("");
+  const [inputDescription, setInputDescription] = useState("");
+  const [location, setLocation] = useState({});
   const navigate = useNavigate();
 
   const msg = `You are about to delete this place.
@@ -52,39 +56,33 @@ export const Place: React.FC = () => {
       setInputPlaceName(place.name);
       setInputAddress(place.address);
       setInputDescription(place.description);
-      console.log('test', place);
+      setLocation(place.location);
+      console.log("test", place);
     };
-    
+
     getPlaceById();
   }, [params.pid]);
-  
-  
+
   const updatePlaceHandler = async (event: any) => {
     event.preventDefault();
-    console.log('submit!!!!!!');
-    console.log('address', inputAddress);
+    console.log("submit!!!!!!");
+    console.log("address", inputAddress);
+    console.log("description", inputDescription);
     try {
-      const results = await geocodeByAddress(inputAddress);
-      const latLng = await getLatLng(results[0]);
-      const lat = latLng.lat;
-      const lng = latLng.lng;
       const updatedPlaceData = {
         name: inputPlaceName,
         address: inputAddress,
-        location: {
-          lat: lat,
-          lng: lng,
-        },
+        location: location,
         description: inputDescription,
-        picture: loadedPlace?.picture
-      }
+        picture: loadedPlace?.picture,
+      };
       console.log(updatedPlaceData);
-      await sendRequest(`/api/places/${params.pid}`, 'PUT', updatedPlaceData)
+      await sendRequest(`/api/places/${params.pid}`, "PUT", updatedPlaceData);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
-  
+
   return (
     <AppTemplate>
       {loadedPlace && (
@@ -117,7 +115,11 @@ export const Place: React.FC = () => {
             <Box sx={{ display: "flex" }}>
               {isNameEdit ? (
                 <Box component="form" onSubmit={updatePlaceHandler}>
-                  <TextField margin="normal" defaultValue={loadedPlace.name} onChange={(event)=> setInputPlaceName(event.target.value) } />
+                  <TextField
+                    margin="normal"
+                    defaultValue={loadedPlace.name}
+                    onChange={(event) => setInputPlaceName(event.target.value)}
+                  />
                 </Box>
               ) : (
                 <Typography variant="h3">{loadedPlace.name}</Typography>
@@ -139,25 +141,32 @@ export const Place: React.FC = () => {
                   </Button>
                 </Typography>
                 {isAddressEdit ? (
-                  <GooglePlacesAutocomplete
-                    apiKey={process.env.REACT_APP_KEY_GOOGLE_PLACES}
-                    selectProps={{
-                      defaultInputValue: inputAddress,
-                      placeholder: "Address *",
-                      styles: {
-                        input: (provided: any) => ({
-                          ...provided,
-                        }),
-                        option: (provided: any) => ({
-                          ...provided,
-                          textAlign: "left",
-                        }),
-                      },
-                      onChange: (address: any) => {
-                        setInputAddress(address.label);
-                      },
-                    }}
-                  />
+                  <Box component="form" onSubmit={updatePlaceHandler}>
+                    <GooglePlacesAutocomplete
+                      apiKey={process.env.REACT_APP_KEY_GOOGLE_PLACES}
+                      selectProps={{
+                        defaultInputValue: inputAddress,
+                        placeholder: "Address *",
+                        styles: {
+                          input: (provided: any) => ({
+                            ...provided,
+                          }),
+                          option: (provided: any) => ({
+                            ...provided,
+                            textAlign: "left",
+                          }),
+                        },
+                        onChange: async (address: any) => {
+                          setInputAddress(address.label);
+                          const results = await geocodeByAddress(address.label);
+                          const latLng = await getLatLng(results[0]);
+                          const lat = latLng.lat;
+                          const lng = latLng.lng;
+                          setLocation({lat: lat, lng: lng})
+                        },
+                      }}
+                    />
+                  </Box>
                 ) : (
                   <Typography variant="body1" sx={{ fontSize: "20px" }}>
                     {loadedPlace.address}
@@ -171,10 +180,12 @@ export const Place: React.FC = () => {
                     <Box component="form" onSubmit={updatePlaceHandler}>
                       <TextField
                         margin="normal"
-                        multiline
                         rows={4}
                         defaultValue={loadedPlace.description}
-                        onChange={(event) => setInputDescription(event?.target.value)}
+                        value={inputDescription}
+                        onChange={(event) =>
+                          setInputDescription(event?.target.value)
+                        }
                       />
                     </Box>
                   ) : (

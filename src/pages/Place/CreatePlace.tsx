@@ -24,14 +24,11 @@ export const CreatePlace: React.FC = () => {
       const lat = latLng.lat;
       const lng = latLng.lng;
       
-      // const fd = new FormData();
       // formData.append("name", inputPlaceName);
       // formData.append("address", inputAddress);
       // formData.append("description", inputDescription);
       // formData.append("latitude", lat.toString());
       // formData.append("longitude", lng.toString());
-      // { file && fd.append('image', file) }
-      // console.log(fd.get('image'))
       const formData = {
         name: inputPlaceName,
         address: inputAddress,
@@ -45,8 +42,12 @@ export const CreatePlace: React.FC = () => {
       // formData.append("picture", uploadImg);
       console.log("place info has been sent to server");
       console.log(formData);
-
-      //send image
+      
+      //send image (send with original file, await)
+      const fd = new FormData();
+      // { file && fd.append('image', file) }
+      // console.log(fd.get('image'))
+      // await response from server, I expect to get a path
 
       //send those info to a server
       await sendRequest(`/api/places`, "POST" ,formData);

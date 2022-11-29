@@ -1,13 +1,25 @@
 import axios from "axios";
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
+const FORCE_AUTH_EXCEPTION = "/api/users/jwt";
+
 export const useHttpRequest = () => {
   const [error, setError] = useState<boolean | null>(false);
+  const navigate = useNavigate();
+
   const errorHandler = (err: unknown) => {
     if (axios.isAxiosError(err)) {
-      console.log("error message", err.message);
+      // redirect to login when response is 401 Unauthorized and is not one of
+      if (
+        err.response?.status === 401 &&
+        !(err.request?.responseURL || "").endsWith(FORCE_AUTH_EXCEPTION)
+      ) {
+        navigate("/login");
+      }
+
       return err.message;
     } else {
       console.log("Unexpected error", err);
@@ -15,6 +27,7 @@ export const useHttpRequest = () => {
       return "We are having an unpredictable error";
     }
   };
+
   const sendRequest = useCallback(
     async (url: string, method: Method, body: unknown = null) => {
       if (method === "GET") {
@@ -60,5 +73,6 @@ export const useHttpRequest = () => {
   const clearError = () => {
     setError(null);
   };
+
   return { error, sendRequest, clearError };
 };

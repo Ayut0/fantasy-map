@@ -25,6 +25,7 @@ export const CreatePlace: React.FC = () => {
       const lat = latLng.lat;
       const lng = latLng.lng;
       
+
       //send image
       const fd = new FormData();
       { file && fd.append('filetoupload', file) }
@@ -33,8 +34,7 @@ export const CreatePlace: React.FC = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log(res);
-      
+
       const formData = {
         name: inputPlaceName,
         address: inputAddress,
@@ -43,15 +43,11 @@ export const CreatePlace: React.FC = () => {
           lat: lat,
           lng: lng,
         },
-        picture: res
+        picture: res.data
       };
-      
-      console.log("place info has been sent to server");
-      console.log(formData);
 
       //send those info to a server
-      await sendRequest(`/api/places`, "POST" ,formData);
-
+      await sendRequest(`/api/places`, "POST", formData);
     } catch (err) {
       console.log(err);
       return err;

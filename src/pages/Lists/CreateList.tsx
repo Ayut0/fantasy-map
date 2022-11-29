@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   FormControl,
   MenuItem,
   OutlinedInput,
@@ -57,8 +58,9 @@ const CreateList: React.FC = () => {
   const isExistedList: boolean = Object.values(lid).length ? true : false;
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
-
-  const [titleVal, setTitleVal] = useState("");
+  const [isPlaceAdded, setIsPlaceAdded] = useState(false);
+  const [addedPlace, setAddedPlace] = useState("");
+  // const [titleVal, setTitleVal] = useState("");
   const handleChange = (event: SelectChangeEvent<typeof placeName>) => {
     const {
       target: { value },
@@ -80,7 +82,17 @@ const CreateList: React.FC = () => {
   const handleSubmit = (): void => {
     // setTitleVal(title.value);
     alert("test");
-};
+  };
+
+  const handleAddPlace = (event: any) => {
+    setIsPlaceAdded(!isPlaceAdded);
+  };
+
+  const handleSavePlace = (event: any) => {
+    setAddedPlace(event.target.value);
+    setIsPlaceAdded(!isPlaceAdded);
+  };
+
   return (
     <AppTemplate>
       <Stack
@@ -92,7 +104,7 @@ const CreateList: React.FC = () => {
         }}
       >
         <Typography component="h3" variant="h3" sx={{ color: "#232946" }}>
-          {isExistedList ? "Edit list" : "Creating a new list"}
+          {isExistedList ? "Edit list" : "Create a new list"}
         </Typography>
         <FormControl
           fullWidth
@@ -109,7 +121,7 @@ const CreateList: React.FC = () => {
               name="title"
               autoComplete="title"
               autoFocus
-              value={titleVal}
+              // value={titleVal}
             />
           </Box>
           <Box sx={{ width: "50%" }}>
@@ -260,28 +272,53 @@ const CreateList: React.FC = () => {
                   rowGap: "24px",
                 }}
               >
-                <Typography
-                  component="h4"
-                  variant="h5"
-                  sx={{ color: "#232946", width: "40%" }}
-                >
-                  Click the button below to add a new place
-                </Typography>
-                <ActionButton
-                  variant="outlined"
-                  sx={{
-                    padding: ".7rem 1rem",
-                    width: "60%",
-                    fontSize: "1.1rem",
-                  }}
-                >
-                  <Link
-                    to={""}
-                    style={{ textDecoration: "none", color: "#232946" }}
-                  >
-                    Add a new place
-                  </Link>
-                </ActionButton>
+                {isPlaceAdded ? (
+                  <>
+                    <TextField />
+                    <Button
+                      variant="outlined"
+                      type="submit"
+                      onClick={handleSavePlace}
+                      sx={{
+                        backgroundColor: "#2CA58D",
+                        width: "10%",
+                        color: "#EEEEEE",
+                        "&:hover": {
+                          color: "#2CA58D",
+                        },
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Typography
+                      component="h4"
+                      variant="h5"
+                      sx={{ color: "#232946", width: "40%" }}
+                    >
+                      Click the button below to add a new place
+                    </Typography>
+                    <ActionButton
+                      variant="outlined"
+                      type="submit"
+                      onClick={handleAddPlace}
+                      sx={{
+                        padding: ".7rem 1rem",
+                        width: "60%",
+                        fontSize: "1.1rem",
+                      }}
+                    >
+                      <Link
+                        to={""}
+                        style={{ textDecoration: "none", color: "#232946" }}
+                      >
+                        Add a new place
+                      </Link>
+                    </ActionButton>
+                  </>
+                )}
               </Box>
             </Fragment>
           )}

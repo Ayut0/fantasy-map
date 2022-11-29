@@ -5,6 +5,7 @@ import ImageUpload from "../../components/ImageUpload";
 import AppTemplate from "../../templates/AppTemplate";
 import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import axios from "axios";
 
 export const CreatePlace: React.FC = () => {
   const { error, sendRequest, clearError } = useHttpRequest();
@@ -24,14 +25,16 @@ export const CreatePlace: React.FC = () => {
       const lat = latLng.lat;
       const lng = latLng.lng;
       
-      // const fd = new FormData();
-      // formData.append("name", inputPlaceName);
-      // formData.append("address", inputAddress);
-      // formData.append("description", inputDescription);
-      // formData.append("latitude", lat.toString());
-      // formData.append("longitude", lng.toString());
-      // { file && fd.append('image', file) }
-      // console.log(fd.get('image'))
+      //send image
+      const fd = new FormData();
+      { file && fd.append('filetoupload', file) }
+      const res = await axios.post('/api/files/upload', fd, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log(res);
+      
       const formData = {
         name: inputPlaceName,
         address: inputAddress,
@@ -40,13 +43,11 @@ export const CreatePlace: React.FC = () => {
           lat: lat,
           lng: lng,
         },
-        picture: previewUrl
+        picture: res
       };
-      // formData.append("picture", uploadImg);
+      
       console.log("place info has been sent to server");
       console.log(formData);
-
-      //send image
 
       //send those info to a server
       await sendRequest(`/api/places`, "POST" ,formData);

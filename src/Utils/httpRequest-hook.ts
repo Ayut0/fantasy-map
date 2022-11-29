@@ -30,9 +30,9 @@ export const useHttpRequest = () => {
       } else if (method === "POST") {
         try {
           const response = await axios.post(url, body);
-          return response.data;
           console.log(response);
           console.log("response status", response.status);
+          return response.data;
         } catch (err) {
           errorHandler(err);
         }

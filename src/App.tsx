@@ -45,8 +45,8 @@ function App() {
     const data = await sendRequest("/api/users/jwt", "GET");
     if (data) {
       dispatch({ type: "login", payload: data });
-      setFetchingDataFromToken(false);
     }
+    setFetchingDataFromToken(false);
   };
 
   useEffect(() => {

@@ -39,11 +39,13 @@ const theme = createTheme({
 function App() {
   const { sendRequest } = useHttpRequest();
   const { dispatch } = useAppContext();
+  const [fetchingDataFromToken, setFetchingDataFromToken] = useState(true);
 
   const fetchUserDataFromToken = async () => {
     const data = await sendRequest("/api/users/jwt", "GET");
     if (data) {
       dispatch({ type: "login", payload: data });
+      setFetchingDataFromToken(false);
     }
   };
 
@@ -53,47 +55,51 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route
-            path="/lists/:lid"
-            element={<ProtectedRoute element={<Lists />} />}
-          />
-          <Route
-            path="/list/create"
-            element={<ProtectedRoute element={<CreateList />} />}
-          />
-          <Route
-            path="/list/:lid"
-            element={<ProtectedRoute element={<CreateList />} />}
-          />
-          <Route
-            path="/list/see"
-            element={<ProtectedRoute element={<SeeList />} />}
-          />
-          <Route
-            path="/place/:pid"
-            element={<ProtectedRoute element={<Place />} />}
-          />
-          <Route
-            path="/place/create"
-            element={<ProtectedRoute element={<CreatePlace />} />}
-          />
-          <Route
-            path="/profile/"
-            element={<ProtectedRoute element={<Profile />} />}
-          />
-          <Route
-            path="/profile/edit"
-            element={<ProtectedRoute element={<ProfileEdit />} />}
-          />
-          <Route path="/result" element={<Result />} />
-        </Routes>
-        <Footer />
-      </ThemeProvider>
+      {fetchingDataFromToken ? (
+        "Loading..."
+      ) : (
+        <ThemeProvider theme={theme}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route
+              path="/lists/:lid"
+              element={<ProtectedRoute element={<Lists />} />}
+            />
+            <Route
+              path="/list/create"
+              element={<ProtectedRoute element={<CreateList />} />}
+            />
+            <Route
+              path="/list/:lid"
+              element={<ProtectedRoute element={<CreateList />} />}
+            />
+            <Route
+              path="/list/see"
+              element={<ProtectedRoute element={<SeeList />} />}
+            />
+            <Route
+              path="/place/:pid"
+              element={<ProtectedRoute element={<Place />} />}
+            />
+            <Route
+              path="/place/create"
+              element={<ProtectedRoute element={<CreatePlace />} />}
+            />
+            <Route
+              path="/profile/"
+              element={<ProtectedRoute element={<Profile />} />}
+            />
+            <Route
+              path="/profile/edit"
+              element={<ProtectedRoute element={<ProfileEdit />} />}
+            />
+            <Route path="/result" element={<Result />} />
+          </Routes>
+          <Footer />
+        </ThemeProvider>
+      )}
     </div>
   );
 }

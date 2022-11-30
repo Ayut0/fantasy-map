@@ -1,9 +1,10 @@
+import axios from "axios";
 import {
   Box,
-  Button,
   FormControl,
+  FormHelperText,
+  InputLabel,
   MenuItem,
-  OutlinedInput,
   Select,
   SelectChangeEvent,
   TextField,
@@ -16,29 +17,9 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import ImageUpload from "../../components/ImageUpload";
 import AppTemplate from "../../templates/AppTemplate";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
-
-// const places: string[] = [
-//   "Los Angels",
-//   "San Diego",
-//   "San Francisco",
-//   "Santa Barbara",
-//   "Sacramento",
-//   "Santa Clara",
-//   "Malibu",
-//   "Long beach",
-// ];
-
-const loadedPlaces: string[] = [
-  "Paris",
-  "Tokyo",
-  "Rio de janeiro",
-  "London",
-  "Beijing",
-  "Athene",
-  "Sydney",
-];
 
 // const everyPlaces: string[] = [...places, ...loadedPlaces];
 
@@ -53,26 +34,41 @@ function getStyles(place: string, placeName: string[], theme: Theme) {
 
 const CreateList: React.FC = () => {
   const theme = useTheme();
-  const [placeName, setPlaceName] = useState<any[]>(loadedPlaces);
-
   const lid = useParams<string>();
-  const isExistedList: boolean = Object.values(lid).length ? true : false;
-  const [showConfirmationModal, setShowConfirmationModal] =
-    useState<boolean>(false);
+
+  const [userPlaces, setUserPlaces] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+
+  // to be removed?
   const [isPlaceAdded, setIsPlaceAdded] = useState(false);
   const [addedPlace, setAddedPlace] = useState("");
+  // to be removed?
+
   const [titleVal, setTitleVal] = useState("");
   const [descriptionVal, setDescriptionVal] = useState("");
-  const { error, sendRequest, clearError } = useHttpRequest();
+  const [categoryVal, setCategoryVal] = useState(-1);
+  const [placesVal, setPlacesVal] = useState<number[]>([]);
+  const [file, setFile] = useState<File>();
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [titleError, setTitleError] = useState<string | false>(false);
+  const [descriptionError, setDescriptionError] = useState<string | false>(
+    false
+  );
+  const [categoryError, setCategoryError] = useState<string | false>(false);
 
-  const handleChange = (event: SelectChangeEvent<typeof placeName>) => {
+  const { error, sendRequest, clearError } = useHttpRequest();
+  const [showConfirmationModal, setShowConfirmationModal] =
+    useState<boolean>(false);
+  const isExistedList: boolean = Object.values(lid).length ? true : false;
+
+  const handleChange = (event: SelectChangeEvent) => {
     const {
       target: { value },
     } = event;
-    setPlaceName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    // setPlaceName(
+    //   // On autofill we get a stringified value.
+    //   typeof value === "string" ? value.split(",") : value
+    // );
   };
 
   const showDeleteModalHandler = (): void => {
@@ -83,9 +79,48 @@ const CreateList: React.FC = () => {
     setShowConfirmationModal(false);
   };
 
-  const handleSubmit = (): void => {
-    // setTitleVal(title.value);
-    alert("test");
+  const handleSubmit = async () => {
+    const data = {
+      name: titleVal,
+      description: descriptionVal,
+      categoryId: categoryVal,
+      placeIds: placesVal,
+    };
+
+    console.log("list data", data);
+
+    // validate
+    setTitleError(!titleVal && "Title is mandatory");
+    setDescriptionError(!descriptionVal && "Description is mandatory");
+    setCategoryError(!categoryVal && "Category is mandatory");
+
+    // stop execution if any error is found
+    if (!!titleError || !!categoryError || !!descriptionError) {
+      return;
+    }
+
+    let picture = "images/no-list-pic.jpeg";
+    if (file) {
+      const formData = new FormData();
+      formData.append("filetoupload", file);
+      const uploadResponse = await axios.post("/api/files/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      picture = uploadResponse.data;
+    }
+
+    const listsResponse = await sendRequest("/api/lists/", "POST", {
+      ...data,
+      picture,
+    });
+
+    alert(
+      listsResponse
+        ? "List successfully created!"
+        : "Oh no! Something went wrong"
+    );
   };
 
   const handleAddPlace = (event: any) => {
@@ -112,12 +147,19 @@ const CreateList: React.FC = () => {
   };
 
   useEffect(() => {
-    const getPlaces = async () => {
-      const response = await sendRequest("/api/places", "GET");
-      setPlaceName(response);
-      console.log(response);
+    const getUserPlaces = async () => {
+      const userPlaces = await sendRequest("/api/places", "GET");
+      setUserPlaces(userPlaces);
+      console.log(userPlaces);
     };
-    getPlaces();
+
+    const getCategories = async () => {
+      const categories = await sendRequest("/api/categories", "GET");
+      setCategories(categories);
+    };
+
+    getUserPlaces();
+    getCategories();
   }, []);
 
   return (
@@ -136,7 +178,7 @@ const CreateList: React.FC = () => {
         <FormControl
           fullWidth
           sx={{ rowGap: "1.2rem", textAlign: "initial", alignItems: "center" }}
-          // onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
         >
           <Box sx={{ width: "50%" }}>
             <TextField
@@ -149,7 +191,10 @@ const CreateList: React.FC = () => {
               autoComplete="title"
               autoFocus
               onChange={handleChangetitle}
+              value={titleVal}
+              error={!!titleError}
             />
+            {titleError && <FormHelperText>{titleError}</FormHelperText>}
           </Box>
           <Box sx={{ width: "50%" }}>
             <TextField
@@ -162,6 +207,41 @@ const CreateList: React.FC = () => {
               autoComplete="description"
               multiline
               onChange={handleChangeDescription}
+              value={descriptionVal}
+              error={!!descriptionError}
+            />
+            {descriptionError && (
+              <FormHelperText>{descriptionError}</FormHelperText>
+            )}
+          </Box>
+          <Box sx={{ width: "50%" }}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="categories-select">Category</InputLabel>
+              <Select
+                value={categoryVal}
+                onChange={(e) => setCategoryVal(e.target.value as number)}
+                fullWidth
+                id="categories-select"
+                error={!!categoryError}
+              >
+                <MenuItem disabled value={-1}>
+                  <em>Select a category</em>
+                </MenuItem>
+                {categories.map((cat) => (
+                  <MenuItem key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {categoryError && <FormHelperText>{categoryError}</FormHelperText>}
+          </Box>
+          <Box sx={{ width: "50%" }}>
+            <ImageUpload
+              file={file}
+              setFile={setFile}
+              previewUrl={previewUrl}
+              setPreviewUrl={setPreviewUrl}
             />
           </Box>
           {isExistedList ? (
@@ -173,9 +253,9 @@ const CreateList: React.FC = () => {
                   justifyContent: "space-around",
                 }}
               >
-                <Typography variant="h6">
+                {/* <Typography variant="h6">
                   {loadedPlaces.length} places in this list
-                </Typography>
+                </Typography> */}
                 <ActionButton
                   variant="outlined"
                   sx={{
@@ -192,32 +272,6 @@ const CreateList: React.FC = () => {
                   </Link>
                 </ActionButton>
               </Box>
-              <Select
-                multiple
-                displayEmpty
-                value=""
-                onChange={handleChange}
-                input={<OutlinedInput />}
-                renderValue={(selected) => {
-                  if (selected.length === 0) {
-                    return <em>Your places</em>;
-                  }
-
-                  return selected.join(", ");
-                }}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                sx={{ width: "50%", marginTop: "1rem" }}
-              >
-                <MenuItem disabled value="">
-                  <em>Your places</em>
-                </MenuItem>
-                {placeName.map((place: any) => (
-                  <MenuItem key={place.id} value={place.id}>
-                    {place.name}
-                  </MenuItem>
-                ))}
-              </Select>
               <ActionButton
                 variant="outlined"
                 sx={{
@@ -250,36 +304,27 @@ const CreateList: React.FC = () => {
             </Fragment>
           ) : (
             <Fragment>
-              <Select
-                multiple
-                displayEmpty
-                value={placeName}
-                onChange={handleChange}
-                input={<OutlinedInput />}
-                renderValue={(selected) => {
-                  if (selected.length === 0) {
-                    return <em>Your places</em>;
-                  }
-
-                  return selected.join(", ");
-                }}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                sx={{ width: "50%", marginTop: "1rem" }}
-              >
-                <MenuItem disabled value="">
-                  <em>Your places</em>
-                </MenuItem>
-                {placeName.map((place: any) => (
-                  <MenuItem
-                    key={place.id}
-                    value={place.id}
-                    style={getStyles(place, placeName, theme)}
+              <Box sx={{ width: "50%" }}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="places-select">
+                    Places in this list
+                  </InputLabel>
+                  <Select
+                    multiple
+                    value={placesVal}
+                    onChange={(e) => setPlacesVal(e.target.value as number[])}
+                    fullWidth
+                    id="places-select"
+                    placeholder="Select a place"
                   >
-                    {place.name}
-                  </MenuItem>
-                ))}
-              </Select>
+                    {userPlaces.map((place) => (
+                      <MenuItem key={place.id} value={place.id}>
+                        {place.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
               <Typography variant="body1" sx={{ color: "#232946" }}>
                 or
               </Typography>

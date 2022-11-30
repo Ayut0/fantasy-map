@@ -5,8 +5,11 @@ import ImageUpload from "../../components/ImageUpload";
 import AppTemplate from "../../templates/AppTemplate";
 import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import { redirect, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const CreatePlace: React.FC = () => {
+  const navigate = useNavigate();
   const { error, sendRequest, clearError } = useHttpRequest();
 
   const [file, setFile] = useState();
@@ -23,12 +26,17 @@ export const CreatePlace: React.FC = () => {
       const latLng = await getLatLng(results[0]);
       const lat = latLng.lat;
       const lng = latLng.lng;
+
       
-      // formData.append("name", inputPlaceName);
-      // formData.append("address", inputAddress);
-      // formData.append("description", inputDescription);
-      // formData.append("latitude", lat.toString());
-      // formData.append("longitude", lng.toString());
+      //send image
+      const fd = new FormData();
+      { file && fd.append('filetoupload', file) }
+      const res = await axios.post('/api/files/upload', fd, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
       const formData = {
         name: inputPlaceName,
         address: inputAddress,
@@ -37,21 +45,12 @@ export const CreatePlace: React.FC = () => {
           lat: lat,
           lng: lng,
         },
-        picture: previewUrl
+        picture: res.data
       };
-      // formData.append("picture", uploadImg);
-      console.log("place info has been sent to server");
-      console.log(formData);
-      
-      //send image (send with original file, await)
-      const fd = new FormData();
-      // { file && fd.append('image', file) }
-      // console.log(fd.get('image'))
-      // await response from server, I expect to get a path
 
       //send those info to a server
       await sendRequest(`/api/places`, "POST" ,formData);
-
+      navigate('/list/create')
     } catch (err) {
       console.log(err);
       return err;

@@ -27,7 +27,6 @@ export const CreatePlace: React.FC = () => {
       const lat = latLng.lat;
       const lng = latLng.lng;
 
-      
       //send image
       const fd = new FormData();
       { file && fd.append('filetoupload', file) }

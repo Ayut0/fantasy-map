@@ -12,22 +12,23 @@ import {
   useTheme,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import AppTemplate from "../../templates/AppTemplate";
+import { useHttpRequest } from "../../Utils/httpRequest-hook";
 
-const places: string[] = [
-  "Los Angels",
-  "San Diego",
-  "San Francisco",
-  "Santa Barbara",
-  "Sacramento",
-  "Santa Clara",
-  "Malibu",
-  "Long beach",
-];
+// const places: string[] = [
+//   "Los Angels",
+//   "San Diego",
+//   "San Francisco",
+//   "Santa Barbara",
+//   "Sacramento",
+//   "Santa Clara",
+//   "Malibu",
+//   "Long beach",
+// ];
 
 const loadedPlaces: string[] = [
   "Paris",
@@ -39,7 +40,7 @@ const loadedPlaces: string[] = [
   "Sydney",
 ];
 
-const everyPlaces: string[] = [...places, ...loadedPlaces];
+// const everyPlaces: string[] = [...places, ...loadedPlaces];
 
 function getStyles(place: string, placeName: string[], theme: Theme) {
   return {
@@ -52,7 +53,7 @@ function getStyles(place: string, placeName: string[], theme: Theme) {
 
 const CreateList: React.FC = () => {
   const theme = useTheme();
-  const [placeName, setPlaceName] = useState<string[]>(loadedPlaces);
+  const [placeName, setPlaceName] = useState<any[]>(loadedPlaces);
 
   const lid = useParams<string>();
   const isExistedList: boolean = Object.values(lid).length ? true : false;
@@ -60,7 +61,10 @@ const CreateList: React.FC = () => {
     useState<boolean>(false);
   const [isPlaceAdded, setIsPlaceAdded] = useState(false);
   const [addedPlace, setAddedPlace] = useState("");
-  // const [titleVal, setTitleVal] = useState("");
+  const [titleVal, setTitleVal] = useState("");
+  const [descriptionVal, setDescriptionVal] = useState("");
+  const { error, sendRequest, clearError } = useHttpRequest();
+
   const handleChange = (event: SelectChangeEvent<typeof placeName>) => {
     const {
       target: { value },
@@ -88,10 +92,33 @@ const CreateList: React.FC = () => {
     setIsPlaceAdded(!isPlaceAdded);
   };
 
-  const handleSavePlace = (event: any) => {
+  const handleChangeNewPlace = (event: any) => {
     setAddedPlace(event.target.value);
-    setIsPlaceAdded(!isPlaceAdded);
+    console.log(addedPlace);
   };
+
+  const handleSavePlace = (event: any) => {
+    setIsPlaceAdded(!isPlaceAdded);
+    // places.push(addedPlace);
+  };
+
+  const handleChangetitle = (event: any) => {
+    setTitleVal(event.target.value);
+  };
+
+  const handleChangeDescription = (event: any) => {
+    setDescriptionVal(event.target.value);
+    console.log(descriptionVal);
+  };
+
+  useEffect(() => {
+    const getPlaces = async () => {
+      const response = await sendRequest("/api/places", "GET");
+      setPlaceName(response);
+      console.log(response);
+    };
+    getPlaces();
+  }, []);
 
   return (
     <AppTemplate>
@@ -121,7 +148,7 @@ const CreateList: React.FC = () => {
               name="title"
               autoComplete="title"
               autoFocus
-              // value={titleVal}
+              onChange={handleChangetitle}
             />
           </Box>
           <Box sx={{ width: "50%" }}>
@@ -134,6 +161,7 @@ const CreateList: React.FC = () => {
               name="description"
               autoComplete="description"
               multiline
+              onChange={handleChangeDescription}
             />
           </Box>
           {isExistedList ? (
@@ -167,7 +195,7 @@ const CreateList: React.FC = () => {
               <Select
                 multiple
                 displayEmpty
-                value={placeName}
+                value=""
                 onChange={handleChange}
                 input={<OutlinedInput />}
                 renderValue={(selected) => {
@@ -184,13 +212,9 @@ const CreateList: React.FC = () => {
                 <MenuItem disabled value="">
                   <em>Your places</em>
                 </MenuItem>
-                {everyPlaces.map((place: string) => (
-                  <MenuItem
-                    key={place}
-                    value={place}
-                    style={getStyles(place, placeName, theme)}
-                  >
-                    {place}
+                {placeName.map((place: any) => (
+                  <MenuItem key={place.id} value={place.id}>
+                    {place.name}
                   </MenuItem>
                 ))}
               </Select>
@@ -246,13 +270,13 @@ const CreateList: React.FC = () => {
                 <MenuItem disabled value="">
                   <em>Your places</em>
                 </MenuItem>
-                {places.map((place: string) => (
+                {placeName.map((place: any) => (
                   <MenuItem
-                    key={place}
-                    value={place}
+                    key={place.id}
+                    value={place.id}
                     style={getStyles(place, placeName, theme)}
                   >
-                    {place}
+                    {place.name}
                   </MenuItem>
                 ))}
               </Select>
@@ -272,53 +296,32 @@ const CreateList: React.FC = () => {
                   rowGap: "24px",
                 }}
               >
-                {isPlaceAdded ? (
-                  <>
-                    <TextField />
-                    <Button
-                      variant="outlined"
-                      type="submit"
-                      onClick={handleSavePlace}
-                      sx={{
-                        backgroundColor: "#2CA58D",
-                        width: "10%",
-                        color: "#EEEEEE",
-                        "&:hover": {
-                          color: "#2CA58D",
-                        },
-                      }}
+                <>
+                  <Typography
+                    component="h4"
+                    variant="h5"
+                    sx={{ color: "#232946", width: "40%" }}
+                  >
+                    Click the button below to add a new place
+                  </Typography>
+                  <ActionButton
+                    variant="outlined"
+                    type="submit"
+                    onClick={handleAddPlace}
+                    sx={{
+                      padding: ".7rem 1rem",
+                      width: "60%",
+                      fontSize: "1.1rem",
+                    }}
+                  >
+                    <Link
+                      to={"/place/create"}
+                      style={{ textDecoration: "none", color: "#232946" }}
                     >
-                      Save
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Typography
-                      component="h4"
-                      variant="h5"
-                      sx={{ color: "#232946", width: "40%" }}
-                    >
-                      Click the button below to add a new place
-                    </Typography>
-                    <ActionButton
-                      variant="outlined"
-                      type="submit"
-                      onClick={handleAddPlace}
-                      sx={{
-                        padding: ".7rem 1rem",
-                        width: "60%",
-                        fontSize: "1.1rem",
-                      }}
-                    >
-                      <Link
-                        to={""}
-                        style={{ textDecoration: "none", color: "#232946" }}
-                      >
-                        Add a new place
-                      </Link>
-                    </ActionButton>
-                  </>
-                )}
+                      Add a new place
+                    </Link>
+                  </ActionButton>
+                </>
               </Box>
             </Fragment>
           )}

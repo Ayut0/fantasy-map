@@ -10,10 +10,11 @@ interface Props {
   handleClose: ()=>void;
   msg: string;
   btnMsg: string;
+  clickEvent?:(event: any)=> Promise<void>;
 }
 
-export const ConfirmationModal: React.FC<Props> = ({open, handleClose, msg, btnMsg}) => {
-  const handleDelete = () => console.log("place deleted!");
+export const ConfirmationModal: React.FC<Props> = ({open, handleClose, msg, btnMsg, clickEvent}) => {
+  // const handleDelete = () => console.log("place deleted!");
 
   return (
     <div>
@@ -64,7 +65,7 @@ export const ConfirmationModal: React.FC<Props> = ({open, handleClose, msg, btnM
           </Typography>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
-              onClick={handleDelete}
+              onClick={clickEvent}
               sx={{
                 backgroundColor: "#FD3B59",
                 color: "#FFFFFF",

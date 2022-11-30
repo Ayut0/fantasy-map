@@ -5,9 +5,11 @@ import ImageUpload from "../../components/ImageUpload";
 import AppTemplate from "../../templates/AppTemplate";
 import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import { redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const CreatePlace: React.FC = () => {
+  const navigate = useNavigate();
   const { error, sendRequest, clearError } = useHttpRequest();
 
   const [file, setFile] = useState();
@@ -24,7 +26,6 @@ export const CreatePlace: React.FC = () => {
       const latLng = await getLatLng(results[0]);
       const lat = latLng.lat;
       const lng = latLng.lng;
-      
 
       //send image
       const fd = new FormData();
@@ -47,7 +48,8 @@ export const CreatePlace: React.FC = () => {
       };
 
       //send those info to a server
-      await sendRequest(`/api/places`, "POST", formData);
+      await sendRequest(`/api/places`, "POST" ,formData);
+      navigate('/list/create')
     } catch (err) {
       console.log(err);
       return err;

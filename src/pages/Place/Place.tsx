@@ -27,6 +27,7 @@ import GooglePlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-google-places-autocomplete";
+import ActionButton from "../../components/ActionButton";
 
 export const Place: React.FC = () => {
   const params = useParams();
@@ -65,9 +66,6 @@ export const Place: React.FC = () => {
 
   const updatePlaceHandler = async (event: any) => {
     event.preventDefault();
-    console.log("submit!!!!!!");
-    console.log("address", inputAddress);
-    console.log("description", inputDescription);
     try {
       const updatedPlaceData = {
         name: inputPlaceName,
@@ -76,22 +74,35 @@ export const Place: React.FC = () => {
         description: inputDescription,
         picture: loadedPlace?.picture,
       };
-      console.log(updatedPlaceData);
-      await sendRequest(`/api/places/${params.pid}`, "PUT", updatedPlaceData);
+
+      await sendRequest(`/api/places/${params.pid}`, 'PUT', updatedPlaceData);
     } catch (err) {
       console.log(err);
     }
   };
 
+  const deletePlaceHandler = async(event:any) => {
+    event.preventDefault();
+    try {
+      
+      await sendRequest(`/api/places/${params.pid}`, "DELETE");
+
+      navigate('/')
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <AppTemplate>
-      {loadedPlace && (
+      {loadedPlace ? (
         <Fragment>
           <ConfirmationModal
             open={open}
             handleClose={handleClose}
             msg={msg}
             btnMsg={btnMsg}
+            clickEvent={deletePlaceHandler}
           />
           <Container>
             <CardMedia
@@ -246,7 +257,14 @@ export const Place: React.FC = () => {
             </Box>
           </Container>
         </Fragment>
-      )}
+      ) :
+        (<Box sx={{position: 'absolute', top: '50%', left: '50%'}}>
+          <span>Oh... could not find your place...</span>
+          <ActionButton variant="outlined" onClick={() => navigate('/place/create')}>
+            Create a new one?
+          </ActionButton>
+        </Box>
+        )}
     </AppTemplate>
   );
 };

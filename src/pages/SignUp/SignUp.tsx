@@ -3,6 +3,10 @@ import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 import ImageUpload from "../../components/ImageUpload";
+import { useAppContext } from "../../context/AppContext";
+import { useNavigate } from "react-router-dom";
+import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import axios from "axios";
 
 const SignUp: React.FC = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -15,32 +19,46 @@ const SignUp: React.FC = () => {
   const [emailErrorMsg, setEmailErrorMsg] = useState<string>("");
   const [passwordErrorMsg, setPasswordErrorMsg] = useState<string>("");
   const [disable, setDisable] = useState<boolean>(true);
+  const [file, setFile] = useState<File>();
+  const [previewUrl, setPreviewUrl] = useState("");
+  const { state, dispatch } = useAppContext();
+  const navigate = useNavigate();
+  const { sendRequest } = useHttpRequest();
 
   useEffect(() => {
-    const hasError: boolean = (usernameError || emailError) || passwordError;
-    const isFormEmpty = (!usernameRef.current?.value.length || !emailRef.current?.value.length) || !passwordRef.current?.value.length;
+    const hasError: boolean = usernameError || emailError || passwordError;
+    const isFormEmpty =
+      !usernameRef.current?.value.length ||
+      !emailRef.current?.value.length ||
+      !passwordRef.current?.value.length;
 
     setDisable(hasError || isFormEmpty);
-  }, [emailError, passwordError, usernameError])
+  }, [emailError, passwordError, usernameError]);
+
+  useEffect(() => {
+    if (state.loggedUser) {
+      navigate("/");
+    }
+  }, [state.loggedUser]);
 
   //Username validation
-  const isUsernameValid = (username: string) =>{
+  const isUsernameValid = (username: string) => {
     if (username.trim().length < 6) {
       setUsernameError(true);
-      setUsernameErrorMsg('Please enter at least 6 characters');
+      setUsernameErrorMsg("Please enter at least 6 characters");
       return;
     } else {
       setUsernameError(false);
-      setUsernameErrorMsg('I love your name')
+      setUsernameErrorMsg("I love your name");
     }
-  }
+  };
 
   const ratz = /[a-z]/,
     rAtZ = /[A-Z]/,
     r0t9 = /[0-9]/;
-  
-   //email validation
-   const isEmailValid = (email: string) => {
+
+  //email validation
+  const isEmailValid = (email: string) => {
     if (email.includes("@")) {
       setEmailError(false);
       setEmailErrorMsg(`Excellent`);
@@ -49,9 +67,9 @@ const SignUp: React.FC = () => {
       setEmailErrorMsg("Please include @");
       return;
     }
-   };
-  
-   const isPasswordValid = (password: string) => {
+  };
+
+  const isPasswordValid = (password: string) => {
     if (!ratz.test(password)) {
       setPasswordError(true);
       setPasswordErrorMsg("Please include at least one lowercase letter");
@@ -72,14 +90,49 @@ const SignUp: React.FC = () => {
 
     setPasswordError(false);
     setPasswordErrorMsg(`You are good to go!!`);
-   };
-  
-  const signUpHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
+  };
+
+  const signupUser = async (userData: any) => {
+    const signupResponse = await sendRequest("/api/users/signup", "POST", {
+      ...userData,
+      profilePicture: "images/no-profile-pic.jpeg",
+    });
+
+    // only uploads file if user selected picture
+    if (file) {
+      const formData = new FormData();
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      formData.append("filetoupload", file!);
+      const response = await axios.post("/api/files/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      // update profile picture
+      await sendRequest("/api/users/profile", "PUT", {
+        name: userData.name,
+        password: userData.password,
+        profilePicture: response.data,
+        location: "",
+        description: "",
+      });
+    }
+
+    dispatch({ type: "login", payload: signupResponse });
+    navigate("/");
+  };
+
+  const signUpHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    console.log(
-      `username: ${usernameRef.current?.value}  email: ${emailRef.current?.value}, password: ${passwordRef.current?.value}`
-    );
-  }
+    const userData = {
+      name: usernameRef.current?.value,
+      email: emailRef.current?.value,
+      password: passwordRef.current?.value,
+    };
+    console.log("user data", userData);
+    console.log("file", file);
+    signupUser(userData);
+  };
 
   return (
     <Grid container component="section" sx={{ height: "100vh" }}>
@@ -170,7 +223,12 @@ const SignUp: React.FC = () => {
             autoComplete="current-password"
             sx={{ width: "70%" }}
           />
-          <ImageUpload />
+          <ImageUpload
+            file={file}
+            setFile={setFile}
+            previewUrl={previewUrl}
+            setPreviewUrl={setPreviewUrl}
+          />
           <Button
             type="submit"
             disabled={disable}

@@ -28,9 +28,11 @@ import GooglePlacesAutocomplete, {
   getLatLng,
 } from "react-google-places-autocomplete";
 import ActionButton from "../../components/ActionButton";
+import { useAppContext } from "../../context/AppContext";
 
 export const Place: React.FC = () => {
   const params = useParams();
+  const { state } = useAppContext();
   const [loadedPlace, setLoadedPlace] = useState<PlaceType>();
   const { sendRequest } = useHttpRequest();
   const [open, setOpen] = useState(false);
@@ -43,6 +45,7 @@ export const Place: React.FC = () => {
   const [inputAddress, setInputAddress] = useState("");
   const [inputDescription, setInputDescription] = useState("");
   const [location, setLocation] = useState({});
+  const [isUserIdMatches, setIsUserIdMatches] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const msg = `You are about to delete this place.
@@ -59,6 +62,10 @@ export const Place: React.FC = () => {
       setInputDescription(place.description);
       setLocation(place.location);
       console.log("test", place);
+      //compare userID from place and user ID logged in
+      if (place.user.id === state?.loggedUser?.id) {
+        setIsUserIdMatches(true);
+      }
     };
 
     getPlaceById();
@@ -75,23 +82,22 @@ export const Place: React.FC = () => {
         picture: loadedPlace?.picture,
       };
 
-      await sendRequest(`/api/places/${params.pid}`, 'PUT', updatedPlaceData);
+      await sendRequest(`/api/places/${params.pid}`, "PUT", updatedPlaceData);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const deletePlaceHandler = async(event:any) => {
+  const deletePlaceHandler = async (event: any) => {
     event.preventDefault();
     try {
-      
       await sendRequest(`/api/places/${params.pid}`, "DELETE");
 
-      navigate('/')
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <AppTemplate>
@@ -135,9 +141,11 @@ export const Place: React.FC = () => {
               ) : (
                 <Typography variant="h3">{loadedPlace.name}</Typography>
               )}
-              <Button onClick={() => setIsNameEdit(!isNameEdit)}>
-                <FiEdit size={32} />
-              </Button>
+              {isUserIdMatches && (
+                <Button onClick={() => setIsNameEdit(!isNameEdit)}>
+                  <FiEdit size={32} />
+                </Button>
+              )}
             </Box>
             <Grid container className="wrap__address__description">
               <Grid item xs={6} sx={{ textAlign: "left", my: 6 }}>
@@ -147,9 +155,11 @@ export const Place: React.FC = () => {
                     style={{ transform: "rotate(55deg)" }}
                   />
                   Address
-                  <Button onClick={() => setIsAddressEdit(!isAddressEdit)}>
-                    <FiEdit size={20} />
-                  </Button>
+                  {isUserIdMatches && (
+                    <Button onClick={() => setIsAddressEdit(!isAddressEdit)}>
+                      <FiEdit size={20} />
+                    </Button>
+                  )}
                 </Typography>
                 {isAddressEdit ? (
                   <Box component="form" onSubmit={updatePlaceHandler}>
@@ -173,7 +183,7 @@ export const Place: React.FC = () => {
                           const latLng = await getLatLng(results[0]);
                           const lat = latLng.lat;
                           const lng = latLng.lng;
-                          setLocation({lat: lat, lng: lng})
+                          setLocation({ lat: lat, lng: lng });
                         },
                       }}
                     />
@@ -204,17 +214,24 @@ export const Place: React.FC = () => {
                       {loadedPlace.description}
                     </Typography>
                   )}
-                  <Button
-                    onClick={() => setIsDescriptionEdit(!isDescriptionEdit)}
-                  >
-                    <FiEdit size={20} />
-                  </Button>
+                  {isUserIdMatches && (
+                    <Button
+                      onClick={() => setIsDescriptionEdit(!isDescriptionEdit)}
+                    >
+                      <FiEdit size={20} />
+                    </Button>
+                  )}
                 </Typography>
               </Grid>
             </Grid>
             <Typography variant="h4" sx={{ textAlign: "left", my: "40px" }}>
               Last reviews
             </Typography>
+            {loadedPlace.reviews?.length === 0 && (
+              <Typography variant="h5" sx={{ textAlign: "left", mb: "200px" }}>
+                No review given yet :)
+              </Typography>
+            )}
             <Grid
               container
               rowSpacing={6}
@@ -249,22 +266,29 @@ export const Place: React.FC = () => {
                 );
               })}
             </Grid>
-            <Box sx={{ display: "flex", justifyContent: "right", mt: "20px" }}>
-              <Button sx={{ color: "red" }} onClick={handleOpen}>
-                Delete
-                <RiDeleteBin6Line />
-              </Button>
-            </Box>
+            {isUserIdMatches && (
+              <Box
+                sx={{ display: "flex", justifyContent: "right", mt: "20px" }}
+              >
+                <Button sx={{ color: "red" }} onClick={handleOpen}>
+                  Delete
+                  <RiDeleteBin6Line />
+                </Button>
+              </Box>
+            )}
           </Container>
         </Fragment>
-      ) :
-        (<Box sx={{position: 'absolute', top: '50%', left: '50%'}}>
+      ) : (
+        <Box sx={{ position: "absolute", top: "50%", left: "50%" }}>
           <span>Oh... could not find your place...</span>
-          <ActionButton variant="outlined" onClick={() => navigate('/place/create')}>
+          <ActionButton
+            variant="outlined"
+            onClick={() => navigate("/place/create")}
+          >
             Create a new one?
           </ActionButton>
         </Box>
-        )}
+      )}
     </AppTemplate>
   );
 };

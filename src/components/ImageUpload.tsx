@@ -1,8 +1,14 @@
-import { Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import AddPhotoAlternateRoundedIcon from "@mui/icons-material/AddPhotoAlternateRounded";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 
-const ImageUpload = ({ file ,setFile, previewUrl, setPreviewUrl }:any) => {
+const ImageUpload = ({
+  file,
+  setFile,
+  previewUrl,
+  setPreviewUrl,
+  instructions,
+}: any) => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   // const [file, setFile] = useState(undefined);
   // const [previewUrl, setPreviewUrl] = useState<string>();
@@ -39,13 +45,11 @@ const ImageUpload = ({ file ,setFile, previewUrl, setPreviewUrl }:any) => {
     filePickerRef.current?.click();
   };
   return (
-    <Fragment>
+    <Box
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
       {previewUrl && (
-        <img
-          src={previewUrl}
-          alt="preview"
-          style={{ height: "35%", width: "40%" }}
-        ></img>
+        <img src={previewUrl} alt="preview" style={{ width: "200px" }}></img>
       )}
       <input
         type="file"
@@ -59,19 +63,24 @@ const ImageUpload = ({ file ,setFile, previewUrl, setPreviewUrl }:any) => {
         component="label"
         sx={{
           mt: 3,
-          mb: 2,
+          mb: 1,
           pt: 2,
           pb: 2,
-          fontSize: {sm: "13px", lg: 20},
+          fontSize: { sm: "13px", lg: 20 },
           backgroundColor: "#2CA58D",
-          width: {sm: "70%", lg: "30%"},
+          width: { sm: "70%", lg: "30%" },
         }}
         onClick={pickImageHandler}
       >
         Upload File
-        <AddPhotoAlternateRoundedIcon sx={{ paddingBottom: "4px" }} />
+        <AddPhotoAlternateRoundedIcon sx={{ pl: 1, pb: "4px" }} />
       </Button>
-    </Fragment>
+      {instructions && (
+        <Typography variant="body2" sx={{ color: "rgba(0, 0, 0, 0.5)" }}>
+          {instructions}
+        </Typography>
+      )}
+    </Box>
   );
 };
 

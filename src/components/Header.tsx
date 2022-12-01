@@ -95,20 +95,29 @@ export const Header: React.FC = () => {
               sx={{
                 display: "flex",
                 justifyContent: "right",
-                alignItems: "flex-end",
+                alignItems: "center",
               }}
             >
-              <Box>
-                {/* Could be replaced by react-router-dom Link component */}
+              <Box sx={{ display: "flex", gap: 1 }}>
                 {!state.loggedUser ? (
                   <>
-                    <Link to="/login">Login</Link>
-                    <Button color="inherit">Register</Button>
+                    <Link to="/login" style={{ color: "#fff" }}>
+                      Login
+                    </Link>
+                    <Link to="/signup" style={{ color: "#fff" }}>
+                      Register
+                    </Link>
                   </>
                 ) : (
                   <>
                     <p>Welcome, {state.loggedUser.name}</p>
-                    <Button color="inherit" onClick={handleClickLogout}>
+                    <Button
+                      color="inherit"
+                      variant="outlined"
+                      size="small"
+                      onClick={handleClickLogout}
+                      sx={{ lineHeight: "1rem" }}
+                    >
                       Logout
                     </Button>
                   </>

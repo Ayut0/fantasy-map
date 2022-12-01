@@ -57,6 +57,7 @@ export const Place: React.FC = () => {
     const getPlaceById = async () => {
       const place = await sendRequest(`/api/places/${params.pid}`, "GET");
       setLoadedPlace(place);
+      console.log(place);
       setInputPlaceName(place.name);
       setInputAddress(place.address);
       setInputDescription(place.description);
@@ -224,9 +225,21 @@ export const Place: React.FC = () => {
                 </Typography>
               </Grid>
             </Grid>
-            <Typography variant="h4" sx={{ textAlign: "left", my: "40px" }}>
-              Last reviews
-            </Typography>
+            <Grid container sx={{ alignItems: "center" }}>
+              <Grid item xs={8}>
+                <Typography variant="h4" sx={{ textAlign: "left", my: "40px" }}>
+                  Last reviews
+                </Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Button
+                  variant="contained"
+                  sx={{ backgroundColor: "#2CA58D", borderRadius: "20px" }}
+                >
+                  Add a new review
+                </Button>
+              </Grid>
+            </Grid>
             {loadedPlace.reviews?.length === 0 && (
               <Typography variant="h5" sx={{ textAlign: "left", mb: "200px" }}>
                 No review given yet :)
@@ -248,10 +261,27 @@ export const Place: React.FC = () => {
                       }}
                     >
                       <CardContent sx={{ textOverflow: "ellipsis" }}>
+                        {state?.loggedUser?.id === review.user.id && (
+                          <Box
+                            sx={{ display: "flex", justifyContent: "right" }}
+                          >
+                            <Box
+                              sx={{
+                                "&:hover": {
+                                  cursor: "pointer",
+                                  color: "red",
+                                },
+                              }}
+                              onClick={() => console.log("delete clocked")}
+                            >
+                              <RiDeleteBin6Line />
+                            </Box>
+                          </Box>
+                        )}
                         <Box>
                           <Avatar sx={{ margin: "10px auto" }} />
                         </Box>
-                        <Typography>User Name</Typography>
+                        <Typography>{review.user.name}</Typography>
                         <Rating
                           name="read-only"
                           value={review.stars}
@@ -271,7 +301,7 @@ export const Place: React.FC = () => {
                 sx={{ display: "flex", justifyContent: "right", mt: "20px" }}
               >
                 <Button sx={{ color: "red" }} onClick={handleOpen}>
-                  Delete
+                  Delete Place
                   <RiDeleteBin6Line />
                 </Button>
               </Box>

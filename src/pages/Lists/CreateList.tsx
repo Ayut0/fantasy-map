@@ -1,72 +1,55 @@
+import axios from "axios";
 import {
   Box,
+  Card,
+  CardContent,
+  Container,
   FormControl,
+  FormHelperText,
   MenuItem,
-  OutlinedInput,
   Select,
   SelectChangeEvent,
   TextField,
-  Theme,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { Fragment, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import ImageUpload from "../../components/ImageUpload";
 import AppTemplate from "../../templates/AppTemplate";
-
-const places: string[] = [
-  "Los Angels",
-  "San Diego",
-  "San Francisco",
-  "Santa Barbara",
-  "Sacramento",
-  "Santa Clara",
-  "Malibu",
-  "Long beach",
-];
-
-const loadedPlaces: string[] = [
-  "Paris",
-  "Tokyo",
-  "Rio de janeiro",
-  "London",
-  "Beijing",
-  "Athene",
-  "Sydney",
-];
-
-const everyPlaces: string[] = [...places, ...loadedPlaces];
-
-function getStyles(place: string, placeName: string[], theme: Theme) {
-  return {
-    fontWeight:
-      placeName.indexOf(place) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import { useAppContext } from "../../context/AppContext";
+import CreateListDeleteSection from "./CreateListDeleteSection";
 
 const CreateList: React.FC = () => {
-  const theme = useTheme();
-  const [placeName, setPlaceName] = useState<string[]>(loadedPlaces);
+  const params = useParams<string>();
 
-  const lid = useParams<string>();
-  const isExistedList: boolean = Object.values(lid).length ? true : false;
+  const [userPlaces, setUserPlaces] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+
+  const [isPlaceAdded, setIsPlaceAdded] = useState(false);
+  const [addedPlace, setAddedPlace] = useState("");
+
+  const [titleVal, setTitleVal] = useState("");
+  const [descriptionVal, setDescriptionVal] = useState("");
+  const [categoryVal, setCategoryVal] = useState(-1);
+  const [placesVal, setPlacesVal] = useState<number[]>([]);
+  const [file, setFile] = useState<File>();
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [titleError, setTitleError] = useState<string | false>(false);
+  const [descriptionError, setDescriptionError] = useState<string | false>(
+    false
+  );
+  const [categoryError, setCategoryError] = useState<string | false>(false);
+  const [list, setList] = useState<any>();
+
+  const { sendRequest } = useHttpRequest();
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
-
-  const handleChange = (event: SelectChangeEvent<typeof placeName>) => {
-    const {
-      target: { value },
-    } = event;
-    setPlaceName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
+  const { state } = useAppContext();
+  const navigate = useNavigate();
 
   const showDeleteModalHandler = (): void => {
     setShowConfirmationModal(true);
@@ -76,222 +59,266 @@ const CreateList: React.FC = () => {
     setShowConfirmationModal(false);
   };
 
+  const handleSubmit = async () => {
+    const data = {
+      name: titleVal,
+      description: descriptionVal,
+      categoryId: categoryVal,
+      placeIds: placesVal,
+    };
+
+    // validate
+    const titleErrMsg = !titleVal && "Title is mandatory";
+    const descErrMsg = !descriptionVal && "Description is mandatory";
+    const catErrMsg = !categoryVal && "Category is mandatory";
+    setTitleError(titleErrMsg);
+    setDescriptionError(descErrMsg);
+    setCategoryError(catErrMsg);
+
+    // stop execution if any error is found
+    if (titleErrMsg || descErrMsg || catErrMsg) {
+      return;
+    }
+
+    let picture = list ? previewUrl : "images/no-list-pic.jpeg";
+    if (file) {
+      const formData = new FormData();
+      formData.append("filetoupload", file);
+      const uploadResponse = await axios.post("/api/files/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      picture = uploadResponse.data;
+    }
+
+    // console.log("update data", picture, file);
+
+    const url = list ? `/api/lists/${list.id}` : "/api/lists";
+    const method = list ? "PUT" : "POST";
+    console.log("update list", url, method, list, picture);
+
+    const listsResponse = await sendRequest(url, method, {
+      ...data,
+      picture,
+    });
+
+    alert(
+      listsResponse ? "List successfully saved!" : "Oh no! Something went wrong"
+    );
+  };
+
+  const handleAddPlace = (event: any) => {
+    setIsPlaceAdded(!isPlaceAdded);
+  };
+
+  const handleChangeNewPlace = (event: any) => {
+    setAddedPlace(event.target.value);
+    console.log(addedPlace);
+  };
+
+  const handleSavePlace = (event: any) => {
+    setIsPlaceAdded(!isPlaceAdded);
+  };
+
+  const handleChangetitle = (event: any) => {
+    setTitleVal(event.target.value);
+  };
+
+  const handleChangeDescription = (event: any) => {
+    setDescriptionVal(event.target.value);
+  };
+
+  useEffect(() => {
+    const getUserPlaces = async () => {
+      const userPlaces = await sendRequest("/api/places", "GET");
+      setUserPlaces(userPlaces);
+      console.log(userPlaces);
+    };
+
+    const getCategories = async () => {
+      const categories = await sendRequest("/api/categories", "GET");
+      setCategories(categories);
+    };
+
+    getUserPlaces();
+    getCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchList = async () => {
+      const dbList = await sendRequest(`/api/lists/${params.lid}`, "GET");
+      if (!dbList) {
+        navigate("/");
+        return;
+      }
+      setList(dbList);
+      setTitleVal(dbList.name);
+      setDescriptionVal(dbList.description);
+      setPreviewUrl(dbList.picture);
+      setCategoryVal(dbList.categoryId);
+      setPlacesVal(dbList.places.map((p: any) => p.id));
+    };
+    if (params.lid) {
+      fetchList();
+    }
+  }, [params.lid]);
+
+  useEffect(() => {
+    if (
+      params.lid &&
+      state.loggedUser &&
+      list &&
+      state.loggedUser.id !== list.userId
+    ) {
+      navigate("/");
+    }
+  }, [list, state.loggedUser]);
+
   return (
     <AppTemplate>
       <Stack
-        sx={{ width: "100%", backgroundColor: "#F9F6F0", rowGap: "1.2rem", paddingTop: '10rem' }}
+        sx={{
+          width: "100%",
+          backgroundColor: "#F9F6F0",
+          rowGap: "1.2rem",
+          paddingTop: "10rem",
+        }}
       >
-        <Typography component="h3" variant="h3" sx={{ color: "#232946" }}>
-          {lid ? "Edit list" : "Creating a new list"}
-        </Typography>
-        <FormControl
-          fullWidth
-          sx={{ rowGap: "1.2rem", textAlign: "initial", alignItems: "center" }}
-        >
-          <Box sx={{ width: "50%" }}>
+        <Container maxWidth="md">
+          <Typography
+            component="h3"
+            variant="h3"
+            textAlign="center"
+            sx={{ color: "#232946", mb: 2 }}
+          >
+            {list ? "Edit list" : "Create a new list"}
+          </Typography>
+          <ImageUpload
+            file={file}
+            setFile={setFile}
+            previewUrl={previewUrl}
+            setPreviewUrl={setPreviewUrl}
+            instructions="Select a image that represents what is your list about"
+          />
+          <FormControl fullWidth>
             <TextField
               margin="normal"
               required
-              fullWidth
               id="title"
-              label="Title"
               name="title"
+              label="Title"
               autoComplete="title"
               autoFocus
+              onChange={handleChangetitle}
+              value={titleVal}
+              error={!!titleError}
             />
-          </Box>
-          <Box sx={{ width: "50%" }}>
+            {titleError && <FormHelperText>{titleError}</FormHelperText>}
+          </FormControl>
+          <FormControl fullWidth>
             <TextField
               margin="normal"
               required
-              fullWidth
               id="description"
               label="Description"
               name="description"
               autoComplete="description"
               multiline
+              onChange={handleChangeDescription}
+              value={descriptionVal}
+              error={!!descriptionError}
             />
-          </Box>
-          {isExistedList ? (
-            <Fragment>
-              <Box
-                sx={{
-                  width: "70%",
-                  display: "flex",
-                  justifyContent: "space-around",
-                }}
-              >
-                <Typography variant="h6">
-                  {loadedPlaces.length} places in this list
-                </Typography>
-                <ActionButton
-                  variant="outlined"
-                  sx={{
-                    padding: ".3rem .1rem",
-                    width: "20%",
-                    fontSize: ".8rem",
-                  }}
-                >
-                  <Link
-                    to={""}
-                    style={{ textDecoration: "none", color: "#232946" }}
-                  >
-                    Add a new place
-                  </Link>
-                </ActionButton>
-              </Box>
-              <Select
-                multiple
-                displayEmpty
-                value={placeName}
-                onChange={handleChange}
-                input={<OutlinedInput />}
-                renderValue={(selected) => {
-                  if (selected.length === 0) {
-                    return <em>Your places</em>;
-                  }
-
-                  return selected.join(", ");
-                }}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                sx={{ width: "50%", marginTop: "1rem" }}
-              >
-                <MenuItem disabled value="">
-                  <em>Your places</em>
+            {descriptionError && (
+              <FormHelperText>{descriptionError}</FormHelperText>
+            )}
+          </FormControl>
+          <FormControl fullWidth>
+            <Select
+              required
+              value={categoryVal}
+              onChange={(e) => setCategoryVal(e.target.value as number)}
+              id="categories-select"
+              error={!!categoryError}
+              sx={{ mb: 1, mt: 2 }}
+            >
+              <MenuItem disabled value={-1}>
+                Select a category
+              </MenuItem>
+              {categories.map((cat) => (
+                <MenuItem key={cat.id} value={cat.id}>
+                  {cat.name}
                 </MenuItem>
-                {everyPlaces.map((place: string) => (
-                  <MenuItem
-                    key={place}
-                    value={place}
-                    style={getStyles(place, placeName, theme)}
-                  >
-                    {place}
-                  </MenuItem>
-                ))}
-              </Select>
-              <ActionButton
-                variant="outlined"
-                sx={{
-                  mt: 3,
-                  mb: 2,
-                  pt: 2,
-                  pb: 2,
-                  fontSize: 20,
-                  backgroundColor: "#FF7A7A",
-                  width: "15%",
-                  color: "#EEEEEE",
-                  "&:hover": {
-                    color: "#FF7A7A",
-                  },
-                }}
-                onClick={showDeleteModalHandler}
-              >
-                Delete this list
-              </ActionButton>
-              {showConfirmationModal && (
-                <ConfirmationModal
-                  open={true}
-                  handleClose={closeDeleteModalHandler}
-                  msg={
-                    "You are about to delete this lis. Once you delete the list, you are not able to restore... If you are good, click the button below."
-                  }
-                  btnMsg={"Delete this list"}
-                />
-              )}
-            </Fragment>
-          ) : (
-            <Fragment>
-              <Select
-                multiple
-                displayEmpty
-                value={placeName}
-                onChange={handleChange}
-                input={<OutlinedInput />}
-                renderValue={(selected) => {
-                  if (selected.length === 0) {
-                    return <em>Your places</em>;
-                  }
-
-                  return selected.join(", ");
-                }}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                sx={{ width: "50%", marginTop: "1rem" }}
-              >
-                <MenuItem disabled value="">
-                  <em>Your places</em>
-                </MenuItem>
-                {places.map((place: string) => (
-                  <MenuItem
-                    key={place}
-                    value={place}
-                    style={getStyles(place, placeName, theme)}
-                  >
-                    {place}
-                  </MenuItem>
-                ))}
-              </Select>
-              <Typography variant="body1" sx={{ color: "#232946" }}>
-                or
+              ))}
+            </Select>
+            {categoryError && <FormHelperText>{categoryError}</FormHelperText>}
+          </FormControl>
+          <Card sx={{ mt: 2 }}>
+            <CardContent>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Adding places to your list
               </Typography>
-              <Box
-                sx={{
-                  backgroundColor: "#FDFDFB",
-                  width: "40%",
-                  textAlign: "center",
-                  height: "200px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  rowGap: "24px",
-                }}
-              >
-                <Typography
-                  component="h4"
-                  variant="h5"
-                  sx={{ color: "#232946", width: "40%" }}
+              <Typography variant="body2">
+                You can select one of the places you created before:
+              </Typography>
+              <FormControl fullWidth>
+                <Select
+                  multiple
+                  value={placesVal}
+                  onChange={(e) => setPlacesVal(e.target.value as number[])}
+                  id="places-select"
+                  sx={{ mb: 1, mt: 2 }}
                 >
-                  Click the button below to add a new place
-                </Typography>
+                  {userPlaces.map((place) => (
+                    <MenuItem key={place.id} value={place.id}>
+                      {place.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Typography variant="body2" sx={{ color: "#232946" }}>
+                or you can click on the button below to add a new place
+              </Typography>
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
                 <ActionButton
-                  variant="outlined"
+                  variant="contained"
+                  type="submit"
+                  onClick={handleAddPlace}
                   sx={{
-                    padding: ".7rem 1rem",
-                    width: "60%",
-                    fontSize: "1.1rem",
+                    backgroundColor: "#2CA58D",
                   }}
                 >
                   <Link
-                    to={""}
-                    style={{ textDecoration: "none", color: "#232946" }}
+                    to={"/place/create"}
+                    style={{ textDecoration: "none", color: "#EEEEEE" }}
                   >
                     Add a new place
                   </Link>
                 </ActionButton>
               </Box>
-            </Fragment>
-          )}
-          <ActionButton
-            variant="outlined"
-            sx={{
-              mt: 3,
-              mb: 2,
-              pt: 2,
-              pb: 2,
-              fontSize: 20,
-              backgroundColor: "#2CA58D",
-              width: "10%",
-              color: "#EEEEEE",
-              "&:hover": {
-                color: "#2CA58D",
-              },
-            }}
-          >
-            {lid ? "Update List" : "Create"}
-          </ActionButton>
-        </FormControl>
+            </CardContent>
+          </Card>
+          <Box sx={{ display: "flex", justifyContent: "right" }}>
+            {params.lid && <CreateListDeleteSection listId={params.lid} />}
+            <ActionButton
+              variant="outlined"
+              type="submit"
+              onClick={handleSubmit}
+              sx={{
+                my: 2,
+                p: 2,
+                fontSize: 18,
+                backgroundColor: "#2CA58D",
+                color: "#EEEEEE",
+                "&:hover": {
+                  color: "#2CA58D",
+                },
+              }}
+            >
+              {list ? "Update List" : "Create list"}
+            </ActionButton>
+          </Box>
+        </Container>
       </Stack>
     </AppTemplate>
   );

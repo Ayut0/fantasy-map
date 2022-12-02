@@ -10,6 +10,7 @@ import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 
 import { Place } from "./pages/Place/Place";
+import { Review } from "./pages/Place/Review";
 import Profile from "./pages/Profile/Profile";
 import ProfileEdit from "./pages/Profile/ProfileEdit";
 import CreateList from "./pages/Lists/CreateList";
@@ -86,6 +87,10 @@ function App() {
             <Route
               path="/place/create"
               element={<ProtectedRoute element={<CreatePlace />} />}
+            />
+            <Route
+              path="/place/:pid/review"
+              element={<ProtectedRoute element={<Review />} />}
             />
             <Route
               path="/profile/"

@@ -11,12 +11,18 @@ export interface FavoriteList {
     userId?: number;
 }
 
-export interface Review {
+export interface User {
+    name: string;
     id: number;
-    content?: string;
-    stars?: number;
-    userId: number;
-    placeId: number
+}
+
+export interface Review {
+  id: number;
+  content?: string;
+  stars?: number;
+  userId: number;
+  placeId: number;
+  user: User;
 }
 
 interface Location {
@@ -36,12 +42,23 @@ export interface Place{
     reviews? : Review[]
 }
 
-export interface List{
+export interface PopularList{
     description: string;
     id: number;
     name: string;
     picture: string;
-    places: Place[]
+    user?: any;
+}
+
+export interface List{
+    description: string;
+    id?: number;
+    name: string;
+    picture: string;
+    places: Place[];
+    userId?: number;
+    categoryId?: number;
+    deleted?: boolean
 }
 
 export interface Marker {
@@ -59,6 +76,7 @@ export interface MapCenter {
 }
   
 export interface ListCard {
+    id?: number;
     name: string;
     description?: string;
     picture?: string;

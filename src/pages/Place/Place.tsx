@@ -17,6 +17,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import { HiPaperAirplane } from "react-icons/hi";
 import { MdFavoriteBorder } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import AppTemplate from "../../templates/AppTemplate";
 import { Place as PlaceType } from "../../../typings";
@@ -54,6 +55,7 @@ export const Place: React.FC = () => {
   const [isUserIdMatches, setIsUserIdMatches] = useState<boolean>(false);
   const [idToBeDeleted, setIdToBeDeleted] = useState<number>();
   const [isFetchData, setIsFetchData] = useState<boolean>(true);
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const msgPlace = `You are about to delete this place.
@@ -74,6 +76,7 @@ export const Place: React.FC = () => {
       setInputAddress(place.address);
       setInputDescription(place.description);
       setLocation(place.location);
+      setIsFavorite(place.favorite);
       console.log("test", place);
       //compare userID from place and user ID logged in
       if (place.user.id === state?.loggedUser?.id) {
@@ -125,6 +128,16 @@ export const Place: React.FC = () => {
     }
   };
 
+  const switchFavorite = async () => {
+    console.log("fav clicked");
+    setIsFavorite(!isFavorite);
+    try {
+      await sendRequest(`/api/favorites/${params.pid}`, "PUT");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <AppTemplate>
       {loadedPlace ? (
@@ -152,8 +165,12 @@ export const Place: React.FC = () => {
               sx={{ paddingTop: "10rem" }}
             />
             <Box sx={{ display: "flex", justifyContent: "right", mt: "30px" }}>
-              <Button>
-                <MdFavoriteBorder size={20} />
+              <Button onClick={switchFavorite}>
+                {isFavorite ? (
+                  <MdFavorite size={20} />
+                ) : (
+                  <MdFavoriteBorder size={20} />
+                )}
               </Button>
               <Button
                 variant="contained"

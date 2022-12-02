@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import AppTemplate from "../../templates/AppTemplate";
 import { Button, Box, Container, Rating, TextField, Typography } from "@mui/material";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
-import { redirect, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Review: React.FC = () => {
-  const { error, sendRequest, clearError } = useHttpRequest();
+  const { sendRequest } = useHttpRequest();
   const navigate = useNavigate();
   const params = useParams();
   const [stars, setStars] = useState<number | null>(0);
@@ -42,6 +42,7 @@ export const Review: React.FC = () => {
             justifyContent: "center",
             backgroundColor: "#F9F6F0",
             height: "100vh",
+            textAlign: "center"
           }}
           maxWidth="md"
           onSubmit={handleSubmit}

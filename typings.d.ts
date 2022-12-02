@@ -36,6 +36,14 @@ export interface Place{
     reviews? : Review[]
 }
 
+export interface PopularList{
+    description: string;
+    id: number;
+    name: string;
+    picture: string;
+    user?: any;
+}
+
 export interface List{
     description: string;
     id: number;
@@ -59,6 +67,7 @@ export interface MapCenter {
 }
   
 export interface ListCard {
+    id?: number;
     name: string;
     description?: string;
     picture?: string;

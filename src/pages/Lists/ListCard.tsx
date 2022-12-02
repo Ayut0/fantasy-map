@@ -8,9 +8,10 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import React from "react";
+import { Link } from "react-router-dom";
 import { ListCard as ListCardType } from '../../../typings';
 
-const ListCard: React.FC<ListCardType> = ({ name, description, picture, averageStars }) => {
+const ListCard: React.FC<ListCardType> = ({ id, name, description, picture, averageStars }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -22,19 +23,21 @@ const ListCard: React.FC<ListCardType> = ({ name, description, picture, averageS
       whileTap={{ scale: 1.1 }}
     >
       <Card sx={{ display: "flex", mb: 8 }}>
+        <Link to={`/place/${id}`}>
+        <Box sx={{ display: "flex" }}>
         <CardMedia
           component="img"
           sx={{ width: "30%" }}
           image={picture}
           alt="description"
         ></CardMedia>
-        <Box sx={{ display: "flex" }}>
           <CardContent sx={{ display: "1 0 auto", textAlign: 'initial' }}>
             <Typography variant="h6" sx={{fontWeight: 'bold'}}>{name}</Typography>
             <Typography variant="subtitle1">{description}</Typography>
             <Rating name="read-only" value={averageStars} readOnly sx={{paddingTop: '52px'}} />
           </CardContent>
         </Box>
+        </Link>
       </Card>
     </motion.div>
   );

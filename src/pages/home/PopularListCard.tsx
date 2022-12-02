@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import {Avatar, Box, Card, CardContent, CardMedia, Grid, Typography} from "@mui/material";
 import { Buttons } from "./Buttons";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import { PopularList as PopularListType } from "../../../typings";
 
 export const PopularListCard: React.FC = () => {
-  const [popularLists, setPopularLists] = useState([]);
+  const [popularLists, setPopularLists] = useState<PopularListType[]>([]);
   const { error, sendRequest, clearError } = useHttpRequest();
   useEffect(() => {
     const getPopularList = async () => {
@@ -18,7 +19,7 @@ export const PopularListCard: React.FC = () => {
 
   return (
     <Grid container rowSpacing={6} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-      {popularLists.map((list:any) => {
+      {popularLists.map((list:PopularListType) => {
         return (
           <Grid key={list.id} item xs={4}>
             <Card
@@ -43,7 +44,7 @@ export const PopularListCard: React.FC = () => {
                     {list.description}
                   </Typography>
                 </Box>
-                <Buttons />
+                <Buttons listId={list.id} />
                 <Grid container pt={2} sx={{ alignItems: "center" }}>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={5}>

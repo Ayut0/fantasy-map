@@ -8,8 +8,11 @@ import {
   Typography,
 } from "@mui/material";
 import AppTemplate from "../../templates/AppTemplate";
+import ActionButton from "../../components/ActionButton";
+import { useNavigate } from "react-router-dom";
 
 export const SeeList: React.FC = () => {
+  const navigate = useNavigate()
   const handleClickList = () => console.log("To edit list");
   const lists = [
     {
@@ -64,7 +67,12 @@ export const SeeList: React.FC = () => {
           </Grid>
           <Grid item xs={4}></Grid>
           <Grid item xs={4}>
-            <Button>Add a new list</Button>
+            <ActionButton
+            variant="outlined"
+            onClick={() => navigate("/list/create")}
+          >
+            Add a new list
+          </ActionButton>
           </Grid>
         </Grid>
         <Container maxWidth="md" sx={{ pt: 3 }} onClick={handleClickList}>

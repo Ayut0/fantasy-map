@@ -21,7 +21,7 @@ import { ConfirmationModal } from "../../components/ConfirmationModal";
 import AppTemplate from "../../templates/AppTemplate";
 import { Place as PlaceType } from "../../../typings";
 import { Review as ReviewType } from "../../../typings";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import GooglePlacesAutocomplete, {
   geocodeByAddress,
@@ -36,8 +36,14 @@ export const Place: React.FC = () => {
   const [loadedPlace, setLoadedPlace] = useState<PlaceType>();
   const { sendRequest } = useHttpRequest();
   const [open, setOpen] = useState(false);
+  const [openReview, setOpenReview] = useState(false);
   const handleOpen = () => setOpen(true);
+  const handleOpenReview = (id: number) => {
+    setOpenReview(true);
+    setIdToBeDeleted(id);
+  };
   const handleClose = () => setOpen(false);
+  const handleCloseReview = () => setOpenReview(false);
   const [isNameEdit, setIsNameEdit] = useState<boolean>(false);
   const [isAddressEdit, setIsAddressEdit] = useState<boolean>(false);
   const [isDescriptionEdit, setIsDescriptionEdit] = useState<boolean>(false);
@@ -46,17 +52,24 @@ export const Place: React.FC = () => {
   const [inputDescription, setInputDescription] = useState("");
   const [location, setLocation] = useState({});
   const [isUserIdMatches, setIsUserIdMatches] = useState<boolean>(false);
+  const [idToBeDeleted, setIdToBeDeleted] = useState<number>();
+  const [isFetchData, setIsFetchData] = useState<boolean>(true);
   const navigate = useNavigate();
 
-  const msg = `You are about to delete this place.
+  const msgPlace = `You are about to delete this place.
               Once you delete the place, you are not able to restore....
               If you are good, click the button below.`;
-  const btnMsg = "Delete this place";
+  const btnMsgPlace = "Delete this place";
+  const msgReview = `You are about to delete this review.
+              Once you delete the review, you are not able to restore....
+              If you are good, click the button below.`;
+  const btnMsgReview = "Delete this review";
 
   useEffect(() => {
     const getPlaceById = async () => {
       const place = await sendRequest(`/api/places/${params.pid}`, "GET");
       setLoadedPlace(place);
+      console.log(place);
       setInputPlaceName(place.name);
       setInputAddress(place.address);
       setInputDescription(place.description);
@@ -66,10 +79,12 @@ export const Place: React.FC = () => {
       if (place.user.id === state?.loggedUser?.id) {
         setIsUserIdMatches(true);
       }
+      setIsFetchData(false);
     };
-
-    getPlaceById();
-  }, [params.pid]);
+    if (isFetchData) {
+      getPlaceById();
+    }
+  }, [params.pid, isFetchData]);
 
   const updatePlaceHandler = async (event: any) => {
     event.preventDefault();
@@ -99,6 +114,17 @@ export const Place: React.FC = () => {
     }
   };
 
+  const deleteReviewHandler = async (event: any) => {
+    event.preventDefault();
+    try {
+      await sendRequest(`/api/reviews/${idToBeDeleted}`, "DELETE");
+      setOpenReview(false);
+      setIsFetchData(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <AppTemplate>
       {loadedPlace ? (
@@ -106,11 +132,18 @@ export const Place: React.FC = () => {
           <ConfirmationModal
             open={open}
             handleClose={handleClose}
-            msg={msg}
-            btnMsg={btnMsg}
+            msg={msgPlace}
+            btnMsg={btnMsgPlace}
             clickEvent={deletePlaceHandler}
           />
-          <Container>
+          <ConfirmationModal
+            open={openReview}
+            handleClose={handleCloseReview}
+            msg={msgReview}
+            btnMsg={btnMsgReview}
+            clickEvent={deleteReviewHandler}
+          />
+          <Container sx={{ pb: 5 }}>
             <CardMedia
               component="img"
               height="600"
@@ -224,9 +257,29 @@ export const Place: React.FC = () => {
                 </Typography>
               </Grid>
             </Grid>
-            <Typography variant="h4" sx={{ textAlign: "left", my: "40px" }}>
-              Last reviews
-            </Typography>
+            <Grid container sx={{ alignItems: "center" }}>
+              <Grid item xs={9}>
+                <Typography variant="h4" sx={{ textAlign: "left", my: "40px" }}>
+                  Last reviews
+                </Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <ActionButton
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    backgroundColor: "#2CA58D",
+                  }}
+                >
+                  <Link
+                    to={`/place/${params.pid}/review`}
+                    style={{ textDecoration: "none", color: "#EEEEEE" }}
+                  >
+                    Add a new review
+                  </Link>
+                </ActionButton>
+              </Grid>
+            </Grid>
             {loadedPlace.reviews?.length === 0 && (
               <Typography variant="h5" sx={{ textAlign: "left", mb: "200px" }}>
                 No review given yet :)
@@ -248,18 +301,48 @@ export const Place: React.FC = () => {
                       }}
                     >
                       <CardContent sx={{ textOverflow: "ellipsis" }}>
+                        {state?.loggedUser?.id === review.user.id && (
+                          <Box
+                            sx={{ display: "flex", justifyContent: "right" }}
+                          >
+                            <Box
+                              sx={{
+                                "&:hover": {
+                                  cursor: "pointer",
+                                  color: "red",
+                                },
+                              }}
+                              onClick={() => handleOpenReview(review.id)}
+                            >
+                              <RiDeleteBin6Line />
+                            </Box>
+                          </Box>
+                        )}
                         <Box>
                           <Avatar sx={{ margin: "10px auto" }} />
                         </Box>
-                        <Typography>User Name</Typography>
-                        <Rating
-                          name="read-only"
-                          value={review.stars}
-                          readOnly
-                        />
-                        <Typography variant="body2" color="text.secondary">
-                          {review.content}
-                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography>{review.user.name}</Typography>
+                          <Rating
+                            name="read-only"
+                            value={review.stars}
+                            readOnly
+                          />
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ textAlign: "center" }}
+                          >
+                            {review.content}
+                          </Typography>
+                        </Box>
                       </CardContent>
                     </Card>
                   </Grid>
@@ -271,7 +354,7 @@ export const Place: React.FC = () => {
                 sx={{ display: "flex", justifyContent: "right", mt: "20px" }}
               >
                 <Button sx={{ color: "red" }} onClick={handleOpen}>
-                  Delete
+                  Delete Place
                   <RiDeleteBin6Line />
                 </Button>
               </Box>

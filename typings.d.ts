@@ -11,12 +11,18 @@ export interface FavoriteList {
     userId?: number;
 }
 
-export interface Review {
+export interface User {
+    name: string;
     id: number;
-    content?: string;
-    stars?: number;
-    userId: number;
-    placeId: number
+}
+
+export interface Review {
+  id: number;
+  content?: string;
+  stars?: number;
+  userId: number;
+  placeId: number;
+  user: User;
 }
 
 interface Location {

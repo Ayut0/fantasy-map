@@ -46,10 +46,13 @@ export interface PopularList{
 
 export interface List{
     description: string;
-    id: number;
+    id?: number;
     name: string;
     picture: string;
-    places: Place[]
+    places: Place[];
+    userId?: number;
+    categoryId?: number;
+    deleted?: boolean
 }
 
 export interface Marker {

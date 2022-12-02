@@ -5,15 +5,25 @@ import { Link } from "react-router-dom";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ListSection from "./ListSection";
 
-const UsersListSection: React.FC = () => {
+interface Props {
+  profileData: any;
+}
+
+const UsersListSection: React.FC<Props> = ({ profileData }) => {
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-around", marginBottom: '2rem' }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          marginBottom: "2rem",
+        }}
+      >
         <Typography component="h3" variant="h4" sx={{ color: "#232946" }}>
           Your lists
         </Typography>
         <Link
-          to={""}
+          to={"/list/see"}
           style={{
             textDecoration: "none",
             color: "#025B67",
@@ -26,7 +36,7 @@ const UsersListSection: React.FC = () => {
           <ArrowForwardIosIcon fontSize="small" />
         </Link>
       </Box>
-      <ListSection />
+      <ListSection lists={profileData?.lists} />
     </Box>
   );
 };

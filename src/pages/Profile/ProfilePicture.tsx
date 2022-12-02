@@ -1,17 +1,13 @@
 import React from "react";
 
 type Props = {
-  picture?: string;
+  picture: string | undefined;
 };
 
-const ProfilePicture: React.FC = () => {
-  return (
-      <img
-        style={{ width: "50%" }}
-        src="https://library.sportingnews.com/styles/facebook_1200x630/s3/2022-10/Victor%20Wembanyama%20100722.jpeg?itok=1vOhoeJt"
-        alt="profile-picture"
-      />
-  );
+const ProfilePicture: React.FC<Props> = ({
+  picture = "images/no-profile-pic.jpeg",
+}) => {
+  return <img style={{ width: "50%" }} src={picture} alt="profile-picture" />;
 };
 
 export default ProfilePicture;

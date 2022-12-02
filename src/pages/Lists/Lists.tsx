@@ -117,6 +117,7 @@ const Lists: React.FC = () => {
                   return (
                     <ListCard
                       key={place.id}
+                      id={place.id}
                       name={place.name}
                       description={place.description}
                       picture={place.picture}

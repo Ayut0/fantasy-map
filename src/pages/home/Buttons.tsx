@@ -2,7 +2,11 @@ import React from "react";
 import ActionButton from "../../components/ActionButton";
 import { Link } from "react-router-dom";
 
-export const Buttons: React.FC = () => {
+type idProps = {
+  listId?: number
+}
+
+export const Buttons: React.FC<idProps> = ({listId}) => {
   return (
     <ActionButton
       variant="contained"
@@ -14,8 +18,8 @@ export const Buttons: React.FC = () => {
         borderRadius: "50px"
       }}
     >
-      <Link style={{ textDecoration: "none", color: "#FFFFFF" }} to="/lists">
-        {/* Replace link to actual list later */}
+      <Link style={{ textDecoration: "none", color: "#FFFFFF" }} to={`/lists/${listId}`}>
+        
         View List
       </Link>
     </ActionButton>

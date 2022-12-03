@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
+import { FiExternalLink } from "react-icons/fi";
 import { HiPaperAirplane } from "react-icons/hi";
 import { MdFavoriteBorder } from "react-icons/md";
 import { MdFavorite } from "react-icons/md";
@@ -136,7 +137,16 @@ export const Place: React.FC = () => {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
+
+  const handleGetDirection = async () => {
+    const place = await sendRequest(`/api/places/${params.pid}`, "GET");
+    setLoadedPlace(place);
+    window.open(
+      `https://maps.google.com/?q=${place.location.lat},${place.location.lng}`,
+      "_blank"
+    );
+  };
 
   return (
     <AppTemplate>
@@ -172,12 +182,16 @@ export const Place: React.FC = () => {
                   <MdFavoriteBorder size={20} />
                 )}
               </Button>
-              <Button
+              <ActionButton
                 variant="contained"
-                sx={{ backgroundColor: "#2CA58D", borderRadius: "20px" }}
+                type="submit"
+                onClick={handleGetDirection}
+                sx={{
+                  backgroundColor: "#2CA58D",
+                }}
               >
-                Get direction
-              </Button>
+                Get direction<FiExternalLink />
+              </ActionButton>
             </Box>
             <Box sx={{ display: "flex" }}>
               {isNameEdit ? (

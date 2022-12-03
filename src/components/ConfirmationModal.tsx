@@ -10,10 +10,11 @@ interface Props {
   handleClose: ()=>void;
   msg: string;
   btnMsg: string;
-  clickEvent?:(event: any)=> Promise<void>;
+  clickEvent?: (event: any) => Promise<void>;
+  isWarning?: boolean
 }
 
-export const ConfirmationModal: React.FC<Props> = ({open, handleClose, msg, btnMsg, clickEvent}) => {
+export const ConfirmationModal: React.FC<Props> = ({open, handleClose, msg, btnMsg, clickEvent, isWarning}) => {
   // const handleDelete = () => console.log("place deleted!");
 
   return (
@@ -24,7 +25,8 @@ export const ConfirmationModal: React.FC<Props> = ({open, handleClose, msg, btnM
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box
+        {isWarning ? (
+          <Box
           sx={{
             backgroundColor: "#FFEFEF",
             width: "400px",
@@ -67,7 +69,7 @@ export const ConfirmationModal: React.FC<Props> = ({open, handleClose, msg, btnM
             <Button
               onClick={clickEvent}
               sx={{
-                backgroundColor: "#FD3B59",
+                backgroundColor: "#fd3b58",
                 color: "#FFFFFF",
                 mt: "25px",
                 "&:hover": {
@@ -79,6 +81,48 @@ export const ConfirmationModal: React.FC<Props> = ({open, handleClose, msg, btnM
             </Button>
           </Box>
         </Box>
+        ) : (
+        <Box
+          sx={{
+            backgroundColor: "#effffa",
+            width: "400px",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            border: "2px solid #7aff85",
+            borderRadius: "10px",
+            padding: "30px",
+            boxShadow: 24,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "right",
+              padding: "8px",
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+          >
+            <Button onClick={handleClose}>
+              <ImCross />
+            </Button>
+          </Box>
+          <Typography
+            id="modal-modal-title"
+            variant="h5"
+            component="h2"
+            sx={{ color: "#414241" }}
+          >
+            {msg}
+          </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Hang tight, we are redirecting...
+          </Typography>
+        </Box>
+        )}
       </Modal>
     </div>
   );

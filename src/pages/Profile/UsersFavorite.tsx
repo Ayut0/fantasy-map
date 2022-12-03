@@ -17,10 +17,9 @@ type Data = {
   favorites: FavoriteList[];
 };
 
-
 const DUMMY_PLACES = [
   {
-    id: '1',
+    id: "1",
     name: "Mauricios Wine Shop",
     description: "Absolutely the best!!",
     image:
@@ -30,7 +29,7 @@ const DUMMY_PLACES = [
     rating: 3,
   },
   {
-    id: '2',
+    id: "2",
     name: "Mauricios Wine Shop",
     description: "Absolutely the best!!",
     image:
@@ -40,7 +39,7 @@ const DUMMY_PLACES = [
     rating: 5,
   },
   {
-    id:'3',
+    id: "3",
     name: "Mauricios Wine Shop",
     description: "Absolutely the best!!",
     image:
@@ -51,7 +50,6 @@ const DUMMY_PLACES = [
   },
 ];
 const UsersFavorite: React.FC = () => {
-
   return (
     <Grid item xs={12} lg={6}>
       <Box
@@ -62,7 +60,7 @@ const UsersFavorite: React.FC = () => {
         }}
       >
         <Typography component="h3" variant="h4" sx={{ color: "#232946" }}>
-          Your reviews
+          Your favorites
         </Typography>
         <Link
           to={""}
@@ -78,16 +76,31 @@ const UsersFavorite: React.FC = () => {
           <ArrowForwardIosIcon fontSize="small" />
         </Link>
       </Box>
-      <Box sx={{display: 'flex', flexDirection: 'column', rowGap: '2rem', alignItems: 'center', justifyContent: 'center'}}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          rowGap: "2rem",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         {DUMMY_PLACES.map((place) => (
-          <Card key={place.id} sx={{ display: "flex", mb: 8, width:{lg: '65%'} }}>
-            <CardActionArea sx={{display:'flex', justifyContent: 'initial'}}>
-            <CardMedia component="img" image={place.image} alt={place.name} sx={{ width: "40%" }} />
-            <CardContent sx={{textAlign: 'initial'}}>
-              <Typography variant="h6">{place.name}</Typography>
-              <Typography variant="subtitle1">{place.description}</Typography>
-              <Rating name="read-only" value={place.rating} readOnly />
-            </CardContent>
+          <Card
+            key={place.id}
+            sx={{ display: "flex", mb: 8, width: { lg: "65%" } }}
+          >
+            <CardActionArea sx={{ display: "flex", justifyContent: "initial" }}>
+              <CardMedia
+                component="img"
+                image={place.image}
+                alt={place.name}
+                sx={{ width: "40%" }}
+              />
+              <CardContent sx={{ textAlign: "initial" }}>
+                <Typography variant="h6">{place.name}</Typography>
+                <Typography variant="subtitle1">{place.description}</Typography>
+              </CardContent>
             </CardActionArea>
           </Card>
         ))}

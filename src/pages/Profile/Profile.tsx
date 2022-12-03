@@ -45,7 +45,7 @@ const Profile: React.FC = () => {
           <Grid item xs={12}>
             <Grid container>
               <UsersFavorite />
-              <UsersReview />
+              <UsersReview profileData={profileData} />
             </Grid>
           </Grid>
         </Grid>

@@ -1,35 +1,23 @@
-import { Box, Card, CardActionArea, CardContent, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Rating,
+  Typography,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Review } from "../../../typings";
 
-type Data = {
-  reviews: Review[]
+interface Props {
+  profileData: any;
 }
 
-const DUMMY_REVIEWS = [
-  {
-    id: '1',
-    name: "Mauricios Wine Shop",
-    content: "It's good but there is a room to improve their service."
-  },
-  
-  {
-    id: '2',
-    name: "Mauricios Wine Shop",
-    content: "It's good but there is a room to improve their service."
-  },
-  {
-    id: '3',
-    name: "Mauricios Wine Shop",
-    content: "It's good but there is a room to improve their service."
-  },
-
-]
-
-const UsersReview: React.FC = () => {
+const UsersReview: React.FC<Props> = ({ profileData }) => {
   return (
     <Grid item xs={12} lg={6}>
       <Box
@@ -56,18 +44,42 @@ const UsersReview: React.FC = () => {
           <ArrowForwardIosIcon fontSize="small" />
         </Link>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: {sm: '2rem', lg: '6rem'}, alignItems: 'center', justifyContent: 'center'}}>
-        {DUMMY_REVIEWS.map((review) => (
-        <Card key={review.id} sx={{ width:{lg: '65%'} }}>
-          <CardActionArea>
-            <CardContent sx={{padding: '40px' ,textAlign: 'initial'}}>
-            <Typography variant="h6">{review.name}</Typography>
-              <Typography variant="subtitle1">{review.content}</Typography>
-            </CardContent>
-          </CardActionArea>
-          </Card>
-        ))}
-      </Box>
+      {profileData?.reviews && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            rowGap: { sm: "2rem", lg: "6rem" },
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {!profileData?.reviews?.length && (
+            <Typography variant="body1">
+              You dont have any review yet
+            </Typography>
+          )}
+          {profileData.reviews.map((review: any) => (
+            <Card key={review.id} sx={{ width: { lg: "65%" } }}>
+              <CardActionArea
+                sx={{ display: "flex", justifyContent: "initial" }}
+              >
+                <CardMedia
+                  component="img"
+                  image={review.place.picture}
+                  alt={review.place.name}
+                  sx={{ width: "40%" }}
+                />
+                <CardContent sx={{ padding: "40px", textAlign: "initial" }}>
+                  <Typography variant="h6">{review.place.name}</Typography>
+                  <Rating name="read-only" value={review.stars} readOnly />
+                  <Typography variant="subtitle1">{review.content}</Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          ))}
+        </Box>
+      )}
     </Grid>
   );
 };

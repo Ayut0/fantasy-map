@@ -25,6 +25,9 @@ const ListSection: React.FC<Props> = ({ lists = [] }) => {
         justifyContent: "center",
       }}
     >
+      {!lists.length && (
+        <Typography variant="body1">You dont have any List yet</Typography>
+      )}
       {lists.slice(0, 3).map((list, index) => (
         <Card
           key={index}

@@ -44,6 +44,7 @@ const CreateList: React.FC = () => {
   );
   const [categoryError, setCategoryError] = useState<string | false>(false);
   const [list, setList] = useState<any>();
+  const [open, setOpen] = useState<boolean>(false);
 
   const { sendRequest } = useHttpRequest();
   const [showConfirmationModal, setShowConfirmationModal] =
@@ -58,6 +59,10 @@ const CreateList: React.FC = () => {
   const closeDeleteModalHandler = (): void => {
     setShowConfirmationModal(false);
   };
+
+  function timeout(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
   const handleSubmit = async () => {
     const data = {
@@ -103,9 +108,23 @@ const CreateList: React.FC = () => {
       picture,
     });
 
-    alert(
-      listsResponse ? "List successfully saved!" : "Oh no! Something went wrong"
-    );
+    console.log('res', listsResponse);
+
+    {
+      listsResponse.status === 200 ? (
+        setOpen(true)
+      ) : (
+        <span>Oh... something went wrong</span>
+      );
+    }
+
+    await timeout(3000);
+
+    navigate(`/list/see`)
+
+    // alert(
+    //   listsResponse ? "List successfully saved!" : "Oh no! Something went wrong"
+    // );
   };
 
   const handleAddPlace = (event: any) => {
@@ -177,6 +196,15 @@ const CreateList: React.FC = () => {
 
   return (
     <AppTemplate>
+      <ConfirmationModal
+        open={open}
+        msg={"List is successfully created"}
+        btnMsg={""}
+        isWarning={false}
+        handleClose={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
       <Stack
         sx={{
           width: "100%",
@@ -269,7 +297,7 @@ const CreateList: React.FC = () => {
                   id="places-select"
                   sx={{ mb: 1, mt: 2 }}
                 >
-                  {userPlaces.map((place) => (
+                  {userPlaces?.map((place) => (
                     <MenuItem key={place.id} value={place.id}>
                       {place.name}
                     </MenuItem>

@@ -45,7 +45,7 @@ export const useHttpRequest = () => {
           const response = await axios.post(url, body);
           console.log(response);
           console.log("response status", response.status);
-          return response.data;
+          return response;
         } catch (err) {
           errorHandler(err);
         }

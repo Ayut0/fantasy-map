@@ -9,6 +9,7 @@ export interface LoggedUser {
 interface AppContextState {
   loggedUser: LoggedUser | null;
   searchVal: string;
+  selectedCategory: number | null;
 }
 
 type AppContextAction =
@@ -22,6 +23,10 @@ type AppContextAction =
   | {
       type: "search";
       payload: string;
+    }
+  | {
+      type: "searchCategory";
+      payload: number;
     };
 
 interface Props {
@@ -32,6 +37,7 @@ interface Props {
 const defaultState: AppContextState = {
   loggedUser: null,
   searchVal: "",
+  selectedCategory: null,
 };
 
 const context = React.createContext<{
@@ -64,6 +70,11 @@ const reducer = (
         ...state,
         searchVal: action.payload,
       };
+    case "searchCategory":
+      return {
+        ...state,
+        selectedCategory: action.payload,
+      }
     default:
       throw "Invalid action";
   }

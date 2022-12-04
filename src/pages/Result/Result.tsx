@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppContext } from "../../context/AppContext";
 import {
   Avatar,
@@ -8,8 +8,6 @@ import {
   CardMedia,
   Container,
   Grid,
-  TextField,
-  Toolbar,
   Typography,
 } from "@mui/material";
 import AppTemplate from "../../templates/AppTemplate";
@@ -21,22 +19,6 @@ export const Result: React.FC = () => {
   const { dispatch, state } = useAppContext();
   const [getResult, setGetResult] = useState([]);
    const { error, sendRequest, clearError } = useHttpRequest();
-  const dummyResultLists = [
-    {
-      id: 2,
-      name: "Best places to buy wine",
-      description: "Come and see!",
-      picture: "https://ychef.files.bbci.co.uk/976x549/p0cwcj6m.jpg",
-      user: {
-        id: 1,
-        name: "Megumi Akama",
-        email: "megaka@outlook.com",
-        profilePicture: "https://www.w3schools.com/howto/img_avatar.png",
-        location: "Vancouver, BC",
-        description: "Gimme somme wine!",
-      },
-    },
-  ];
 
   useEffect(() => {
     const getRequiredLists = async () => {
@@ -45,10 +27,20 @@ export const Result: React.FC = () => {
         "GET"
       );
       setGetResult(response);
-      console.log(getResult);
     };
     getRequiredLists();
   }, [state.searchVal]);
+
+  useEffect(() => {
+    const getRequiredLists = async () => {
+      const response = await sendRequest(
+        `/api/lists/category/${state.selectedCategory}`,
+        "GET"
+      );
+      setGetResult(response);
+    };
+    getRequiredLists();
+  }, [state.selectedCategory]);
 
   return (
     <AppTemplate>

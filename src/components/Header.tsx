@@ -29,7 +29,6 @@ export const Header: React.FC = () => {
 
   const handleInputChange: React.ChangeEventHandler = (event: any) => {
     setSearchVal(event.target.value);
-    // dispatch({ type: "search", payload: event.target.value });
   };
 
   const handleKeyUp: React.KeyboardEventHandler = (event) => {

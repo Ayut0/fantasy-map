@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, Dispatch, useEffect } from "react";
+import React, { useContext, useReducer, Dispatch } from "react";
 
 export interface LoggedUser {
   id: number;
@@ -10,6 +10,7 @@ interface AppContextState {
   loggedUser: LoggedUser | null;
   searchVal: string;
   profileData: any | null;
+  selectedCategory: number | null;
 }
 
 type AppContextAction =
@@ -27,6 +28,10 @@ type AppContextAction =
   | {
       type: "setProfileData";
       payload: any;
+    }
+  | {
+      type: "searchCategory";
+      payload: number;
     };
 
 interface Props {
@@ -38,6 +43,7 @@ const defaultState: AppContextState = {
   loggedUser: null,
   searchVal: "",
   profileData: null,
+  selectedCategory: null,
 };
 
 const context = React.createContext<{
@@ -74,6 +80,11 @@ const reducer = (
       return {
         ...state,
         profileData: action.payload,
+      };
+    case "searchCategory":
+      return {
+        ...state,
+        selectedCategory: action.payload,
       };
     default:
       throw "Invalid action";

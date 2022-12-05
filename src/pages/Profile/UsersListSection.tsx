@@ -6,10 +6,10 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ListSection from "./ListSection";
 
 interface Props {
-  profileData: any;
+  lists: any[];
 }
 
-const UsersListSection: React.FC<Props> = ({ profileData }) => {
+const UsersListSection: React.FC<Props> = ({ lists = [] }) => {
   return (
     <Box>
       <Box
@@ -36,7 +36,7 @@ const UsersListSection: React.FC<Props> = ({ profileData }) => {
           <ArrowForwardIosIcon fontSize="small" />
         </Link>
       </Box>
-      <ListSection lists={profileData?.lists} />
+      <ListSection lists={lists} />
     </Box>
   );
 };

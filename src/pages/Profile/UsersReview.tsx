@@ -14,10 +14,10 @@ import { Link } from "react-router-dom";
 import { Review } from "../../../typings";
 
 interface Props {
-  profileData: any;
+  reviews: any[];
 }
 
-const UsersReview: React.FC<Props> = ({ profileData }) => {
+const UsersReview: React.FC<Props> = ({ reviews = [] }) => {
   return (
     <Grid item xs={12} lg={6}>
       <Box
@@ -30,21 +30,8 @@ const UsersReview: React.FC<Props> = ({ profileData }) => {
         <Typography component="h3" variant="h4" sx={{ color: "#232946" }}>
           Your reviews
         </Typography>
-        <Link
-          to={""}
-          style={{
-            textDecoration: "none",
-            color: "#025B67",
-            textAlign: "end",
-            fontSize: "1.5rem",
-          }}
-        >
-          See more list
-          <ArrowForwardIosIcon fontSize="small" />
-          <ArrowForwardIosIcon fontSize="small" />
-        </Link>
       </Box>
-      {profileData?.reviews && (
+      {reviews && (
         <Box
           sx={{
             display: "flex",
@@ -54,12 +41,12 @@ const UsersReview: React.FC<Props> = ({ profileData }) => {
             justifyContent: "center",
           }}
         >
-          {!profileData?.reviews?.length && (
+          {!reviews.length && (
             <Typography variant="body1">
               You dont have any review yet
             </Typography>
           )}
-          {profileData.reviews.map((review: any) => (
+          {reviews.map((review: any) => (
             <Card key={review.id} sx={{ width: { lg: "65%" } }}>
               <CardActionArea
                 sx={{ display: "flex", justifyContent: "initial" }}

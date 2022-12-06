@@ -20,6 +20,7 @@ import { Home } from "./pages/Home/Home";
 import { Result } from "./pages/Result/Result";
 import { useAppContext } from "./context/AppContext";
 import { useHttpRequest } from "./Utils/httpRequest-hook";
+import Alert from "./components/Alert";
 
 const theme = createTheme({
   palette: {
@@ -60,6 +61,7 @@ function App() {
         "Loading..."
       ) : (
         <ThemeProvider theme={theme}>
+          <Alert />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />

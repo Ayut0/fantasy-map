@@ -26,7 +26,13 @@ const ProfileInfo: React.FC = () => {
 
   const saveFieldValue = (field: string) => {
     sendRequest("/api/users/profile", "PUT", state.profileData);
-    alert("Profile updated!");
+    dispatch({
+      type: "alert",
+      payload: {
+        type: "success",
+        message: "Profile successfully updated",
+      },
+    });
     if (field === "name") setEditName(false);
     if (field === "location") setEditLocation(false);
     if (field === "description") setEditDescription(false);

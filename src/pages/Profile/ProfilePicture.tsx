@@ -21,7 +21,6 @@ const ProfilePicture: React.FC = () => {
   }, [state.profileData]);
 
   const uploadImage = async (file: File) => {
-    console.log("something should happen!");
     const formData = new FormData();
     formData.append("filetoupload", file);
     const uploadResponse = await axios.post("/api/files/upload", formData, {
@@ -48,7 +47,13 @@ const ProfilePicture: React.FC = () => {
       },
     });
 
-    alert("Profile updated!");
+    dispatch({
+      type: "alert",
+      payload: {
+        type: "success",
+        message: "Profile picture successfully updated",
+      },
+    });
   };
 
   const setFile = (file: File) => {

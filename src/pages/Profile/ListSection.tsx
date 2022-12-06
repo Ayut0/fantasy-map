@@ -2,38 +2,44 @@ import { CardActionArea, CardContent, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-type List = {
-  name: string;
-  description: string;
-}[];
+interface Props {
+  lists: any[] | undefined;
+}
 
-const DUMMY_LISTS: List = [
-  {
-    name: "Best liquor shop in Vancouver",
-    description: "My favorite liquor shops :)",
-  },
-  {
-    name: "Best liquor shop in Vancouver",
-    description: "My favorite liquor shops :)",
-  },
-  {
-    name: "Best liquor shop in Vancouver",
-    description: "My favorite liquor shops :)",
-  },
-];
+const ListSection: React.FC<Props> = ({ lists = [] }) => {
+  const navigate = useNavigate();
 
-const ListSection: React.FC = () => {
+  const handleCardClick = (listId: number) => {
+    navigate(`/list/${listId}`);
+  };
+
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column', rowGap: '2rem', alignItems: 'center', justifyContent: 'center'}}>
-      {DUMMY_LISTS.map((List, index) => (
-        <Card key={index} sx={{width: '65%'}}>
-          <CardActionArea sx={{padding: '1.5rem'}}>
-            <CardContent sx={{textAlign: 'initial'}}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        rowGap: "2rem",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      {!lists.length && (
+        <Typography variant="body1">You dont have any List yet</Typography>
+      )}
+      {lists.slice(0, 3).map((list, index) => (
+        <Card
+          key={index}
+          sx={{ width: "65%" }}
+          onClick={() => handleCardClick(list.id)}
+        >
+          <CardActionArea sx={{ padding: "1.5rem" }}>
+            <CardContent sx={{ textAlign: "initial" }}>
               <Typography variant="h5" component="div">
-                {List.name}
+                {list.name}
               </Typography>
-              <Typography>{List.description}</Typography>
+              <Typography>{list.description}</Typography>
             </CardContent>
           </CardActionArea>
         </Card>

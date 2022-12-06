@@ -1,35 +1,67 @@
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import React from "react";
+import { Grid, Container, Box } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import AppTemplate from "../../templates/AppTemplate";
 import BioSection from "./BioSection";
 import UsersFavorite from "./UsersFavorite";
 import UsersListSection from "./UsersListSection";
 import UsersReview from "./UsersReview";
+import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import { useAppContext } from "../../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const Profile: React.FC = () => {
+  const { state, dispatch } = useAppContext();
+  const { sendRequest } = useHttpRequest();
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [favorites, setFavorites] = useState<any[]>([]);
+  const [lists, setLists] = useState<any[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      if (state.loggedUser?.id) {
+        const dbUser = await sendRequest("/api/users/profile", "GET");
+        const profileData = {
+          name: dbUser.name,
+          email: dbUser.email,
+          password: dbUser.password,
+          profilePicture: dbUser.profilePicture,
+          location: dbUser.location,
+          description: dbUser.description,
+        };
+        dispatch({
+          type: "setProfileData",
+          payload: profileData,
+        });
+        setFavorites(dbUser.favoritePlaces);
+        setReviews(dbUser.reviews);
+        setLists(dbUser.lists);
+      } else {
+        navigate("/login");
+      }
+    })();
+  }, [state.loggedUser]);
+
   return (
     <AppTemplate>
-      <Stack sx={{ width: "100%", backgroundColor: "#F9F6F0", paddingTop: '10rem' }}>
-        <Grid
-          container
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          rowSpacing={{ xs: 1, sm: 2, md: 3 }}
-        >
-          <Grid item xs={12}>
-            <BioSection />
-          </Grid>
-          <Grid item xs={12}>
-            <UsersListSection />
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container>
-              <UsersFavorite />
-              <UsersReview />
+      <Box sx={{ backgroundColor: "#F9F6F0", paddingTop: "10rem" }}>
+        <Container maxWidth="lg">
+          <Grid container>
+            <Grid item xs={12}>
+              <BioSection />
+            </Grid>
+            <Grid item xs={12}>
+              <UsersListSection lists={lists} />
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container sx={{ my: 4 }}>
+                <UsersFavorite favorites={favorites} />
+                <UsersReview reviews={reviews} />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Stack>
+        </Container>
+      </Box>
     </AppTemplate>
   );
 };

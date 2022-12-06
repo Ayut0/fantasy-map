@@ -13,14 +13,19 @@ import { Marker } from "../../../typings";
 
 const Lists: React.FC = () => {
   const params = useParams();
+  console.log(params);
   const [loadedList, setLoadedList] = useState<ListType>();
 
   const { error, sendRequest, clearError } = useHttpRequest();
 
   useEffect(() => {
     const getListById = async () => {
-      const list = await sendRequest(`/api/lists/${params.lid}`, "GET");
-      setLoadedList(list);
+      try {
+        const list = await sendRequest(`/api/lists/${params.lid}`, "GET");
+        setLoadedList(list);
+      } catch (err) {
+        console.log(err)
+      }
     };
 
     getListById();

@@ -109,7 +109,7 @@ export const Header: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <p>Welcome, {state.loggedUser.name}</p>
+                    <Link to="/profile" style={{ color: "#fff", textDecoration: "none" }}>Welcome, {state.loggedUser.name}</Link>
                     <Button
                       color="inherit"
                       variant="outlined"

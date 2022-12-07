@@ -47,6 +47,7 @@ const CreateListDeleteSection: React.FC<Props> = ({ listId }) => {
           }
           btnMsg={"Delete this list"}
           clickEvent={handleDelete}
+          isWarning={true}
         />
       )}
     </>

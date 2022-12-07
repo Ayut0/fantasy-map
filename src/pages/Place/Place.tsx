@@ -158,6 +158,7 @@ export const Place: React.FC = () => {
             msg={msgPlace}
             btnMsg={btnMsgPlace}
             clickEvent={deletePlaceHandler}
+            isWarning={true}
           />
           <ConfirmationModal
             open={openReview}
@@ -165,6 +166,7 @@ export const Place: React.FC = () => {
             msg={msgReview}
             btnMsg={btnMsgReview}
             clickEvent={deleteReviewHandler}
+            isWarning={true}
           />
           <Container sx={{ pb: 5 }}>
             <CardMedia

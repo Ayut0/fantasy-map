@@ -5,12 +5,9 @@ import { Categories } from "./Categories";
 import { Container } from "@mui/material";
 import AppTemplate from "../../templates/AppTemplate";
 
-
 export const Home: React.FC = () => {
-  
-
   return (
-    <AppTemplate >
+    <AppTemplate>
       <Hero />
       <Container maxWidth="lg">
         <PopularLists />

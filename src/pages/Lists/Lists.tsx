@@ -15,10 +15,10 @@ import { useAppContext } from "../../context/AppContext";
 
 const Lists: React.FC = () => {
   const params = useParams();
-  console.log(params);
   const [loadedList, setLoadedList] = useState<ListType>();
   const { error, sendRequest, clearError } = useHttpRequest();
   const { state } = useAppContext();
+  console.log(loadedList?.places?.length === 1);
 
   useEffect(() => {
     const getListById = async () => {
@@ -42,7 +42,7 @@ const Lists: React.FC = () => {
         ? Number(loadedList.places[0].location.lng)
         : -123.120904,
     },
-    zoom: 16,
+    zoom: loadedList?.places?.length === 1 ? 6 : 12
   };
 
   //asl Mau somehow we got lat and lng as a string....
@@ -92,7 +92,8 @@ const Lists: React.FC = () => {
           spacing={2}
           sx={{
             backgroundColor: "#F9F6F0",
-            paddingTop: "10rem",
+            paddingTop: "16px",
+            width:'100%'
           }}
         >
           <Box sx={{ width: "50%" }}>

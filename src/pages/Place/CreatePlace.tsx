@@ -5,7 +5,7 @@ import ImageUpload from "../../components/ImageUpload";
 import AppTemplate from "../../templates/AppTemplate";
 import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 

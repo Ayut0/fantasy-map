@@ -31,12 +31,13 @@ import GooglePlacesAutocomplete, {
 } from "react-google-places-autocomplete";
 import ActionButton from "../../components/ActionButton";
 import { useAppContext } from "../../context/AppContext";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export const Place: React.FC = () => {
   const params = useParams();
   const { state } = useAppContext();
   const [loadedPlace, setLoadedPlace] = useState<PlaceType>();
-  const { sendRequest } = useHttpRequest();
+  const { sendRequest, isLoading } = useHttpRequest();
   const [open, setOpen] = useState(false);
   const [openReview, setOpenReview] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -102,6 +103,7 @@ export const Place: React.FC = () => {
       };
 
       await sendRequest(`/api/places/${params.pid}`, "PUT", updatedPlaceData);
+      navigate(0)
     } catch (err) {
       console.log(err);
     }
@@ -130,7 +132,6 @@ export const Place: React.FC = () => {
   };
 
   const switchFavorite = async () => {
-    console.log("fav clicked");
     setIsFavorite(!isFavorite);
     try {
       await sendRequest(`/api/favorites/${params.pid}`, "PUT");
@@ -150,6 +151,9 @@ export const Place: React.FC = () => {
 
   return (
     <AppTemplate>
+      <>
+        {isLoading && <LoadingSpinner loading={true} /> }
+      </>
       {loadedPlace ? (
         <Fragment>
           <ConfirmationModal

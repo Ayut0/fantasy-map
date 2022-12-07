@@ -121,10 +121,6 @@ const CreateList: React.FC = () => {
     await timeout(3000);
 
     navigate(`/list/see`)
-
-    // alert(
-    //   listsResponse ? "List successfully saved!" : "Oh no! Something went wrong"
-    // );
   };
 
   const handleAddPlace = (event: any) => {

@@ -8,6 +8,7 @@ const FORCE_AUTH_EXCEPTION = "/api/users/jwt";
 
 export const useHttpRequest = () => {
   const [error, setError] = useState<boolean | null>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const navigate = useNavigate();
 
   const errorHandler = (err: unknown) => {
@@ -31,39 +32,48 @@ export const useHttpRequest = () => {
   const sendRequest = useCallback(
     async (url: string, method: Method, body: unknown = null) => {
       if (method === "GET") {
+        setIsLoading(true)
         try {
           const response = await axios.get(url);
           console.log(response);
           const responseData = await response.data;
           console.log("response status", response.status);
+          setIsLoading(false)
           return responseData;
         } catch (err) {
           errorHandler(err);
         }
       } else if (method === "POST") {
+        setIsLoading(true)
         try {
           const response = await axios.post(url, body);
           console.log(response);
           console.log("response status", response.status);
+          setIsLoading(false)
           return response;
         } catch (err) {
           errorHandler(err);
         }
       } else if (method === "PUT") {
+        setIsLoading(true)
         try {
           const response = await axios.put(url, body);
           console.log(response);
           console.log("response status", response.status);
+          setIsLoading(false)
         } catch (err) {
           errorHandler(err);
         }
       } else if (method === "DELETE") {
+        setIsLoading(true)
         try {
           const response = await axios.delete(url);
           console.log(response);
           console.log("response status", response.status);
+          setIsLoading(false)
         } catch (err) {
           errorHandler(err);
+          setIsLoading(false)
         }
       }
     },
@@ -74,5 +84,5 @@ export const useHttpRequest = () => {
     setError(null);
   };
 
-  return { error, sendRequest, clearError };
+  return { error, sendRequest, clearError, isLoading };
 };

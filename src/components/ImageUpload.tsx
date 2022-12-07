@@ -69,7 +69,7 @@ const ImageUpload = ({
           pb: 2,
           fontSize: { sm: "13px", lg: 20 },
           backgroundColor: "#2CA58D",
-          width: width ? width : { sm: "70%", lg: "30%" },
+          width: width ? width : { sm: "70%", lg: "100%" },
         }}
         onClick={pickImageHandler}
       >

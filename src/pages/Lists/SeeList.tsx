@@ -78,7 +78,7 @@ export const SeeList: React.FC = () => {
                     {/* <Typography variant="body2">places</Typography> */}
                     <ActionButton
                       variant="text"
-                      onClick={() => navigate(`/list/create/${list.id}`)}
+                      onClick={() => navigate(`/list/${list.id}`)}
                     >
                       Edit
                     </ActionButton>

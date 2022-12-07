@@ -61,6 +61,7 @@ export const useHttpRequest = () => {
           console.log(response);
           console.log("response status", response.status);
           setIsLoading(false)
+          return response;
         } catch (err) {
           errorHandler(err);
         }
@@ -71,6 +72,7 @@ export const useHttpRequest = () => {
           console.log(response);
           console.log("response status", response.status);
           setIsLoading(false)
+          return response;
         } catch (err) {
           errorHandler(err);
           setIsLoading(false)

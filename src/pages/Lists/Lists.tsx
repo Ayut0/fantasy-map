@@ -92,11 +92,11 @@ const Lists: React.FC = () => {
           spacing={2}
           sx={{
             backgroundColor: "#F9F6F0",
-            paddingTop: "16px",
+            paddingTop: "104px",
             width:'100%'
           }}
         >
-          <Box sx={{ width: "50%" }}>
+          <Box sx={{ width: "50%", height: "90vh" }}>
             <Box sx={{ textAlign: "initial" }}>
               <Typography
                 variant="h2"
@@ -140,7 +140,7 @@ const Lists: React.FC = () => {
               </Box>
             </motion.div>
           </Box>
-          <Box sx={{ gridRow: "1", width: "45%", height: "100vh" }}>
+          <Box sx={{ gridRow: "1", width: "45%", height: "80vh" }}>
             {/* I think I should create a new component just for a google map. pass lat and lng as props. */}
             <GoogleMapReact
               bootstrapURLKeys={{

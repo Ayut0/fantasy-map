@@ -17,9 +17,9 @@ const ListCard: React.FC<ListCardType> = ({ id, name, description, picture, aver
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{
-        duration: 1
+        duration: .5
       }}
-      whileHover={{ scale: 1.05 }}
+      whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 1.1 }}
     >
       <Card sx={{ display: "flex", mb: 8 }}>

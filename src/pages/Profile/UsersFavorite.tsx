@@ -8,12 +8,19 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   favorites: any[] | undefined;
 }
 
+
 const UsersFavorite: React.FC<Props> = ({ favorites = [] }) => {
+  const navigate = useNavigate();
+  
+  const handleCardClick = (id:number) => {
+  navigate(`/place/${id}`)
+  }
   return (
     <Grid item xs={12} lg={6}>
       <Box
@@ -40,6 +47,7 @@ const UsersFavorite: React.FC<Props> = ({ favorites = [] }) => {
           <Card
             key={place.id}
             sx={{ display: "flex", mb: 8, width: { lg: "65%" } }}
+            onClick={() => handleCardClick(place.id)}
           >
             <CardActionArea sx={{ display: "flex", justifyContent: "initial" }}>
               <CardMedia

@@ -29,7 +29,7 @@ const theme = createTheme({
     },
     secondary: {
       light: "#0066ff",
-      main: "#0044ff",
+      main: "#F9F6F0",
       contrastText: "#ffcc00",
     },
   },
@@ -61,49 +61,49 @@ function App() {
         "Loading..."
       ) : (
         <ThemeProvider theme={theme}>
-          <Alert />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route
-              path="/lists/:lid"
-              element={<ProtectedRoute element={<Lists />} />}
-            />
-            <Route
-              path="/list/create"
-              element={<ProtectedRoute element={<CreateList />} />}
-            />
-            <Route
-              path="/list/:lid"
-              element={<ProtectedRoute element={<CreateList />} />}
-            />
-            <Route
-              path="/list/see"
-              element={<ProtectedRoute element={<SeeList />} />}
-            />
-            <Route
-              path="/place/:pid"
-              element={<ProtectedRoute element={<Place />} />}
-            />
-            <Route
-              path="/place/create"
-              element={<ProtectedRoute element={<CreatePlace />} />}
-            />
-            <Route
-              path="/place/:pid/review"
-              element={<ProtectedRoute element={<Review />} />}
-            />
-            <Route
-              path="/profile/"
-              element={<ProtectedRoute element={<Profile />} />}
-            />
-            <Route
-              path="/profile/edit"
-              element={<ProtectedRoute element={<ProfileEdit />} />}
-            />
-            <Route path="/result" element={<Result />} />
-          </Routes>
+            <Alert />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route
+                path="/lists/:lid"
+                element={<ProtectedRoute element={<Lists />} />}
+              />
+              <Route
+                path="/list/create"
+                element={<ProtectedRoute element={<CreateList />} />}
+              />
+              <Route
+                path="/list/:lid"
+                element={<ProtectedRoute element={<CreateList />} />}
+              />
+              <Route
+                path="/list/see"
+                element={<ProtectedRoute element={<SeeList />} />}
+              />
+              <Route
+                path="/place/:pid"
+                element={<ProtectedRoute element={<Place />} />}
+              />
+              <Route
+                path="/place/create"
+                element={<ProtectedRoute element={<CreatePlace />} />}
+              />
+              <Route
+                path="/place/:pid/review"
+                element={<ProtectedRoute element={<Review />} />}
+              />
+              <Route
+                path="/profile/"
+                element={<ProtectedRoute element={<Profile />} />}
+              />
+              <Route
+                path="/profile/edit"
+                element={<ProtectedRoute element={<ProfileEdit />} />}
+              />
+              <Route path="/result" element={<Result />} />
+            </Routes>
           <Footer />
         </ThemeProvider>
       )}

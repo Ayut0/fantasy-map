@@ -11,7 +11,6 @@ import {
   Typography,
 } from "@mui/material";
 import AppTemplate from "../../templates/AppTemplate";
-import { Buttons } from "../Home/Buttons";
 import { FaSadTear } from "react-icons/fa";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import ActionButton from "../../components/ActionButton";
@@ -20,9 +19,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 export const Result: React.FC = () => {
   const { dispatch, state } = useAppContext();
   const [getResult, setGetResult] = useState([]);
-   const { sendRequest } = useHttpRequest();
-   const params = useParams();
-   const navigate = useNavigate();
+  const { sendRequest } = useHttpRequest();
 
   useEffect(() => {
       const getRequiredLists = async () => {
@@ -61,7 +58,7 @@ export const Result: React.FC = () => {
           boxSizing: "border-box",
         }}
       >
-        <Typography variant="h3" pb={5}>
+        <Typography variant="h3" pb={5} sx={{textAlign: "center"}}>
           Search result
         </Typography>
         {getResult.length > 0 ? (
@@ -130,13 +127,13 @@ export const Result: React.FC = () => {
             })}
           </Grid>
         ) : (
-          <Typography
-            variant="h4"
-            sx={{ color: "error.main", height: "100vh" }}
-          >
-            No list available...
-            <FaSadTear />
-          </Typography>
+            <Typography
+              variant="h4"
+              sx={{ color: "error.main", height: "100vh", textAlign: "center" }}
+            >
+              No list available...
+              <FaSadTear />
+            </Typography>
         )}
       </Container>
     </AppTemplate>

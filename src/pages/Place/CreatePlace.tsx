@@ -67,6 +67,7 @@ export const CreatePlace: React.FC = () => {
       }
 
       await timeout(3000);
+      //lid is needed for redirect to the exact same list which the user is supposed to edit
       navigate("/list/create");
     } catch (err) {
       console.log(err);

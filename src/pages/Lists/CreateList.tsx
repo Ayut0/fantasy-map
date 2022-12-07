@@ -8,7 +8,6 @@ import {
   FormHelperText,
   MenuItem,
   Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
@@ -49,7 +48,7 @@ const CreateList: React.FC = () => {
   const { sendRequest } = useHttpRequest();
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
-  const { state } = useAppContext();
+  const { state, dispatch } = useAppContext();
   const navigate = useNavigate();
 
   const showDeleteModalHandler = (): void => {
@@ -108,19 +107,24 @@ const CreateList: React.FC = () => {
       picture,
     });
 
-    console.log('res', listsResponse);
-
     {
-      listsResponse.status === 200 ? (
+      (listsResponse.status === 200) || (listsResponse === 204) ? (
         setOpen(true)
       ) : (
-        <span>Oh... something went wrong</span>
+        dispatch({
+          type: "alert",
+          payload: {
+            type: "error",
+            message: "Oh... something went wrong",
+          },
+        })
       );
     }
 
     await timeout(3000);
 
-    navigate(`/list/see`)
+    //use different route and modal is needed for update
+    navigate(0)
   };
 
   const handleAddPlace = (event: any) => {

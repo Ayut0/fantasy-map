@@ -1,26 +1,29 @@
 import { motion } from "framer-motion";
 import GoogleMapReact from "google-map-react";
-import { Box, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import ListCard from "./ListCard";
 import AppTemplate from "../../templates/AppTemplate";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { List as ListType } from "../../../typings";
 import { MapCenter } from "../../../typings";
 import { Marker } from "../../../typings";
+import ActionButton from "../../components/ActionButton";
+import { useAppContext } from "../../context/AppContext";
 
 const Lists: React.FC = () => {
   const params = useParams();
   const [loadedList, setLoadedList] = useState<ListType>();
-
   const { error, sendRequest, clearError } = useHttpRequest();
+  const { state } = useAppContext();
 
   useEffect(() => {
     const getListById = async () => {
       const list = await sendRequest(`/api/lists/${params.lid}`, "GET");
       setLoadedList(list);
+      console.log(list);
     };
 
     getListById();
@@ -28,8 +31,12 @@ const Lists: React.FC = () => {
 
   const initialProps: MapCenter = {
     center: {
-      lat: loadedList ? Number(loadedList.places[0].location.lat) : 49.2809671,
-      lng: loadedList ? Number(loadedList.places[0].location.lng) : -123.120904,
+      lat: loadedList?.places?.length
+        ? Number(loadedList.places[0].location.lat)
+        : 49.2809671,
+      lng: loadedList?.places?.length
+        ? Number(loadedList.places[0].location.lng)
+        : -123.120904,
     },
     zoom: 16,
   };
@@ -73,7 +80,7 @@ const Lists: React.FC = () => {
 
   return (
     <AppTemplate>
-      {loadedList && (
+      {loadedList?.places?.length ? (
         <Stack
           direction="row"
           justifyContent="center"
@@ -85,7 +92,7 @@ const Lists: React.FC = () => {
           }}
         >
           <Box sx={{ width: "50%" }}>
-            <Box sx={{textAlign: 'initial'}}>
+            <Box sx={{ textAlign: "initial" }}>
               <Typography
                 variant="h2"
                 fontFamily="Merriweather"
@@ -142,6 +149,38 @@ const Lists: React.FC = () => {
             ></GoogleMapReact>
           </Box>
         </Stack>
+      ) : (
+        <Container
+          sx={{
+            height: "100vh",
+            pt: 30,
+            textAlign: "center",
+            backgroundColor: "#F9F6F0",
+          }}
+        >
+          <Typography variant="h3" sx={{ pb: 3 }}>
+            List Name: {loadedList?.name}
+          </Typography>
+          <Typography variant="h4" sx={{ pb: 3 }}>
+            No place is registered in this list.
+          </Typography>
+          {loadedList?.userId === state?.loggedUser?.id && (
+            <ActionButton
+              variant="contained"
+              type="submit"
+              sx={{
+                backgroundColor: "#2CA58D",
+              }}
+            >
+              <Link
+                to={`/list/${loadedList?.id}`}
+                style={{ textDecoration: "none", color: "#EEEEEE" }}
+              >
+                Edit List
+              </Link>
+            </ActionButton>
+          )}
+        </Container>
       )}
     </AppTemplate>
   );

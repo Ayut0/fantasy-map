@@ -14,21 +14,27 @@ import AppTemplate from "../../templates/AppTemplate";
 import { Buttons } from "../Home/Buttons";
 import { FaSadTear } from "react-icons/fa";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import ActionButton from "../../components/ActionButton";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export const Result: React.FC = () => {
   const { dispatch, state } = useAppContext();
   const [getResult, setGetResult] = useState([]);
-   const { error, sendRequest, clearError } = useHttpRequest();
+   const { sendRequest } = useHttpRequest();
+   const params = useParams();
+   const navigate = useNavigate();
 
   useEffect(() => {
-    const getRequiredLists = async () => {
-      const response = await sendRequest(
-        `/api/lists/search?query=${state.searchVal}`,
-        "GET"
-      );
-      setGetResult(response);
-    };
-    getRequiredLists();
+      const getRequiredLists = async () => {
+        const response = await sendRequest(
+          `/api/lists/search?query=${state.searchVal}`,
+          "GET"
+        );
+        setGetResult(response);
+      };
+       if (state.searchVal) {
+         getRequiredLists();
+       }
   }, [state.searchVal]);
 
   useEffect(() => {
@@ -37,7 +43,9 @@ export const Result: React.FC = () => {
         `/api/lists/category/${state.selectedCategory}`,
         "GET"
       );
-      setGetResult(response);
+       if (state.selectedCategory) {
+         setGetResult(response);
+       }
     };
     getRequiredLists();
   }, [state.selectedCategory]);
@@ -87,7 +95,20 @@ export const Result: React.FC = () => {
                           {list.description}
                         </Typography>
                       </Box>
-                      <Buttons />
+                      <ActionButton
+                        variant="contained"
+                        type="submit"
+                        sx={{
+                          backgroundColor: "#2CA58D",
+                        }}
+                      >
+                        <Link
+                          to={`/lists/${list.id}`}
+                          style={{ textDecoration: "none", color: "#EEEEEE" }}
+                        >
+                          View List
+                        </Link>
+                      </ActionButton>
                       <Grid container pt={2} sx={{ alignItems: "center" }}>
                         <Grid item xs={1}></Grid>
                         <Grid item xs={5}>

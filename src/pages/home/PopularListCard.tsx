@@ -1,18 +1,21 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import {Avatar, Box, Card, CardContent, CardMedia, Grid, Typography} from "@mui/material";
-import { Buttons } from "./Buttons";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { PopularList as PopularListType } from "../../../typings";
+import ActionButton from "../../components/ActionButton";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export const PopularListCard: React.FC = () => {
   const [popularLists, setPopularLists] = useState<PopularListType[]>([]);
   const { error, sendRequest, clearError } = useHttpRequest();
+  
   useEffect(() => {
     const getPopularList = async () => {
       const response = await sendRequest("/api/lists/popular", "GET");
       setPopularLists(response);
       console.log(response);
+      console.log(popularLists);
     };
     getPopularList();
   }, []);
@@ -27,6 +30,7 @@ export const PopularListCard: React.FC = () => {
                 width: "335px",
                 height: "461px",
                 borderRadius: "4px",
+                textAlign: "center"
               }}
             >
               <CardContent>
@@ -44,7 +48,20 @@ export const PopularListCard: React.FC = () => {
                     {list.description}
                   </Typography>
                 </Box>
-                <Buttons listId={list.id} />
+                <ActionButton
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    backgroundColor: "#2CA58D",
+                  }}
+                >
+                  <Link
+                    to={`/lists/${list.id}`}
+                    style={{ textDecoration: "none", color: "#EEEEEE" }}
+                  >
+                    View List
+                  </Link>
+                </ActionButton>
                 <Grid container pt={2} sx={{ alignItems: "center" }}>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={5}>

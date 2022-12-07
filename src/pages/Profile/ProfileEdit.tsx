@@ -1,5 +1,5 @@
 import { Box, Grid, TextField, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React from "react";
 import ImageUpload from "../../components/ImageUpload";
 import AppTemplate from "../../templates/AppTemplate";
 
@@ -14,7 +14,7 @@ type Props = {
 const ProfileEdit: React.FC = () => {
   return (
     <AppTemplate>
-      <Grid container sx={{paddingTop: '10rem', height: '100vh'}}>
+      <Grid container sx={{ paddingTop: "10rem", height: "100vh" }}>
         <Grid item xs={12} lg={6}>
           <Box>
             <Typography
@@ -50,14 +50,6 @@ const ProfileEdit: React.FC = () => {
                 sx={{ width: "70%" }}
               />
               <TextField
-                label="email"
-                autoComplete="email"
-                defaultValue=""
-                margin="normal"
-                fullWidth
-                sx={{ width: "70%" }}
-              />
-              <TextField
                 label="Password"
                 type="password"
                 id="password"
@@ -70,9 +62,6 @@ const ProfileEdit: React.FC = () => {
           </Box>
         </Grid>
         <Grid item xs={12} lg={6}>
-          <Box>
-            <img></img>
-          </Box>
           <Box>
             <ImageUpload />
           </Box>

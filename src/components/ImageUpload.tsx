@@ -8,6 +8,7 @@ const ImageUpload = ({
   previewUrl,
   setPreviewUrl,
   instructions,
+  width,
 }: any) => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   // const [file, setFile] = useState(undefined);
@@ -68,7 +69,7 @@ const ImageUpload = ({
           pb: 2,
           fontSize: { sm: "13px", lg: 20 },
           backgroundColor: "#2CA58D",
-          width: { sm: "70%", lg: "30%" },
+          width: width ? width : { sm: "70%", lg: "30%" },
         }}
         onClick={pickImageHandler}
       >

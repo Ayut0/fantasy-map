@@ -6,11 +6,18 @@ export interface LoggedUser {
   name: string;
 }
 
+export interface AlertMessage {
+  type: "success" | "error";
+  message: string;
+  duration?: number;
+}
+
 interface AppContextState {
   loggedUser: LoggedUser | null;
   searchVal: string;
   profileData: any | null;
   selectedCategory: number | null;
+  alert: AlertMessage | null;
 }
 
 type AppContextAction =
@@ -32,6 +39,10 @@ type AppContextAction =
   | {
       type: "searchCategory";
       payload: number;
+    }
+  | {
+      type: "alert";
+      payload: AlertMessage | null;
     };
 
 interface Props {
@@ -44,6 +55,7 @@ const defaultState: AppContextState = {
   searchVal: "",
   profileData: null,
   selectedCategory: null,
+  alert: null,
 };
 
 const context = React.createContext<{
@@ -85,6 +97,11 @@ const reducer = (
       return {
         ...state,
         selectedCategory: action.payload,
+      };
+    case "alert":
+      return {
+        ...state,
+        alert: action.payload,
       };
     default:
       throw "Invalid action";

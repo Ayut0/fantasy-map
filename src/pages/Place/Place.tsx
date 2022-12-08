@@ -338,7 +338,7 @@ export const Place: React.FC = () => {
                       }}
                     >
                       <CardContent sx={{ textOverflow: "ellipsis" }}>
-                        {state?.loggedUser?.id === review.user.id && (
+                        {state?.loggedUser?.id === review.user?.id && (
                           <Box
                             sx={{ display: "flex", justifyContent: "right" }}
                           >
@@ -366,7 +366,7 @@ export const Place: React.FC = () => {
                             alignItems: "center",
                           }}
                         >
-                          <Typography>{review.user.name}</Typography>
+                          <Typography>{review.user?.name}</Typography>
                           <Rating
                             name="read-only"
                             value={review.stars}

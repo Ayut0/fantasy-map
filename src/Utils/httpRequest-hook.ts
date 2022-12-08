@@ -35,42 +35,37 @@ export const useHttpRequest = () => {
         setIsLoading(true)
         try {
           const response = await axios.get(url);
-          console.log(response);
           const responseData = await response.data;
-          console.log("response status", response.status);
           setIsLoading(false)
           return responseData;
         } catch (err) {
           errorHandler(err);
+          setIsLoading(false)
         }
       } else if (method === "POST") {
         setIsLoading(true)
         try {
           const response = await axios.post(url, body);
-          console.log(response);
-          console.log("response status", response.status);
           setIsLoading(false)
           return response;
         } catch (err) {
           errorHandler(err);
+          setIsLoading(false)
         }
       } else if (method === "PUT") {
         setIsLoading(true)
         try {
           const response = await axios.put(url, body);
-          console.log(response);
-          console.log("response status", response.status);
           setIsLoading(false)
           return response;
         } catch (err) {
           errorHandler(err);
+          setIsLoading(false)
         }
       } else if (method === "DELETE") {
         setIsLoading(true)
         try {
           const response = await axios.delete(url);
-          console.log(response);
-          console.log("response status", response.status);
           setIsLoading(false)
           return response;
         } catch (err) {

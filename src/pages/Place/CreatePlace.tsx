@@ -5,12 +5,13 @@ import ImageUpload from "../../components/ImageUpload";
 import AppTemplate from "../../templates/AppTemplate";
 import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 
 export const CreatePlace: React.FC = () => {
   const navigate = useNavigate();
+  const params = useParams();
   const { error, sendRequest, clearError } = useHttpRequest();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -68,7 +69,7 @@ export const CreatePlace: React.FC = () => {
 
       await timeout(3000);
       //lid is needed for redirect to the exact same list which the user is supposed to edit
-      navigate("/list/create");
+      // navigate(`/list/${params.lid}`);
     } catch (err) {
       console.log(err);
       return err;

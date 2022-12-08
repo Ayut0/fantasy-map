@@ -14,8 +14,6 @@ export const PopularListCard: React.FC = () => {
     const getPopularList = async () => {
       const response = await sendRequest("/api/lists/popular", "GET");
       setPopularLists(response);
-      console.log(response);
-      console.log(popularLists);
     };
     getPopularList();
   }, []);

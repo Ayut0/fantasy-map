@@ -34,9 +34,9 @@ const ListSection: React.FC<Props> = ({ lists = [] }) => {
           sx={{ width: "65%" }}
           onClick={() => handleCardClick(list.id)}
         >
-          <CardActionArea sx={{ padding: "1.5rem" }}>
+          <CardActionArea sx={{ padding: {xs: "8px", lg: "1.5rem"} }}>
             <CardContent sx={{ textAlign: "initial" }}>
-              <Typography variant="h5" component="div">
+              <Typography variant="h5" component="h5" sx={{fontWeight: "bold"}}>
                 {list.name}
               </Typography>
               <Typography>{list.description}</Typography>

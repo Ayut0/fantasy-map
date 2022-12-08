@@ -22,6 +22,7 @@ import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { useAppContext } from "../../context/AppContext";
 import CreateListDeleteSection from "./CreateListDeleteSection";
 
+let modalMsg: string;
 const CreateList: React.FC = () => {
   const params = useParams<string>();
 
@@ -96,35 +97,53 @@ const CreateList: React.FC = () => {
       picture = uploadResponse.data;
     }
 
-    // console.log("update data", picture, file);
 
     const url = list ? `/api/lists/${list.id}` : "/api/lists";
     const method = list ? "PUT" : "POST";
-    console.log("update list", url, method, list, picture);
+    // console.log("update list", url, method, list, picture);
 
     const listsResponse = await sendRequest(url, method, {
       ...data,
       picture,
     });
 
-    {
-      (listsResponse.status === 200) || (listsResponse === 204) ? (
-        setOpen(true)
-      ) : (
-        dispatch({
-          type: "alert",
-          payload: {
-            type: "error",
-            message: "Oh... something went wrong",
-          },
-        })
-      );
+    // console.log("response", listsResponse);
+
+    if (listsResponse.status === 200) {
+      setOpen(true)
+      modalMsg = "List is successfully created"
+      dispatch({
+        type: "alert",
+        payload: {
+          type: "success",
+          message: `List successfully created`,
+        },
+      });
+    } else if (listsResponse.status === 204) {
+      setOpen(true)
+      modalMsg = "List is successfully updated"
+      dispatch({
+        type: "alert",
+        payload: {
+          type: "success",
+          message: `List successfully updated`,
+        },
+      });
+    } else {
+      dispatch({
+        type: "alert",
+        payload: {
+          type: "error",
+          message: "Oh... something went wrong",
+        },
+      });
     }
 
-    await timeout(3000);
 
+    await timeout(3000);
+    setOpen(false);
     //use different route and modal is needed for update
-    navigate(0)
+    navigate(`/lists/${list.id}`);
   };
 
   const handleAddPlace = (event: any) => {
@@ -198,7 +217,7 @@ const CreateList: React.FC = () => {
     <AppTemplate>
       <ConfirmationModal
         open={open}
-        msg={"List is successfully created"}
+        msg={modalMsg}
         btnMsg={""}
         isWarning={false}
         handleClose={function (): void {

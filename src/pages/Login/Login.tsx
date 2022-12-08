@@ -83,9 +83,10 @@ const Login: React.FC = () => {
       setServerError("Invalid user and password");
       return;
     }
+    console.log('signin', signinResult);
     dispatch({
       type: "login",
-      payload: signinResult,
+      payload: signinResult.data,
     });
     navigate("/");
   };

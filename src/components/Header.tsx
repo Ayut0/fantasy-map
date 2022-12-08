@@ -20,6 +20,7 @@ export const Header: React.FC = () => {
   const { dispatch, state } = useAppContext();
   const [searchVal, setSearchVal] = useState("");
   const navigate = useNavigate();
+
   const handleClickLogout: React.MouseEventHandler = () => {
     sendRequest("/api/users/signout", "POST").then(() => {
       dispatch({ type: "logout" });
@@ -53,10 +54,10 @@ export const Header: React.FC = () => {
             >
               <Box component="div">
                 <Link
-                  style={{ textDecoration: "none", color: "#FFFFFF" }}
+                  style={{ textDecoration: "none", color: "#f0f1f7" }}
                   to="/"
                 >
-                  <Typography variant="h4" component="div" sx={{ pr: 4 }}>
+                  <Typography variant="h4" component="h1" sx={{ pr: 4, fontSize:{sm:"24px", lg:"40px"} }}>
                     Fantasy map
                   </Typography>
                 </Link>
@@ -100,16 +101,16 @@ export const Header: React.FC = () => {
               <Box sx={{ display: "flex", gap: 1 }}>
                 {!state.loggedUser ? (
                   <>
-                    <Link to="/login" style={{ color: "#fff" }}>
+                    <Link to="/login" style={{ color: "#f0f1f7" }}>
                       Login
                     </Link>
-                    <Link to="/signup" style={{ color: "#fff" }}>
+                    <Link to="/signup" style={{ color: "#f0f1f7" }}>
                       Register
                     </Link>
                   </>
                 ) : (
                   <>
-                    <Link to="/profile" style={{ color: "#fff", textDecoration: "none" }}>Welcome, {state.loggedUser.name}</Link>
+                    <Link to="/profile" style={{ color: "#f0f1f7", textDecoration: "none" }}>Welcome, {state.loggedUser.name}</Link>
                     <Button
                       color="inherit"
                       variant="outlined"
@@ -129,3 +130,4 @@ export const Header: React.FC = () => {
     </Container>
   );
 };
+

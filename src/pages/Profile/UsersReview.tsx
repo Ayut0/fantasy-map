@@ -8,13 +8,12 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Review } from "../../../typings";
+import { Review as ReviewType } from "../../../typings";
 
 interface Props {
-  reviews: any[];
+  reviews: ReviewType[];
 }
 
 const UsersReview: React.FC<Props> = ({ reviews = [] }) => {
@@ -46,8 +45,8 @@ const UsersReview: React.FC<Props> = ({ reviews = [] }) => {
               You dont have any review yet
             </Typography>
           )}
-          {reviews.map((review: any) => (
-            <Card key={review.id} sx={{ width: { lg: "65%" } }}>
+          {reviews.map((review: ReviewType) => (
+            <Card key={review.id} sx={{ width: {xs: "85%", lg: "80%" } }}>
               <CardActionArea
                 sx={{ display: "flex", justifyContent: "initial" }}
               >
@@ -55,12 +54,23 @@ const UsersReview: React.FC<Props> = ({ reviews = [] }) => {
                   component="img"
                   image={review.place.picture}
                   alt={review.place.name}
-                  sx={{ width: "40%" }}
+                  sx={{ width: "40%", height: "152px" }}
                 />
-                <CardContent sx={{ padding: "40px", textAlign: "initial" }}>
+                <CardContent sx={{ textAlign: "initial" }}>
                   <Typography variant="h6">{review.place.name}</Typography>
                   <Rating name="read-only" value={review.stars} readOnly />
-                  <Typography variant="subtitle1">{review.content}</Typography>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "-webkit-box",
+                      WebkitLineClamp: "2",
+                      WebkitBoxOrient: "vertical",
+                    }}
+                  >
+                    {review.content}
+                  </Typography>
                 </CardContent>
               </CardActionArea>
             </Card>

@@ -83,3 +83,9 @@ export interface ListCard {
   picture?: string;
   averageStars?: number;
 }
+
+export interface MobileMenu {
+  id: number;
+  name: string;
+  href: string;
+}

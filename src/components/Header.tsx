@@ -9,11 +9,13 @@ import {
   TextField,
   Toolbar,
   Typography,
+  Hidden,
 } from "@mui/material";
 import { MdSearch } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useHttpRequest } from "../Utils/httpRequest-hook";
 import { useAppContext } from "../context/AppContext";
+import MobileMenu from "./MobileMenu";
 
 export const Header: React.FC = () => {
   const { sendRequest } = useHttpRequest();
@@ -46,7 +48,8 @@ export const Header: React.FC = () => {
           <Grid container spacing={2}>
             <Grid
               item
-              xs={6}
+              xs={8}
+              md={6}
               sx={{
                 display: "flex",
                 alignItems: "flex-end",
@@ -57,11 +60,16 @@ export const Header: React.FC = () => {
                   style={{ textDecoration: "none", color: "#f0f1f7" }}
                   to="/"
                 >
-                  <Typography variant="h4" component="h1" sx={{ pr: 4, fontSize:{sm:"24px", lg:"40px"} }}>
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    sx={{ pr: 4, fontSize: { xs: "24px", md: "40px" } }}
+                  >
                     Fantasy map
                   </Typography>
                 </Link>
               </Box>
+              <Hidden smDown>
               <Box component="div">
                 <TextField
                   onChange={handleInputChange}
@@ -88,17 +96,19 @@ export const Header: React.FC = () => {
                   }}
                 />
               </Box>
+              </Hidden>
             </Grid>
             <Grid
               item
-              xs={6}
+              xs={4}
+              md={6}
               sx={{
                 display: "flex",
-                justifyContent: "right",
+                justifyContent: {xs: "flex-end", md: "right"},
                 alignItems: "center",
               }}
             >
-              <Box sx={{ display: "flex", gap: 1 }}>
+              <Box sx={{ display: "flex" ,gap: 1 }}>
                 {!state.loggedUser ? (
                   <>
                     <Link to="/login" style={{ color: "#f0f1f7" }}>
@@ -110,16 +120,24 @@ export const Header: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <Link to="/profile" style={{ color: "#f0f1f7", textDecoration: "none" }}>Welcome, {state.loggedUser.name}</Link>
-                    <Button
-                      color="inherit"
-                      variant="outlined"
-                      size="small"
-                      onClick={handleClickLogout}
-                      sx={{ lineHeight: "1rem" }}
-                    >
-                      Logout
-                    </Button>
+                    <Hidden smDown>
+                      <Link
+                        to="/profile"
+                        style={{ color: "#f0f1f7", textDecoration: "none" }}
+                      >
+                        Welcome, {state.loggedUser.name}
+                      </Link>
+                      <Button
+                        color="inherit"
+                        variant="outlined"
+                        size="small"
+                        onClick={handleClickLogout}
+                        sx={{ lineHeight: "1rem" }}
+                      >
+                        Logout
+                      </Button>
+                    </Hidden>
+                    <MobileMenu />
                   </>
                 )}
               </Box>
@@ -130,4 +148,3 @@ export const Header: React.FC = () => {
     </Container>
   );
 };
-

@@ -25,10 +25,10 @@ export const CategoryCard: React.FC = () => {
   };
 
   return (
-    <Grid container rowSpacing={6} columnSpacing={{ xs: 6, sm: 2, md: 3 }}>
+    <Grid container rowSpacing={6} columnSpacing={{ xs: 6, sm: 2, md: 3 }} direction={{xs: "column", md: "row"}} justifyContent={{ xs: "center", md:"flex-start" }} alignItems={{ xs: "center" }}>
       {categories.map((category: any) => {
         return (
-          <Grid key={category.id} item xs={3}>
+          <Grid key={category.id} item md={3} xs={12}>
             <Card
               sx={{
                 width: "250px",
@@ -45,13 +45,13 @@ export const CategoryCard: React.FC = () => {
               onClick={() => handleCategorySearch(category.id)}
             >
               <CardContent>
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Box sx={{ display: "flex", justifyContent: "center", paddingBottom: "24px" }}>
                   <img src={category.picture} style={{ display: "block" }} />
                 </Box>
                 <Typography
                   variant="h4"
-                  component="div"
-                  sx={{ textAlign: "center" }}
+                  component="h5"
+                  sx={{ textAlign: "center", fontSize:{xs: "24px", md: "32px"}, color: "#282010" }}
                 >
                   {category.name}
                 </Typography>

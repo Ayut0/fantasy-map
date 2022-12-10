@@ -33,7 +33,7 @@ export const PopularListCard: React.FC = () => {
       columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       direction={{ xs: "column", md: "row" }}
       justifyContent={{ xs: "center" }}
-      alignItems={{ xs: "center" }}
+      alignItems={{ xs: "center", md: "flex-start" }}
     >
       {popularLists.map((list: PopularListType) => {
         return (

@@ -11,6 +11,10 @@ export const useHttpRequest = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const navigate = useNavigate();
 
+  function timeout(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   const errorHandler = (err: unknown) => {
     if (axios.isAxiosError(err)) {
       // redirect to login when response is 401 Unauthorized and is not one of
@@ -36,40 +40,54 @@ export const useHttpRequest = () => {
         try {
           const response = await axios.get(url);
           const responseData = await response.data;
+
+          await timeout(2000)
           setIsLoading(false)
           return responseData;
         } catch (err) {
           errorHandler(err);
+          await timeout(2000)
           setIsLoading(false)
         }
       } else if (method === "POST") {
         setIsLoading(true)
         try {
           const response = await axios.post(url, body);
+
+          await timeout(2000)
           setIsLoading(false)
           return response;
         } catch (err) {
           errorHandler(err);
+          await timeout(2000)
           setIsLoading(false)
         }
       } else if (method === "PUT") {
         setIsLoading(true)
         try {
           const response = await axios.put(url, body);
+
+          await timeout(2000)
           setIsLoading(false)
           return response;
         } catch (err) {
           errorHandler(err);
+
+          await timeout(2000)
           setIsLoading(false)
         }
       } else if (method === "DELETE") {
         setIsLoading(true)
         try {
           const response = await axios.delete(url);
+
+          await timeout(2000)
           setIsLoading(false)
           return response;
         } catch (err) {
           errorHandler(err);
+
+          await timeout(2000)
           setIsLoading(false)
         }
       }

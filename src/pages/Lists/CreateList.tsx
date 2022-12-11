@@ -22,17 +22,21 @@ import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { useAppContext } from "../../context/AppContext";
 import CreateListDeleteSection from "./CreateListDeleteSection";
 import { NO_LIST_PIC } from '../../Utils/consts'
+import { Place as UserPlaceType } from "../../../typings";
+import { Category as CategoryType } from "../../../typings";
+import { List as ListType } from "../../../typings";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import { PlaceInList } from "../../../typings";
 
 let modalMsg: string;
 const CreateList: React.FC = () => {
   const params = useParams<string>();
 
-  const [userPlaces, setUserPlaces] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [userPlaces, setUserPlaces] = useState<UserPlaceType[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const [isPlaceAdded, setIsPlaceAdded] = useState(false);
-  const [addedPlace, setAddedPlace] = useState("");
-
+  // const [addedPlace, setAddedPlace] = useState("");
   const [titleVal, setTitleVal] = useState("");
   const [descriptionVal, setDescriptionVal] = useState("");
   const [categoryVal, setCategoryVal] = useState(-1);
@@ -44,22 +48,22 @@ const CreateList: React.FC = () => {
     false
   );
   const [categoryError, setCategoryError] = useState<string | false>(false);
-  const [list, setList] = useState<any>();
+  const [list, setList] = useState<ListType>();
   const [open, setOpen] = useState<boolean>(false);
 
-  const { sendRequest } = useHttpRequest();
-  const [showConfirmationModal, setShowConfirmationModal] =
-    useState<boolean>(false);
+  const { sendRequest, isLoading } = useHttpRequest();
+  // const [showConfirmationModal, setShowConfirmationModal] =
+  //   useState<boolean>(false);
   const { state, dispatch } = useAppContext();
   const navigate = useNavigate();
 
-  const showDeleteModalHandler = (): void => {
-    setShowConfirmationModal(true);
-  };
+  // const showDeleteModalHandler = (): void => {
+  //   setShowConfirmationModal(true);
+  // };
 
-  const closeDeleteModalHandler = (): void => {
-    setShowConfirmationModal(false);
-  };
+  // const closeDeleteModalHandler = (): void => {
+  //   setShowConfirmationModal(false);
+  // };
 
   function timeout(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -101,14 +105,11 @@ const CreateList: React.FC = () => {
 
     const url = list ? `/api/lists/${list.id}` : "/api/lists";
     const method = list ? "PUT" : "POST";
-    // console.log("update list", url, method, list, picture);
 
     const listsResponse = await sendRequest(url, method, {
       ...data,
       picture,
     });
-
-    // console.log("response", listsResponse);
 
     if (listsResponse.status === 200) {
       setOpen(true)
@@ -143,28 +144,27 @@ const CreateList: React.FC = () => {
 
     await timeout(3000);
     setOpen(false);
-    //use different route and modal is needed for update
-    navigate(`/lists/${list.id}`);
+    
+    navigate(`/lists/${list?.id}`);
   };
 
-  const handleAddPlace = (event: any) => {
+  const handleAddPlace = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setIsPlaceAdded(!isPlaceAdded);
   };
 
-  const handleChangeNewPlace = (event: any) => {
-    setAddedPlace(event.target.value);
-    console.log(addedPlace);
-  };
+  // const handleChangeNewPlace = (event: any) => {
+  //   setAddedPlace(event.target.value);
+  // };
 
-  const handleSavePlace = (event: any) => {
-    setIsPlaceAdded(!isPlaceAdded);
-  };
+  // const handleSavePlace = (event: any) => {
+  //   setIsPlaceAdded(!isPlaceAdded);
+  // };
 
-  const handleChangetitle = (event: any) => {
+  const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitleVal(event.target.value);
   };
 
-  const handleChangeDescription = (event: any) => {
+  const handleChangeDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDescriptionVal(event.target.value);
   };
 
@@ -172,7 +172,6 @@ const CreateList: React.FC = () => {
     const getUserPlaces = async () => {
       const userPlaces = await sendRequest("/api/places", "GET");
       setUserPlaces(userPlaces);
-      console.log(userPlaces);
     };
 
     const getCategories = async () => {
@@ -196,7 +195,7 @@ const CreateList: React.FC = () => {
       setDescriptionVal(dbList.description);
       setPreviewUrl(dbList.picture);
       setCategoryVal(dbList.categoryId);
-      setPlacesVal(dbList.places.map((p: any) => p.id));
+      setPlacesVal(dbList.places.map((p: PlaceInList) => p.id));
     };
     if (params.lid) {
       fetchList();
@@ -216,6 +215,9 @@ const CreateList: React.FC = () => {
 
   return (
     <AppTemplate>
+      <>
+        {isLoading && <LoadingSpinner loading={isLoading} />}
+      </>
       <ConfirmationModal
         open={open}
         msg={modalMsg}
@@ -258,7 +260,7 @@ const CreateList: React.FC = () => {
               label="Title"
               autoComplete="title"
               autoFocus
-              onChange={handleChangetitle}
+              onChange={handleChangeTitle}
               value={titleVal}
               error={!!titleError}
             />

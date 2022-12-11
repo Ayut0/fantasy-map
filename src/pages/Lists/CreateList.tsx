@@ -101,7 +101,6 @@ const CreateList: React.FC = () => {
       picture = uploadResponse.data;
     }
 
-
     const url = list ? `/api/lists/${list.id}` : "/api/lists";
     const method = list ? "PUT" : "POST";
 
@@ -111,8 +110,8 @@ const CreateList: React.FC = () => {
     });
 
     if (listsResponse.status === 200) {
-      setOpen(true)
-      modalMsg = "List is successfully created"
+      setOpen(true);
+      modalMsg = "List is successfully created";
       dispatch({
         type: "alert",
         payload: {
@@ -120,15 +119,23 @@ const CreateList: React.FC = () => {
           message: `List successfully created`,
         },
       });
+      dispatch({
+        type: "list",
+        payload: null,
+      });
     } else if (listsResponse.status === 204) {
-      setOpen(true)
-      modalMsg = "List is successfully updated"
+      setOpen(true);
+      modalMsg = "List is successfully updated";
       dispatch({
         type: "alert",
         payload: {
           type: "success",
           message: `List successfully updated`,
         },
+      });
+      dispatch({
+        type: "list",
+        payload: null,
       });
     } else {
       dispatch({
@@ -140,7 +147,6 @@ const CreateList: React.FC = () => {
       });
     }
 
-
     await timeout(3000);
     setOpen(false);
     
@@ -149,6 +155,18 @@ const CreateList: React.FC = () => {
 
   const handleAddPlace = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setIsPlaceAdded(!isPlaceAdded);
+    dispatch({
+      type: "list",
+      payload: {
+        title: titleVal,
+        description: descriptionVal,
+        category: categoryVal,
+        places: placesVal,
+        file,
+        previewUrl,
+      },
+    });
+    console.log(state);
   };
 
   // const handleChangeNewPlace = (event: any) => {
@@ -196,10 +214,44 @@ const CreateList: React.FC = () => {
       setCategoryVal(dbList.categoryId);
       setPlacesVal(dbList.places.map((p: PlaceInList) => p.id));
     };
-    if (params.lid) {
+    const keepInputVal = async () => {
+      const dbList = await sendRequest(`/api/lists/${params.lid}`, "GET");
+      setList(dbList);
+      if (state.list){
+      setTitleVal(state.list.title);
+      setDescriptionVal(state.list.description);
+      setPreviewUrl(state.list.previewUrl);
+      setFile(state.list.file);
+      setCategoryVal(state.list.category);
+      setPlacesVal(state.list.places.map((p: number) => p));
+      dispatch({
+        type: "list",
+        payload: null,
+      });
+      }
+    };
+    if (state.list) {
+      keepInputVal();
+      return;
+    } else if (params.lid) {
       fetchList();
     }
   }, [params.lid]);
+
+  // useEffect(() => {
+  //   const keepInputVal = async () => {
+  //     const dbList = await sendRequest(`/api/lists/${params.lid}`, "GET");
+  //     setList(dbList);
+  //     if (state.list) {
+  //       setTitleVal(state.list.title);
+  //       setDescriptionVal(state.list.description);
+  //       setPreviewUrl(state.list.previewUrl);
+  //       setFile(state.list.file);
+  //       setCategoryVal(state.list.category);
+  //       setPlacesVal(state.list.places.map((p: number) => p));
+  //     }
+  //   };
+  // }, [state.list]);
 
   useEffect(() => {
     if (
@@ -314,7 +366,10 @@ const CreateList: React.FC = () => {
                 <Select
                   multiple
                   value={placesVal}
-                  onChange={(e) => setPlacesVal(e.target.value as number[])}
+                  onChange={(e) => {
+                    setPlacesVal(e.target.value as number[]);
+                    console.log(e.target.value);
+                  }}
                   id="places-select"
                   sx={{ mb: 1, mt: 2 }}
                 >

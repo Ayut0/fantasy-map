@@ -35,7 +35,6 @@ export const SeeList: React.FC = () => {
       <Container
         maxWidth={false}
         sx={{
-          height: "100vh",
           backgroundColor: "#F9F6F0",
           paddingTop: "10rem",
         }}

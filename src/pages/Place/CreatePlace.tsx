@@ -8,11 +8,13 @@ import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { useAppContext } from "../../context/AppContext";
 
 export const CreatePlace: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams();
   const { error, sendRequest, clearError } = useHttpRequest();
+  const { state, dispatch } = useAppContext();
   const [open, setOpen] = useState<boolean>(false);
 
   const [file, setFile] = useState();
@@ -66,10 +68,10 @@ export const CreatePlace: React.FC = () => {
           <span>Oh... something went wrong</span>
         );
       }
+       
 
       await timeout(3000);
-      //lid is needed for redirect to the exact same list which the user is supposed to edit
-      // navigate(`/list/${params.lid}`);
+      navigate(-1);
     } catch (err) {
       console.log(err);
       return err;

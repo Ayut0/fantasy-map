@@ -21,6 +21,7 @@ import AppTemplate from "../../templates/AppTemplate";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { useAppContext } from "../../context/AppContext";
 import CreateListDeleteSection from "./CreateListDeleteSection";
+import { NO_LIST_PIC } from '../../Utils/consts'
 
 let modalMsg: string;
 const CreateList: React.FC = () => {
@@ -85,7 +86,7 @@ const CreateList: React.FC = () => {
       return;
     }
 
-    let picture = list ? previewUrl : "images/no-list-pic.jpeg";
+    let picture = list ? previewUrl : NO_LIST_PIC;
     if (file) {
       const formData = new FormData();
       formData.append("filetoupload", file);

@@ -21,6 +21,7 @@ import { Result } from "./pages/Result/Result";
 import { useAppContext } from "./context/AppContext";
 import { useHttpRequest } from "./Utils/httpRequest-hook";
 import Alert from "./components/Alert";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 const theme = createTheme({
   palette: {
@@ -39,7 +40,7 @@ const theme = createTheme({
 });
 
 function App() {
-  const { sendRequest } = useHttpRequest();
+  const { sendRequest, isLoading } = useHttpRequest();
   const { dispatch } = useAppContext();
   const [fetchingDataFromToken, setFetchingDataFromToken] = useState(true);
 
@@ -57,8 +58,8 @@ function App() {
 
   return (
     <div className="App">
-      {fetchingDataFromToken ? (
-        "Loading..."
+      {isLoading && fetchingDataFromToken ? (
+        <LoadingSpinner loading={false} />
       ) : (
         <ThemeProvider theme={theme}>
             <Alert />

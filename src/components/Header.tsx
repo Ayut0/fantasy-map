@@ -52,9 +52,10 @@ export const Header: React.FC = () => {
               md={6}
               sx={{
                 display: "flex",
-                alignItems: "flex-end",
+                alignItems: "center",
               }}
             >
+              <Box component="img" alt="logo" src="/images/logo1.png" sx={{height: '90px', width: '90px'}} />
               <Box component="div">
                 <Link
                   style={{ textDecoration: "none", color: "#f0f1f7" }}

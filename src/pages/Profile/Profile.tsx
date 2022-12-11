@@ -8,10 +8,11 @@ import UsersReview from "./UsersReview";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const Profile: React.FC = () => {
   const { state, dispatch } = useAppContext();
-  const { sendRequest } = useHttpRequest();
+  const { sendRequest, isLoading } = useHttpRequest();
   const [reviews, setReviews] = useState<any[]>([]);
   const [favorites, setFavorites] = useState<any[]>([]);
   const [lists, setLists] = useState<any[]>([]);
@@ -44,6 +45,9 @@ const Profile: React.FC = () => {
 
   return (
     <AppTemplate>
+      <>
+      {isLoading && <LoadingSpinner loading={isLoading} />}
+      </>
       <Box sx={{ backgroundColor: "#F9F6F0", paddingTop: "10rem" }}>
         <Container maxWidth="lg">
           <Grid container>

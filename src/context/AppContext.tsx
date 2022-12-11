@@ -12,12 +12,22 @@ export interface AlertMessage {
   duration?: number;
 }
 
+export interface List {
+  title: string;
+  description: string;
+  category: number;
+  places: number[];
+  file: File | undefined;
+  previewUrl: string;
+}
+
 interface AppContextState {
   loggedUser: LoggedUser | null;
   searchVal: string;
   profileData: any | null;
   selectedCategory: number | null;
   alert: AlertMessage | null;
+  list: List | null;
 }
 
 type AppContextAction =
@@ -43,6 +53,10 @@ type AppContextAction =
   | {
       type: "alert";
       payload: AlertMessage | null;
+    }
+  | {
+     type: "list";
+     payload: List | null;
     };
 
 interface Props {
@@ -56,6 +70,7 @@ const defaultState: AppContextState = {
   profileData: null,
   selectedCategory: null,
   alert: null,
+  list: null,
 };
 
 const context = React.createContext<{
@@ -103,6 +118,11 @@ const reducer = (
         ...state,
         alert: action.payload,
       };
+    case "list":
+      return {
+        ...state,
+        list: action.payload,
+      }
     default:
       throw "Invalid action";
   }

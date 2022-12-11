@@ -152,7 +152,7 @@ export const Place: React.FC = () => {
   return (
     <AppTemplate>
       <>
-        {isLoading && <LoadingSpinner loading={true} /> }
+        {isLoading && <LoadingSpinner loading={isLoading} /> }
       </>
       {loadedPlace ? (
         <Fragment>

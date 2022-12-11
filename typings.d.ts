@@ -14,6 +14,10 @@ export interface FavoriteList {
 export interface User {
   name: string;
   id: number;
+  email: string;
+  profilePicture: string;
+  location: string;
+  description: string;
 }
 
 export interface Review {
@@ -41,6 +45,24 @@ export interface Place {
   location: Location;
   userId: number;
   reviews?: Review[];
+  User?: User;
+  favorite?: boolean;
+}
+
+export interface PlaceInList {
+  id: number;
+  name: string;
+  address: string;
+  description: string;
+  picture: string;
+  location: Location;
+  averageStars?: number;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  picture: string;
 }
 
 export interface PopularList {
@@ -82,4 +104,11 @@ export interface ListCard {
   description?: string;
   picture?: string;
   averageStars?: number;
+  user?: User;
+}
+
+export interface MobileMenu {
+  id: number;
+  name: string;
+  href: string;
 }

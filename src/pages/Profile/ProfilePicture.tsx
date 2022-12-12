@@ -3,6 +3,7 @@ import ImageUpload from "../../components/ImageUpload";
 import { useAppContext } from "../../context/AppContext";
 import axios from "axios";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
+import { NO_PROFILE_PIC } from "../../Utils/consts";
 
 const ProfilePicture: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState("");
@@ -14,7 +15,7 @@ const ProfilePicture: React.FC = () => {
   useEffect(() => {
     if (firstExecution.current && state.profileData) {
       setPreviewUrl(
-        state.profileData.profilePicture || "images/no-profile-pic.jpeg"
+        state.profileData.profilePicture || NO_PROFILE_PIC
       );
       firstExecution.current = false;
     }

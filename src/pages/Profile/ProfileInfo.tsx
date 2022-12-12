@@ -39,7 +39,7 @@ const ProfileInfo: React.FC = () => {
   };
 
   return (
-    <Box sx={{ textAlign: { lg: "left" }, display: {xs: "flex"}, flexDirection:{xs: "column"}, alignItems:{xs: "center"} }}>
+    <Box sx={{ textAlign: { lg: "left" }, display: "flex", flexDirection: "column", alignItems: { xs: "center", lg: "flex-start" } }}>
       <Box>
         {!editName ? (
           <EditableField onEditClick={() => setEditName(!editName)}>

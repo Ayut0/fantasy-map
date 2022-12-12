@@ -7,11 +7,12 @@ import { ListCard as ListType } from "../../../typings";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { useAppContext } from "../../context/AppContext";
 import { useEffect } from "react";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export const SeeList: React.FC = () => {
   const navigate = useNavigate();
   const { state } = useAppContext();
-  const { sendRequest } = useHttpRequest();
+  const { sendRequest, isLoading } = useHttpRequest();
   const [loadedList, setLoadedList] = React.useState<ListType[]>();
   const [loadedUser, setLoadedUser] = React.useState();
   const handleClickList = () => console.log("To edit list");
@@ -32,6 +33,9 @@ export const SeeList: React.FC = () => {
 
   return (
     <AppTemplate>
+      <>
+        {isLoading && <LoadingSpinner loading={isLoading} />}
+      </>
       <Container
         maxWidth={false}
         sx={{

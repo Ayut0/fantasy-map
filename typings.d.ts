@@ -2,6 +2,10 @@
 
 import { SliderUnstyledMarkLabelSlotProps } from "@mui/base";
 
+interface Location {
+  lat: number;
+  lng: number;
+}
 export interface FavoriteList {
   id: string;
   name: string;
@@ -9,6 +13,16 @@ export interface FavoriteList {
   description: string;
   rating?: number;
   userId?: number;
+}
+
+export interface FavoritePlace {
+  address: string;
+  description: string;
+  id: number;
+  location: Location;
+  name: string;
+  picture: string
+
 }
 
 export interface User {
@@ -30,16 +44,12 @@ export interface Review {
   place: Place;
 }
 
-interface Location {
-  lat: number;
-  lng: number;
-}
 
 export interface Place {
   address: string;
   averageStars?: number;
   description: string;
-  id?: number;
+  id: number;
   name: string;
   picture?: string;
   location: Location;
@@ -56,8 +66,8 @@ export interface PopularList {
 }
 
 export interface List {
+  id: number;
   description: string;
-  id?: number;
   name: string;
   picture: string;
   places: Place[];
@@ -81,7 +91,7 @@ export interface MapCenter {
 }
 
 export interface ListCard {
-  id?: number;
+  id: number;
   name: string;
   description?: string;
   picture?: string;

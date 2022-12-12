@@ -8,10 +8,11 @@ import UsersReview from "./UsersReview";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const Profile: React.FC = () => {
   const { state, dispatch } = useAppContext();
-  const { sendRequest } = useHttpRequest();
+  const { sendRequest, isLoading } = useHttpRequest();
   const [reviews, setReviews] = useState<any[]>([]);
   const [favorites, setFavorites] = useState<any[]>([]);
   const [lists, setLists] = useState<any[]>([]);
@@ -44,7 +45,14 @@ const Profile: React.FC = () => {
 
   return (
     <AppTemplate>
-      <Box sx={{ backgroundColor: "#F9F6F0", paddingTop: "10rem" }}>
+      <>{isLoading && <LoadingSpinner loading={isLoading} />}</>
+      <Box
+        sx={{
+          backgroundColor: "#F9F6F0",
+          paddingTop: "10rem",
+          paddingBottom: "80px",
+        }}
+      >
         <Container maxWidth="lg">
           <Grid container>
             <Grid item xs={12}>
@@ -54,7 +62,7 @@ const Profile: React.FC = () => {
               <UsersListSection lists={lists} />
             </Grid>
             <Grid item xs={12}>
-              <Grid container sx={{ my: 4 }}>
+              <Grid container rowSpacing={5} sx={{ my: 4 }}>
                 <UsersFavorite favorites={favorites} />
                 <UsersReview reviews={reviews} />
               </Grid>

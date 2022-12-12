@@ -5,20 +5,20 @@ import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import ListCard from "./ListCard";
 import AppTemplate from "../../templates/AppTemplate";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { List as ListType } from "../../../typings";
 import { MapCenter } from "../../../typings";
 import { Marker } from "../../../typings";
 import ActionButton from "../../components/ActionButton";
 import { useAppContext } from "../../context/AppContext";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const Lists: React.FC = () => {
   const params = useParams();
   const [loadedList, setLoadedList] = useState<ListType>();
-  const { error, sendRequest, clearError } = useHttpRequest();
+  const { sendRequest, isLoading } = useHttpRequest();
   const { state } = useAppContext();
-  console.log(loadedList?.places?.length === 1);
 
   useEffect(() => {
     const getListById = async () => {
@@ -84,6 +84,9 @@ const Lists: React.FC = () => {
 
   return (
     <AppTemplate>
+      <>
+        {isLoading && <LoadingSpinner loading={isLoading} />}
+      </>
       {loadedList?.places?.length ? (
         <Stack
           direction="row"
@@ -96,7 +99,7 @@ const Lists: React.FC = () => {
             width:'100%'
           }}
         >
-          <Box sx={{ width: "50%", height: "90vh" }}>
+          <Box sx={{ width: "50%", height: "90vh", marginTop: "64px" }}>
             <Box sx={{ textAlign: "initial" }}>
               <Typography
                 variant="h2"

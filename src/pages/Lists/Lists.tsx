@@ -95,7 +95,7 @@ const Lists: React.FC = () => {
           spacing={2}
           sx={{
             backgroundColor: "#F9F6F0",
-            paddingTop: "104px",
+            pt: '114px',
             width:'100%'
           }}
         >
@@ -107,6 +107,7 @@ const Lists: React.FC = () => {
                 sx={{
                   fontSize: { lg: "48px", md: "32px" },
                   fontWeight: "bold",
+                  pt: 1,
                 }}
               >
                 {loadedList.name}
@@ -158,37 +159,41 @@ const Lists: React.FC = () => {
           </Box>
         </Stack>
       ) : (
-        <Container
-          sx={{
-            height: "100vh",
-            pt: 30,
-            textAlign: "center",
-            backgroundColor: "#F9F6F0",
-          }}
-        >
-          <Typography variant="h3" sx={{ pb: 3 }}>
-            List Name: {loadedList?.name}
-          </Typography>
-          <Typography variant="h4" sx={{ pb: 3 }}>
-            No place is registered in this list.
-          </Typography>
-          {loadedList?.userId === state?.loggedUser?.id && (
-            <ActionButton
-              variant="contained"
-              type="submit"
+        <>
+          {!isLoading && (
+            <Container
               sx={{
-                backgroundColor: "#2CA58D",
+                height: "100vh",
+                pt: 30,
+                textAlign: "center",
+                backgroundColor: "#F9F6F0",
               }}
             >
-              <Link
-                to={`/list/${loadedList?.id}`}
-                style={{ textDecoration: "none", color: "#EEEEEE" }}
-              >
-                Edit List
-              </Link>
-            </ActionButton>
+              <Typography variant="h3" sx={{ pb: 3 }}>
+                List Name: {loadedList?.name}
+              </Typography>
+              <Typography variant="h4" sx={{ pb: 3 }}>
+                No place is registered in this list.
+              </Typography>
+              {loadedList?.userId === state?.loggedUser?.id && (
+                <ActionButton
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    backgroundColor: "#2CA58D",
+                  }}
+                >
+                  <Link
+                    to={`/list/${loadedList?.id}`}
+                    style={{ textDecoration: "none", color: "#EEEEEE" }}
+                  >
+                    Edit List
+                  </Link>
+                </ActionButton>
+              )}
+            </Container>
           )}
-        </Container>
+        </>
       )}
     </AppTemplate>
   );

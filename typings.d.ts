@@ -55,6 +55,24 @@ export interface Place {
   location: Location;
   userId: number;
   reviews?: Review[];
+  User?: User;
+  favorite?: boolean;
+}
+
+export interface PlaceInList {
+  id: number;
+  name: string;
+  address: string;
+  description: string;
+  picture: string;
+  location: Location;
+  averageStars?: number;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  picture: string;
 }
 
 export interface PopularList {

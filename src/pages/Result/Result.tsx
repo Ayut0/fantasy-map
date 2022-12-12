@@ -64,7 +64,6 @@ export const Result: React.FC = () => {
         maxWidth="lg"
         sx={{
           backgroundColor: "#F9F6F0",
-          height: "100vh",
           paddingTop: "10rem",
           paddingBottom: "5rem",
           boxSizing: "border-box",
@@ -176,13 +175,17 @@ export const Result: React.FC = () => {
             })}
           </Grid>
         ) : (
-          <Typography
-            variant="h4"
-            sx={{ color: "error.main", height: "100vh", textAlign: "center" }}
-          >
-            No list found...
-            <FaSadTear />
-          </Typography>
+          <>
+            {!isLoading && (
+              <Typography
+                variant="h4"
+                sx={{ color: "error.main", height: "100vh", textAlign: "center" }}
+              >
+                No list found...
+                <FaSadTear />
+              </Typography>
+            )}
+          </>
         )}
       </Container>
     </AppTemplate>

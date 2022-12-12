@@ -36,7 +36,6 @@ const CreateList: React.FC = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const [isPlaceAdded, setIsPlaceAdded] = useState(false);
-  // const [addedPlace, setAddedPlace] = useState("");
   const [titleVal, setTitleVal] = useState("");
   const [descriptionVal, setDescriptionVal] = useState("");
   const [categoryVal, setCategoryVal] = useState(-1);

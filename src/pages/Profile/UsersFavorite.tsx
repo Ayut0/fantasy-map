@@ -9,9 +9,10 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FavoritePlace as FavoritePlaceType } from "../../../typings"
 
 interface Props {
-  favorites: any[] | undefined;
+  favorites: FavoritePlaceType[] | undefined;
 }
 
 
@@ -34,6 +35,7 @@ const UsersFavorite: React.FC<Props> = ({ favorites = [] }) => {
           Your favorites
         </Typography>
       </Box>
+      {favorites && (
       <Box
         sx={{
           display: "flex",
@@ -42,11 +44,16 @@ const UsersFavorite: React.FC<Props> = ({ favorites = [] }) => {
           alignItems: "center",
           justifyContent: "center",
         }}
-      >
+        >
+          {!favorites.length && (
+            <Typography variant="body1">
+              You don&#39;t have any favorites yet
+            </Typography>
+          )}
         {favorites.map((place) => (
           <Card
             key={place.id}
-            sx={{ display: "flex", mb: 8, width: {xs: "85%", lg: "80%" } }}
+            sx={{ display: "flex", width: {xs: "85%", lg: "80%" } }}
             onClick={() => handleCardClick(place.id)}
           >
             <CardActionArea sx={{ display: "flex", justifyContent: "initial" }}>
@@ -64,6 +71,7 @@ const UsersFavorite: React.FC<Props> = ({ favorites = [] }) => {
           </Card>
         ))}
       </Box>
+      )}
     </Grid>
   );
 };

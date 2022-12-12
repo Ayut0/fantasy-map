@@ -19,7 +19,6 @@ const Lists: React.FC = () => {
   const [loadedList, setLoadedList] = useState<ListType>();
   const { sendRequest, isLoading } = useHttpRequest();
   const { state } = useAppContext();
-  console.log(loadedList?.places?.length === 1);
 
   useEffect(() => {
     const getListById = async () => {
@@ -100,7 +99,7 @@ const Lists: React.FC = () => {
             width:'100%'
           }}
         >
-          <Box sx={{ width: "50%" }}>
+          <Box sx={{ width: "50%", height: "90vh", marginTop: "64px" }}>
             <Box sx={{ textAlign: "initial" }}>
               <Typography
                 variant="h2"

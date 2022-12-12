@@ -3,9 +3,10 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { ListCard as ListCardType } from "../../../typings"
 
 interface Props {
-  lists: any[] | undefined;
+  lists: ListCardType[] | undefined;
 }
 
 const ListSection: React.FC<Props> = ({ lists = [] }) => {
@@ -28,6 +29,7 @@ const ListSection: React.FC<Props> = ({ lists = [] }) => {
       {!lists.length && (
         <Typography variant="body1">You dont have any List yet</Typography>
       )}
+      
       {lists.slice(0, 3).map((list, index) => (
         <Card
           key={index}

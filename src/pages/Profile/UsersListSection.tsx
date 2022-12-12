@@ -4,9 +4,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ListSection from "./ListSection";
+import { ListCard as ListCardType } from "../../../typings"
 
 interface Props {
-  lists: any[];
+  lists: ListCardType[];
 }
 
 const UsersListSection: React.FC<Props> = ({ lists = [] }) => {
@@ -16,6 +17,7 @@ const UsersListSection: React.FC<Props> = ({ lists = [] }) => {
         sx={{
           display: "flex",
           justifyContent: "space-around",
+          alignItems: "center",
           marginBottom: "2rem",
         }}
       >

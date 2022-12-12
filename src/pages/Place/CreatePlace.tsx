@@ -5,18 +5,15 @@ import ImageUpload from "../../components/ImageUpload";
 import AppTemplate from "../../templates/AppTemplate";
 import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
-import { useAppContext } from "../../context/AppContext";
+import { NO_LIST_PIC } from "../../Utils/consts";
 
 export const CreatePlace: React.FC = () => {
   const navigate = useNavigate();
-  const params = useParams();
-  const { error, sendRequest, clearError } = useHttpRequest();
-  const { state, dispatch } = useAppContext();
+  const { sendRequest } = useHttpRequest();
   const [open, setOpen] = useState<boolean>(false);
-
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState<string>();
   const [inputPlaceName, setInputPlaceName] = useState<string>("");
@@ -29,8 +26,7 @@ export const CreatePlace: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler = async (e) => {
     e.preventDefault();
-
-
+    let picture: string = NO_LIST_PIC;
     try {
       const results = await geocodeByAddress(inputAddress);
       const latLng = await getLatLng(results[0]);
@@ -38,15 +34,18 @@ export const CreatePlace: React.FC = () => {
       const lng = latLng.lng;
 
       //send image
-      const fd = new FormData();
-      {
-        file && fd.append("filetoupload", file);
+      if (file) {
+        const fd = new FormData();
+        {
+          file && fd.append("filetoupload", file);
+        }
+        const res = await axios.post("/api/files/upload", fd, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        picture = res.data;
       }
-      const res = await axios.post("/api/files/upload", fd, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
 
       const formData = {
         name: inputPlaceName,
@@ -56,7 +55,7 @@ export const CreatePlace: React.FC = () => {
           lat: lat,
           lng: lng,
         },
-        picture: res.data,
+        picture,
       };
 
       //send those info to a server
@@ -68,7 +67,6 @@ export const CreatePlace: React.FC = () => {
           <span>Oh... something went wrong</span>
         );
       }
-       
 
       await timeout(3000);
       navigate(-1);

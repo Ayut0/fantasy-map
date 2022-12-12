@@ -51,18 +51,9 @@ const CreateList: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
 
   const { sendRequest, isLoading } = useHttpRequest();
-  // const [showConfirmationModal, setShowConfirmationModal] =
-  //   useState<boolean>(false);
+
   const { state, dispatch } = useAppContext();
   const navigate = useNavigate();
-
-  // const showDeleteModalHandler = (): void => {
-  //   setShowConfirmationModal(true);
-  // };
-
-  // const closeDeleteModalHandler = (): void => {
-  //   setShowConfirmationModal(false);
-  // };
 
   function timeout(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -149,7 +140,6 @@ const CreateList: React.FC = () => {
 
     await timeout(3000);
     setOpen(false);
-    
     navigate(`/lists/${list?.id}`);
   };
 
@@ -168,14 +158,6 @@ const CreateList: React.FC = () => {
     });
     console.log(state);
   };
-
-  // const handleChangeNewPlace = (event: any) => {
-  //   setAddedPlace(event.target.value);
-  // };
-
-  // const handleSavePlace = (event: any) => {
-  //   setIsPlaceAdded(!isPlaceAdded);
-  // };
 
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitleVal(event.target.value);
@@ -237,21 +219,6 @@ const CreateList: React.FC = () => {
       fetchList();
     }
   }, [params.lid]);
-
-  // useEffect(() => {
-  //   const keepInputVal = async () => {
-  //     const dbList = await sendRequest(`/api/lists/${params.lid}`, "GET");
-  //     setList(dbList);
-  //     if (state.list) {
-  //       setTitleVal(state.list.title);
-  //       setDescriptionVal(state.list.description);
-  //       setPreviewUrl(state.list.previewUrl);
-  //       setFile(state.list.file);
-  //       setCategoryVal(state.list.category);
-  //       setPlacesVal(state.list.places.map((p: number) => p));
-  //     }
-  //   };
-  // }, [state.list]);
 
   useEffect(() => {
     if (

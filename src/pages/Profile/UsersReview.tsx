@@ -35,14 +35,14 @@ const UsersReview: React.FC<Props> = ({ reviews = [] }) => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            rowGap: { sm: "2rem", lg: "6rem" },
+            rowGap: "2rem",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           {!reviews.length && (
             <Typography variant="body1">
-              You dont have any review yet
+              You don&#39;t have any review yet
             </Typography>
           )}
           {reviews.map((review: ReviewType) => (

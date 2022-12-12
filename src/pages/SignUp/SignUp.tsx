@@ -7,6 +7,7 @@ import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import axios from "axios";
+import { NO_PROFILE_PIC } from "../../Utils/consts";
 
 const SignUp: React.FC = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -95,7 +96,7 @@ const SignUp: React.FC = () => {
   const signupUser = async (userData: any) => {
     const signupResponse = await sendRequest("/api/users/signup", "POST", {
       ...userData,
-      profilePicture: "images/no-profile-pic.jpeg",
+      profilePicture: NO_PROFILE_PIC,
     });
 
     // only uploads file if user selected picture

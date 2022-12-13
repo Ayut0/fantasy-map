@@ -10,8 +10,9 @@ import {
   Toolbar,
   Typography,
   Hidden,
+  IconButton,
 } from "@mui/material";
-import { MdSearch } from "react-icons/md";
+import { MdSearch, MdMenu } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useHttpRequest } from "../Utils/httpRequest-hook";
 import { useAppContext } from "../context/AppContext";
@@ -21,6 +22,7 @@ export const Header: React.FC = () => {
   const { sendRequest } = useHttpRequest();
   const { dispatch, state } = useAppContext();
   const [searchVal, setSearchVal] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleClickLogout: React.MouseEventHandler = () => {
@@ -48,13 +50,25 @@ export const Header: React.FC = () => {
           <Grid container spacing={2}>
             <Grid
               item
-              xs={8}
-              md={6}
+              xs={12}
+              lg={8}
               sx={{
                 display: "flex",
                 alignItems: "center",
               }}
             >
+              <Box>
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  sx={{ mr: 2 }}
+                  onClick={() => setIsMenuOpen((prevValue) => !prevValue)}
+                >
+                  <MdMenu />
+                </IconButton>
+              </Box>
               <Box component="img" alt="logo" src="/images/logo1.png" sx={{height: '90px', width: '90px'}} />
               <Box component="div">
                 <Link
@@ -71,38 +85,37 @@ export const Header: React.FC = () => {
                 </Link>
               </Box>
               <Hidden smDown>
-              <Box component="div">
-                <TextField
-                  onChange={handleInputChange}
-                  onKeyUp={handleKeyUp}
-                  id="outlined-basic"
-                  placeholder="Search"
-                  variant="outlined"
-                  sx={{
-                    backgroundColor: "white",
-                    borderRadius: 8,
-                  }}
-                  value={searchVal}
-                  InputProps={{
-                    endAdornment: (
-                      <MdSearch
-                        style={{
-                          color: "#232946",
-                          paddingTop: 3,
-                          paddingRight: 3,
-                        }}
-                        size="40px"
-                      />
-                    ),
-                  }}
-                />
-              </Box>
+                <Box component="div">
+                  <TextField
+                    onChange={handleInputChange}
+                    onKeyUp={handleKeyUp}
+                    id="outlined-basic"
+                    placeholder="Search"
+                    variant="outlined"
+                    sx={{
+                      backgroundColor: "white",
+                      borderRadius: 8,
+                    }}
+                    value={searchVal}
+                    InputProps={{
+                      endAdornment: (
+                        <MdSearch
+                          style={{
+                            color: "#232946",
+                            paddingTop: 3,
+                            paddingRight: 3,
+                          }}
+                          size="40px"
+                        />
+                      ),
+                    }}
+                  />
+                </Box>
               </Hidden>
             </Grid>
             <Grid
               item
               xs={4}
-              md={6}
               sx={{
                 display: "flex",
                 justifyContent: {xs: "flex-end", md: "right"},
@@ -119,14 +132,14 @@ export const Header: React.FC = () => {
                       Register
                     </Link>
                   </>
-                ) : (
+                 ) : (
                   <>
                     <Hidden smDown>
                       <Link
                         to="/profile"
                         style={{ color: "#f0f1f7", textDecoration: "none" }}
                       >
-                        Welcome, {state.loggedUser.name}
+                        Welcome, <span style={{ textDecoration: 'underline' }}>{state.loggedUser.name}</span>
                       </Link>
                       <Button
                         color="inherit"
@@ -138,7 +151,7 @@ export const Header: React.FC = () => {
                         Logout
                       </Button>
                     </Hidden>
-                    <MobileMenu />
+                    <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
                   </>
                 )}
               </Box>

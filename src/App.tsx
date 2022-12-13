@@ -60,7 +60,7 @@ function App() {
   return (
     <div className="App">
       {isLoading && fetchingDataFromToken ? (
-        <LoadingSpinner loading={false} />
+        <LoadingSpinner loading />
       ) : (
         <ThemeProvider theme={theme}>
             <Alert />

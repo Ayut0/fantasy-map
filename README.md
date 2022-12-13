@@ -1,46 +1,50 @@
-# Getting Started with Create React App
+# About
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ <img height="200px" width="200px" src="../fantasy-map/public/images/logo1.png">
 
-## Available Scripts
+This is Yelp like application for school project not for release or monetize.
 
-In the project directory, you can run:
+Users can share their own list of places where they enjoy their life.
+They also check the location and direction.
 
-### `npm start`
+# Why we cerated this app
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+We created this app to show what we learned through our class such as React.js, Typescript for frontend, Node.js for Backend and Postgres for Database.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# Language and Libraries
 
-### `npm test`
+- React.js
+- TypeScript
+- Material UI
+- Framer Motion(Animation)
+- Node.js/express
+- PostgresSQL
+- Sequelize
+- Heroku
+- Supabase(Image storing)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+React.js is a JavaScript library developed by Meta.It's used for building interactive user interfaces and web applications efficiently.
 
-### `npm run build`
+I use Material UI for styling because it provides us a pre-built UI component make us able to finish design quickly.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# UI design
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<img src="../fantasy-map/public/images/mockup.png">
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+I created UI design Figma.
+Since we want to focus on function-wise, I tried to make it simple but cared User experience.
 
-### `npm run eject`
+# ERD
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<img src="../fantasy-map/public/images/ERD.jpeg">
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This is an ERD of our application represents our data structure.
+We have seven tables.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Place
+- Place_List (Place register in the list)
+- List
+- Category of the list
+- Favorite
+- User
+- Review

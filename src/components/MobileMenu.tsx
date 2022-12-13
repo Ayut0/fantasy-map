@@ -1,22 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Typography,
-  Hidden,
   Divider,
   List,
   ListItem,
   Button,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import { ChevronRight } from "@mui/icons-material";
+import { ChevronLeft } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useHttpRequest } from "../Utils/httpRequest-hook";
 import { useAppContext } from "../context/AppContext";
 import { MobileMenu as MobileMenuType } from "../../typings";
 
-const MobileMenu = () => {
+interface Props {
+  isMenuOpen: boolean,
+  setIsMenuOpen: (value: boolean) => void,
+}
+
+const MobileMenu: React.FC<Props> = ({ isMenuOpen, setIsMenuOpen }) => {
   const navigationLinks:MobileMenuType[] = [
     {
       id: 1,
@@ -42,22 +45,17 @@ const MobileMenu = () => {
   const navigate = useNavigate();
   const { sendRequest } = useHttpRequest();
   const { dispatch, state } = useAppContext();
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const handleClickLogout: React.MouseEventHandler = () => {
     sendRequest("/api/users/signout", "POST").then(() => {
       dispatch({ type: "logout" });
       navigate("/");
     });
   };
+
   return (
     <>
-      <Hidden smUp>
-        <IconButton color="inherit">
-          <MenuIcon onClick={() => setIsMenuOpen(true)} />
-        </IconButton>
-      </Hidden>
       <SwipeableDrawer
-        anchor="right"
+        anchor="left"
         open={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         onOpen={() => setIsMenuOpen(true)}
@@ -69,7 +67,7 @@ const MobileMenu = () => {
       >
         <div>
           <IconButton>
-            <ChevronRight onClick={() => setIsMenuOpen(false)} />
+            <ChevronLeft onClick={() => setIsMenuOpen(false)} />
           </IconButton>
         </div>
         <Divider />
@@ -93,7 +91,7 @@ const MobileMenu = () => {
                   fontWeight: "bold",
                 }}
               >
-                {item.id}:{item.name}
+                {item.id}: {item.name}
               </Link>
             </ListItem>
           ))}

@@ -1,6 +1,7 @@
 # About
 
- <img height="200px" width="200px" src="../fantasy-map/public/images/logo1.png">
+
+ ![logo](/public/images/logo1.png)
 
 This is Yelp like application for school project not for release or monetize.
 
@@ -29,14 +30,14 @@ I use Material UI for styling because it provides us a pre-built UI component ma
 
 # UI design
 
-<img src="../fantasy-map/public/images/mockup.png">
+![Mockup](public/images/mockup.png)
 
 I created UI design Figma.
 Since we want to focus on function-wise, I tried to make it simple but cared User experience.
 
 # ERD
 
-<img src="../fantasy-map/public/images/ERD.jpeg">
+![ERD](public/images/ERD.jpeg)
 
 This is an ERD of our application represents our data structure.
 We have seven tables.

@@ -22,6 +22,7 @@ import { useAppContext } from "./context/AppContext";
 import { useHttpRequest } from "./Utils/httpRequest-hook";
 import Alert from "./components/Alert";
 import LoadingSpinner from "./components/LoadingSpinner";
+import NotFound from "./pages/NotFound/NotFound";
 
 const theme = createTheme({
   palette: {
@@ -104,6 +105,7 @@ function App() {
                 element={<ProtectedRoute element={<ProfileEdit />} />}
               />
               <Route path="/result" element={<Result />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           <Footer />
         </ThemeProvider>

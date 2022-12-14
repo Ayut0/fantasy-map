@@ -57,7 +57,11 @@ type AppContextAction =
   | {
      type: "list";
      payload: List | null;
-    };
+    }
+  | {
+      type: "updateName";
+      payload: string;
+    }
 
 interface Props {
   children: JSX.Element | JSX.Element[];
@@ -92,11 +96,13 @@ const reducer = (
       return {
         ...state,
         loggedUser: action.payload,
+        profileData: null,
       };
     case "logout":
       return {
         ...state,
         loggedUser: null,
+        profileData: null,
       };
     case "search":
       return {
@@ -122,6 +128,14 @@ const reducer = (
       return {
         ...state,
         list: action.payload,
+      }
+    case "updateName":
+      return {
+        ...state,
+        loggedUser: state.loggedUser ? {
+          ...state.loggedUser,
+          name: action.payload,
+        } : null,
       }
     default:
       throw "Invalid action";

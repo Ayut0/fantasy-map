@@ -32,6 +32,8 @@ import GooglePlacesAutocomplete, {
 import ActionButton from "../../components/ActionButton";
 import { useAppContext } from "../../context/AppContext";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { Review } from "../../../typings";
+import { ReviewModal } from "./ReviewModal";
 
 export const Place: React.FC = () => {
   const params = useParams();
@@ -40,13 +42,16 @@ export const Place: React.FC = () => {
   const { sendRequest, isLoading } = useHttpRequest();
   const [open, setOpen] = useState(false);
   const [openReview, setOpenReview] = useState(false);
+  const [openReviewFull, setOpenReviewFull] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleOpenReview = (id: number) => {
     setOpenReview(true);
     setIdToBeDeleted(id);
   };
+  
   const handleClose = () => setOpen(false);
   const handleCloseReview = () => setOpenReview(false);
+  const handleCloseReviewFull = () => setOpenReviewFull(false);
   const [isNameEdit, setIsNameEdit] = useState<boolean>(false);
   const [isAddressEdit, setIsAddressEdit] = useState<boolean>(false);
   const [isDescriptionEdit, setIsDescriptionEdit] = useState<boolean>(false);
@@ -58,6 +63,7 @@ export const Place: React.FC = () => {
   const [idToBeDeleted, setIdToBeDeleted] = useState<number>();
   const [isFetchData, setIsFetchData] = useState<boolean>(true);
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [fullReview, setFullReview] = useState<Review>();
   const navigate = useNavigate();
 
   const msgPlace = `You are about to delete this place.
@@ -68,18 +74,17 @@ export const Place: React.FC = () => {
               Once you delete the review, you are not able to restore....
               If you are good, click the button below.`;
   const btnMsgReview = "Delete this review";
+ 
 
   useEffect(() => {
     const getPlaceById = async () => {
       const place = await sendRequest(`/api/places/${params.pid}`, "GET");
       setLoadedPlace(place);
-      console.log(place);
       setInputPlaceName(place.name);
       setInputAddress(place.address);
       setInputDescription(place.description);
       setLocation(place.location);
       setIsFavorite(place.favorite);
-      console.log("test", place);
       //compare userID from place and user ID logged in
       if (place.user.id === state?.loggedUser?.id) {
         setIsUserIdMatches(true);
@@ -103,7 +108,7 @@ export const Place: React.FC = () => {
       };
 
       await sendRequest(`/api/places/${params.pid}`, "PUT", updatedPlaceData);
-      navigate(0)
+      navigate(0);
     } catch (err) {
       console.log(err);
     }
@@ -149,11 +154,14 @@ export const Place: React.FC = () => {
     );
   };
 
+  const handleClickReviewFull = async (review:Review) => {
+      setFullReview(review);
+      setOpenReviewFull(true);
+  };
+
   return (
     <AppTemplate>
-      <>
-        {isLoading && <LoadingSpinner loading={isLoading} /> }
-      </>
+      <>{isLoading && <LoadingSpinner loading={isLoading} />}</>
       {loadedPlace ? (
         <Fragment>
           <ConfirmationModal
@@ -171,6 +179,12 @@ export const Place: React.FC = () => {
             btnMsg={btnMsgReview}
             clickEvent={deleteReviewHandler}
             isWarning={true}
+          />
+          <ReviewModal
+            open={openReviewFull}
+            handleClose={handleCloseReviewFull}
+            clickEvent={handleClickReviewFull}
+            review={fullReview}
           />
           <Container sx={{ pb: 5 }}>
             <CardMedia
@@ -196,7 +210,8 @@ export const Place: React.FC = () => {
                   backgroundColor: "#2CA58D",
                 }}
               >
-                Get direction<FiExternalLink />
+                Get direction
+                <FiExternalLink />
               </ActionButton>
             </Box>
             <Box sx={{ display: "flex" }}>
@@ -335,9 +350,13 @@ export const Place: React.FC = () => {
                         width: "180px",
                         height: "210px",
                         borderRadius: "4px",
+                        "&:hover": {
+                          cursor: "pointer",
+                          backgroundColor: "#FAFAFA",
+                        },
                       }}
                     >
-                      <CardContent sx={{ textOverflow: "ellipsis" }}>
+                      <CardContent>
                         {state?.loggedUser?.id === review.user?.id && (
                           <Box
                             sx={{ display: "flex", justifyContent: "right" }}
@@ -355,30 +374,41 @@ export const Place: React.FC = () => {
                             </Box>
                           </Box>
                         )}
-                        <Box>
-                          <Avatar sx={{ margin: "10px auto" }} />
-                        </Box>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Typography>{review.user?.name}</Typography>
-                          <Rating
-                            name="read-only"
-                            value={review.stars}
-                            readOnly
-                          />
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            sx={{ textAlign: "center" }}
+                        <Box onClick={() => handleClickReviewFull(review)}>
+                          <Box>
+                            <Avatar sx={{ margin: "10px auto" }} />
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
                           >
-                            {review.content}
-                          </Typography>
+                            <Typography>{review.user?.name}</Typography>
+                            <Rating
+                              name="read-only"
+                              value={review.stars}
+                              readOnly
+                            />
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              sx={{
+                                textAlign: "center",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                width: "100%",
+                                display: "-webkit-box",
+                                WebkitLineClamp: "2",
+                                WebkitBoxOrient: "vertical",
+                                hyphens: "auto",
+                              }}
+                            >
+                              {review.content}
+                            </Typography>
+                          </Box>
                         </Box>
                       </CardContent>
                     </Card>

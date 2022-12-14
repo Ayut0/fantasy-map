@@ -15,7 +15,6 @@ interface Props {
 }
 
 export const ConfirmationModal: React.FC<Props> = ({open, handleClose, msg, btnMsg, clickEvent, isWarning}) => {
-  // const handleDelete = () => console.log("place deleted!");
 
   return (
     <div>

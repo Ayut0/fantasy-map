@@ -33,7 +33,13 @@ const ProfileInfo: React.FC = () => {
         message: "Profile successfully updated",
       },
     });
-    if (field === "name") setEditName(false);
+    if (field === "name") {
+      setEditName(false);
+      dispatch({
+        type: 'updateName',
+        payload: state.profileData.name,
+      });
+    }
     if (field === "location") setEditLocation(false);
     if (field === "description") setEditDescription(false);
   };

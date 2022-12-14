@@ -119,7 +119,7 @@ const SignUp: React.FC = () => {
       });
     }
 
-    dispatch({ type: "login", payload: signupResponse });
+    dispatch({ type: "login", payload: signupResponse.data });
     navigate("/");
   };
 

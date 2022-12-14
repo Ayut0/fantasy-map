@@ -14,7 +14,7 @@ const ProtectedRoute: React.FC<Props> = ({ children, element }) => {
     return <>{children || element}</>;
   }
 
-  return <Navigate to="/" />;
+  return <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

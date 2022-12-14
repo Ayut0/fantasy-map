@@ -140,7 +140,7 @@ const CreateList: React.FC = () => {
 
     await timeout(3000);
     setOpen(false);
-    navigate(`/lists/${list?.id}`);
+    navigate(`/lists/${list?.id ?? listsResponse.data}`);
   };
 
   const handleAddPlace = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

@@ -99,7 +99,7 @@ const Lists: React.FC = () => {
             width:'100%'
           }}
         >
-          <Box sx={{ width: "50%", height: "90vh", marginTop: "64px" }}>
+          <Box sx={{ width: "50%", marginTop: "64px" }}>
             <Box sx={{ textAlign: "initial" }}>
               <Typography
                 variant="h2"

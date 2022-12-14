@@ -57,18 +57,20 @@ export const Header: React.FC = () => {
                 alignItems: "center",
               }}
             >
-              <Box>
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                  sx={{ mr: 2 }}
-                  onClick={() => setIsMenuOpen((prevValue) => !prevValue)}
-                >
-                  <MdMenu />
-                </IconButton>
-              </Box>
+              {state.loggedUser && (
+                <Box>
+                  <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    sx={{ mr: 2 }}
+                    onClick={() => setIsMenuOpen((prevValue) => !prevValue)}
+                  >
+                    <MdMenu />
+                  </IconButton>
+                </Box>
+              )}
               <Box component="img" alt="logo" src="/images/logo1.png" sx={{height: '90px', width: '90px'}} />
               <Box component="div">
                 <Link

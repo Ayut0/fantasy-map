@@ -22,11 +22,19 @@ We created this app to show what we learned through our class such as React.js, 
 - PostgresSQL
 - Sequelize
 - Heroku
-- Supabase(Image storing)
+- Supabase(Image storing and database hosting)
 
-React.js is a JavaScript library developed by Meta.It's used for building interactive user interfaces and web applications efficiently.
+React.js is a JavaScript library, the most popular one nowadays. It's used for building interactive user interfaces and web applications efficiently.
 
-I use Material UI for styling because it provides us a pre-built UI component make us able to finish design quickly.
+We use Material UI for styling because it provides us a pre-built UI component make us able to finish design quickly.
+
+For a server-side, we use Node.js that allows us to use JavaScript which we use for frontend as well.
+We especially work with Express.js framework.
+
+For storing our data, we use PostgresSQL which we mainly obtained from the class.
+
+We deploy both client-side and server-side on the Heroku.
+They are deployed on the same server.
 
 # UI design
 

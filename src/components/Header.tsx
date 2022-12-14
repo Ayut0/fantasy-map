@@ -45,9 +45,9 @@ export const Header: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <AppBar position="fixed" sx={{ py: 1.5 }}>
+      <AppBar position="fixed" sx={{ py: {lg: 1.5} }}>
         <Toolbar>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} sx={{height: {xs: "100px"}}}>
             <Grid
               item
               xs={12}

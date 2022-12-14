@@ -89,23 +89,24 @@ const Lists: React.FC = () => {
       </>
       {loadedList?.places?.length ? (
         <Stack
-          direction="row"
+          direction={{ xs: "column", md: "row" }}
           justifyContent="center"
           alignItems="center"
           spacing={2}
           sx={{
             backgroundColor: "#F9F6F0",
-            pt: '114px',
+            pt: '152px',
             width:'100%'
           }}
+          marginBottom="64px"
         >
-          <Box sx={{ width: "50%", marginTop: "64px" }}>
+          <Box sx={{ width: { xs: "80%", lg: "50%" }, height: {xs: "64vh", lg: "80vh"}, marginTop: {xs: "0px" ,lg: "64px"}}}>
             <Box sx={{ textAlign: "initial" }}>
               <Typography
                 variant="h2"
                 fontFamily="Merriweather"
                 sx={{
-                  fontSize: { lg: "48px", md: "32px" },
+                  fontSize: {xs: "32px", lg: "48px" },
                   fontWeight: "bold",
                   pt: 1,
                 }}
@@ -117,7 +118,7 @@ const Lists: React.FC = () => {
                 fontFamily="Merriweather"
                 sx={{
                   paddingBottom: "32px",
-                  fontSize: { lg: "28px", md: "24px" },
+                  fontSize: {xs: "20px", lg: "28px" },
                 }}
               >
                 {loadedList.description}
@@ -144,7 +145,7 @@ const Lists: React.FC = () => {
               </Box>
             </motion.div>
           </Box>
-          <Box sx={{ gridRow: "1", width: "45%", height: "80vh" }}>
+          <Box sx={{ gridRow: "1", width: { xs: "80%", lg: "45%" }, height: "80vh", marginTop: {xs: "0px" ,lg: "64px"} }}>
             {/* I think I should create a new component just for a google map. pass lat and lng as props. */}
             <GoogleMapReact
               bootstrapURLKeys={{

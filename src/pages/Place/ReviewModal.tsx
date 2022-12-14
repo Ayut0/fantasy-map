@@ -63,7 +63,7 @@ export const ReviewModal: React.FC<ReviewProps> = ({
                 }}
               >
                 <Avatar
-                  src={review.profilePicture}
+                  src={review?.user?.profilePicture}
                   sx={{ margin: "10px auto" }}
                 />
                 <Typography>{review?.user?.name}</Typography>

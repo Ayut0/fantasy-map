@@ -48,7 +48,7 @@ export const Place: React.FC = () => {
     setOpenReview(true);
     setIdToBeDeleted(id);
   };
-  
+
   const handleClose = () => setOpen(false);
   const handleCloseReview = () => setOpenReview(false);
   const handleCloseReviewFull = () => setOpenReviewFull(false);
@@ -74,7 +74,6 @@ export const Place: React.FC = () => {
               Once you delete the review, you are not able to restore....
               If you are good, click the button below.`;
   const btnMsgReview = "Delete this review";
- 
 
   useEffect(() => {
     const getPlaceById = async () => {
@@ -154,9 +153,9 @@ export const Place: React.FC = () => {
     );
   };
 
-  const handleClickReviewFull = async (review:Review) => {
-      setFullReview(review);
-      setOpenReviewFull(true);
+  const handleClickReviewFull = async (review: Review) => {
+    setFullReview(review);
+    setOpenReviewFull(true);
   };
 
   return (
@@ -192,9 +191,19 @@ export const Place: React.FC = () => {
               height="600"
               image={loadedPlace.picture}
               alt="place image"
-              sx={{ paddingTop: "10rem" }}
+              sx={{
+                paddingTop: "10rem",
+                height: { xs: "300px", md: "500px", lg: "600px" },
+              }}
             />
-            <Box sx={{ display: "flex", justifyContent: "right", mt: "30px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "right",
+                mt: "30px",
+                mb: "30px",
+              }}
+            >
               <Button onClick={switchFavorite}>
                 {isFavorite ? (
                   <MdFavorite size={20} />
@@ -224,7 +233,12 @@ export const Place: React.FC = () => {
                   />
                 </Box>
               ) : (
-                <Typography variant="h3">{loadedPlace.name}</Typography>
+                <Typography
+                  variant="h3"
+                  sx={{ fontSize: { xs: "2rem", lg: "3rem" } }}
+                >
+                  {loadedPlace.name}
+                </Typography>
               )}
               {isUserIdMatches && (
                 <Button onClick={() => setIsNameEdit(!isNameEdit)}>
@@ -233,8 +247,12 @@ export const Place: React.FC = () => {
               )}
             </Box>
             <Grid container className="wrap__address__description">
-              <Grid item xs={6} sx={{ textAlign: "left", my: 6 }}>
-                <Typography variant="h4" mb="15px">
+              <Grid item xs={12} lg={6} sx={{ textAlign: "left", my: 6 }}>
+                <Typography
+                  variant="h4"
+                  mb="15px"
+                  sx={{ fontSize: { xs: "1.5rem", lg: "2.2rem" } }}
+                >
                   <HiPaperAirplane
                     size={20}
                     style={{ transform: "rotate(55deg)" }}
@@ -279,8 +297,12 @@ export const Place: React.FC = () => {
                   </Typography>
                 )}
               </Grid>
-              <Grid item xs={6} sx={{ textAlign: "left", my: 6 }}>
-                <Typography variant="h4" mb="15px">
+              <Grid item xs={12} lg={6} sx={{ textAlign: "left", my: 6 }}>
+                <Typography
+                  variant="h4"
+                  mb="15px"
+                  sx={{ fontSize: { xs: "1.5rem", lg: "2.2rem" } }}
+                >
                   Description
                   {isDescriptionEdit ? (
                     <Box component="form" onSubmit={updatePlaceHandler}>
@@ -310,12 +332,19 @@ export const Place: React.FC = () => {
               </Grid>
             </Grid>
             <Grid container sx={{ alignItems: "center" }}>
-              <Grid item xs={9}>
-                <Typography variant="h4" sx={{ textAlign: "left", my: "40px" }}>
+              <Grid item xs={8} lg={9}>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    textAlign: "left",
+                    my: "40px",
+                    fontSize: { xs: "1.5rem", lg: "2.2rem" },
+                  }}
+                >
                   Last reviews
                 </Typography>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={4} lg={3}>
                 <ActionButton
                   variant="contained"
                   type="submit"
@@ -344,11 +373,12 @@ export const Place: React.FC = () => {
             >
               {loadedPlace.reviews?.map((review: ReviewType) => {
                 return (
-                  <Grid key={1} item xs={3}>
+                  <Grid key={1} item xs={12} md={4} lg={3}>
                     <Card
                       sx={{
                         width: "180px",
                         height: "210px",
+                        margin: {xs: "0 auto"},
                         borderRadius: "4px",
                         "&:hover": {
                           cursor: "pointer",
@@ -376,7 +406,10 @@ export const Place: React.FC = () => {
                         )}
                         <Box onClick={() => handleClickReviewFull(review)}>
                           <Box>
-                            <Avatar sx={{ margin: "10px auto" }} />
+                            <Avatar
+                              sx={{ margin: "10px auto" }}
+                              src={review?.user?.profilePicture}
+                            />
                           </Box>
                           <Box
                             sx={{

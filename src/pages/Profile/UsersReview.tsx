@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import React from "react";
-import { Link } from "react-router-dom";
 import { Review as ReviewType } from "../../../typings";
 
 interface Props {
@@ -17,6 +16,9 @@ interface Props {
 }
 
 const UsersReview: React.FC<Props> = ({ reviews = [] }) => {
+  const handleClickReviewFull = () => {
+    console.log("clicked");
+  }
   return (
     <Grid item xs={12} lg={6}>
       <Box
@@ -46,7 +48,7 @@ const UsersReview: React.FC<Props> = ({ reviews = [] }) => {
             </Typography>
           )}
           {reviews.map((review: ReviewType) => (
-            <Card key={review.id} sx={{ width: {xs: "85%", lg: "80%" } }}>
+            <Card key={review.id} sx={{ width: {xs: "85%", lg: "80%" } }} onClick={handleClickReviewFull}>
               <CardActionArea
                 sx={{ display: "flex", justifyContent: "initial" }}
               >

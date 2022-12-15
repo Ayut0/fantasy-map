@@ -8,19 +8,31 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import React from "react";
+import React, { useState } from "react";
 import { Review as ReviewType } from "../../../typings";
+import { ReviewModal } from "../Place/ReviewModal";
 
 interface Props {
   reviews: ReviewType[];
 }
 
 const UsersReview: React.FC<Props> = ({ reviews = [] }) => {
-  const handleClickReviewFull = () => {
-    console.log("clicked");
-  }
+  // const [openReview, setOpenReview] = useState<boolean>(false);
+  const [openReviewFull, setOpenReviewFull] = useState<boolean>(false);
+  const handleCloseReviewFull = () => setOpenReviewFull(false);
+  const [fullReview, setFullReview] = useState<ReviewType>();
+  const handleClickReviewFull = async (review: ReviewType) => {
+    setOpenReviewFull(true);
+    setFullReview(review)
+  };
   return (
     <Grid item xs={12} lg={6}>
+      <ReviewModal
+        open={openReviewFull}
+        handleClose={handleCloseReviewFull}
+        clickEvent={handleClickReviewFull}
+        review={fullReview}
+      />
       <Box
         sx={{
           display: "flex",
@@ -48,7 +60,11 @@ const UsersReview: React.FC<Props> = ({ reviews = [] }) => {
             </Typography>
           )}
           {reviews.map((review: ReviewType) => (
-            <Card key={review.id} sx={{ width: {xs: "85%", lg: "80%" } }} onClick={handleClickReviewFull}>
+            <Card
+              key={review.id}
+              sx={{ width: { xs: "85%", lg: "80%" }, backgroundColor: "#FDFDFB" }}
+              onClick={() => handleClickReviewFull(review)}
+            >
               <CardActionArea
                 sx={{ display: "flex", justifyContent: "initial" }}
               >

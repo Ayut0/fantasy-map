@@ -53,7 +53,7 @@ const UsersFavorite: React.FC<Props> = ({ favorites = [] }) => {
         {favorites.map((place) => (
           <Card
             key={place.id}
-            sx={{ display: "flex", width: {xs: "85%", lg: "80%" } }}
+            sx={{ display: "flex", width: {xs: "85%", lg: "80%" }, backgroundColor: "#FDFDFB" }}
             onClick={() => handleCardClick(place.id)}
           >
             <CardActionArea sx={{ display: "flex", justifyContent: "initial" }}>

@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 
 export const PopularListCard: React.FC = () => {
   const [popularLists, setPopularLists] = useState<PopularListType[]>([]);
-  const { error, sendRequest, clearError } = useHttpRequest();
+  const { sendRequest } = useHttpRequest();
 
   useEffect(() => {
     const getPopularList = async () => {
@@ -44,6 +44,7 @@ export const PopularListCard: React.FC = () => {
                 height: { lg: "528px" },
                 borderRadius: "4px",
                 textAlign: "center",
+                backgroundColor: "#FDFDFB"
               }}
             >
               <CardContent>

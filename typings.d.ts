@@ -42,7 +42,7 @@ export interface Review {
   placeId: number;
   user?: User;
   place: Place;
-  profilePicture: string;
+  profilePicture?: string;
 }
 
 

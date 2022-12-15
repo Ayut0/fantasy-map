@@ -33,7 +33,7 @@ const ListSection: React.FC<Props> = ({ lists = [] }) => {
       {lists.slice(0, 3).map((list, index) => (
         <Card
           key={index}
-          sx={{ width: "65%" }}
+          sx={{ width: "65%", backgroundColor: "#FDFDFB" }}
           onClick={() => handleCardClick(list.id)}
         >
           <CardActionArea sx={{ padding: {xs: "8px", lg: "1.5rem"} }}>

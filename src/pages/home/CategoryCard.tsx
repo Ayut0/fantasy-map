@@ -6,15 +6,14 @@ import { useAppContext } from "../../context/AppContext";
 
 export const CategoryCard: React.FC = () => {
   const [categories, setCategories] = useState<[]>([]);
-  const { error, sendRequest, clearError } = useHttpRequest();
+  const { sendRequest } = useHttpRequest();
   const navigate = useNavigate();
-  const { dispatch, state } = useAppContext();
+  const { dispatch } = useAppContext();
 
   useEffect(() => {
     const getCategory = async () => {
       const response = await sendRequest("/api/categories", "GET");
       setCategories(response);
-      console.log(response);
     };
     getCategory();
   }, []);
@@ -37,6 +36,7 @@ export const CategoryCard: React.FC = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                backgroundColor: "#FDFDFB",
                 "&:hover": {
                   cursor: "pointer",
                   backgroundColor: "#FAFAFA",

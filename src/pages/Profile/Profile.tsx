@@ -9,13 +9,16 @@ import { useHttpRequest } from "../../Utils/httpRequest-hook";
 import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { Review } from "../../../typings";
+import { FavoritePlace } from "../../../typings";
+import { ListCard } from "../../../typings";
 
 const Profile: React.FC = () => {
   const { state, dispatch } = useAppContext();
   const { sendRequest, isLoading } = useHttpRequest();
-  const [reviews, setReviews] = useState<any[]>([]);
-  const [favorites, setFavorites] = useState<any[]>([]);
-  const [lists, setLists] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [favorites, setFavorites] = useState<FavoritePlace[]>([]);
+  const [lists, setLists] = useState<ListCard[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {

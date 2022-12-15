@@ -2,6 +2,8 @@ import React from "react";
 import { Avatar, Box, Button, Rating, Typography, Modal } from "@mui/material";
 import { ImCross } from "react-icons/im";
 import { Review } from "../../../typings";
+import { useAppContext } from "../../context/AppContext";
+import { useLocation } from "react-router-dom";
 
 interface ReviewProps {
   open: boolean;
@@ -16,6 +18,9 @@ export const ReviewModal: React.FC<ReviewProps> = ({
   clickEvent,
   review,
 }) => {
+  const { state } = useAppContext();
+  const location = useLocation();
+  console.log(location)
   return (
     <>
       {review && review.content && (
@@ -28,7 +33,7 @@ export const ReviewModal: React.FC<ReviewProps> = ({
           >
             <Box
               sx={{
-                backgroundColor: "#FFFFFF",
+                backgroundColor: "#FDFDFB",
                 width: "400px",
                 height: "400px",
                 position: "absolute",
@@ -63,8 +68,8 @@ export const ReviewModal: React.FC<ReviewProps> = ({
                 }}
               >
                 <Avatar
-                  src={review?.user?.profilePicture}
-                  sx={{ margin: "10px auto" }}
+                  src={location.pathname === "/profile"? state.profileData.profilePicture : review?.user?.profilePicture}
+                  sx={{ margin: "10px auto", width: "80px", height: "80px" }}
                 />
                 <Typography>{review?.user?.name}</Typography>
                 <Rating name="read-only" value={review.stars} readOnly />

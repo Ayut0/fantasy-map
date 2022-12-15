@@ -3,14 +3,6 @@ import React from "react";
 import ImageUpload from "../../components/ImageUpload";
 import AppTemplate from "../../templates/AppTemplate";
 
-type Props = {
-  name: string;
-  location?: string;
-  description: string;
-  email: string;
-  password: string;
-};
-
 const ProfileEdit: React.FC = () => {
   return (
     <AppTemplate>

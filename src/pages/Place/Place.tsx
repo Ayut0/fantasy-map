@@ -95,7 +95,7 @@ export const Place: React.FC = () => {
     }
   }, [params.pid, isFetchData]);
 
-  const updatePlaceHandler = async (event: any) => {
+  const updatePlaceHandler = async (event : React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     try {
       const updatedPlaceData = {
@@ -113,7 +113,7 @@ export const Place: React.FC = () => {
     }
   };
 
-  const deletePlaceHandler = async (event: any) => {
+  const deletePlaceHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     try {
       await sendRequest(`/api/places/${params.pid}`, "DELETE");
@@ -124,7 +124,7 @@ export const Place: React.FC = () => {
     }
   };
 
-  const deleteReviewHandler = async (event: any) => {
+  const deleteReviewHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     try {
       await sendRequest(`/api/reviews/${idToBeDeleted}`, "DELETE");

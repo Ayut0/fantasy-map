@@ -22,7 +22,7 @@ const ListCard: React.FC<ListCardType> = ({ id, name, description, picture, aver
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 1.1 }}
     >
-      <Card sx={{ display: "flex", mb: 8 }}>
+      <Card sx={{ display: "flex", mb: 8, backgroundColor: "#FDFDFB" }}>
         <Link to={`/place/${id}`}>
         <Box sx={{ display: "flex" }}>
         <CardMedia

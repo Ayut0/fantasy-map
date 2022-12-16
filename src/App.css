@@ -37,3 +37,12 @@ a {
   text-decoration: none;
   color: unset;
 }
+
+a.github-link {
+  text-decoration: underline;
+}
+
+a.github-link:hover {
+  text-decoration: underline;
+  color: lightgray;
+}

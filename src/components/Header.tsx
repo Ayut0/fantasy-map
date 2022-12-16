@@ -45,7 +45,7 @@ export const Header: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <AppBar position="fixed" sx={{ py: {lg: 1.5} }}>
+      <AppBar position="fixed">
         <Toolbar>
           <Grid container spacing={2} sx={{height: {xs: "100px"}}}>
             <Grid
@@ -80,7 +80,7 @@ export const Header: React.FC = () => {
                   <Typography
                     variant="h4"
                     component="h1"
-                    sx={{ pr: 4, fontSize: { xs: "24px", md: "40px" } }}
+                    sx={{ pr: 4, fontSize: { xs: "24px", md: "32px" } }}
                   >
                     Fantasy map
                   </Typography>

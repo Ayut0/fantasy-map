@@ -21,7 +21,7 @@ const UsersListSection: React.FC<Props> = ({ lists = [] }) => {
           marginBottom: "2rem",
         }}
       >
-        <Typography component="h3" variant="h4" sx={{ color: "#232946" }}>
+        <Typography component="h3" variant="h4" sx={{ color: "#232946", fontSize: "2rem" }}>
           Your lists
         </Typography>
         <Link
@@ -30,12 +30,12 @@ const UsersListSection: React.FC<Props> = ({ lists = [] }) => {
             textDecoration: "none",
             color: "#025B67",
             textAlign: "end",
-            fontSize: "1.5rem",
+            fontSize: "1.25rem",
           }}
         >
           See more list
-          <ArrowForwardIosIcon fontSize="small" />
-          <ArrowForwardIosIcon fontSize="small" />
+          <ArrowForwardIosIcon fontSize="small" sx={{fontSize: "1rem"}} />
+          <ArrowForwardIosIcon fontSize="small" sx={{fontSize: "1rem"}}/>
         </Link>
       </Box>
       <ListSection lists={lists} />

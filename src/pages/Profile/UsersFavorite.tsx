@@ -31,7 +31,7 @@ const UsersFavorite: React.FC<Props> = ({ favorites = [] }) => {
           marginBottom: "2rem",
         }}
       >
-        <Typography component="h3" variant="h4" sx={{ color: "#232946" }}>
+        <Typography component="h3" variant="h4" sx={{ color: "#232946", fontSize: "2rem" }}>
           Your favorites
         </Typography>
       </Box>

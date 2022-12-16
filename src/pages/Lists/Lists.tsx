@@ -106,7 +106,7 @@ const Lists: React.FC = () => {
                 variant="h2"
                 fontFamily="Merriweather"
                 sx={{
-                  fontSize: {xs: "32px", lg: "48px" },
+                  fontSize: {xs: "32px", lg: "40px" },
                   fontWeight: "bold",
                   pt: 1,
                 }}
@@ -118,7 +118,7 @@ const Lists: React.FC = () => {
                 fontFamily="Merriweather"
                 sx={{
                   paddingBottom: "32px",
-                  fontSize: {xs: "20px", lg: "28px" },
+                  fontSize: {xs: "20px", lg: "24px" },
                 }}
               >
                 {loadedList.description}

@@ -20,7 +20,7 @@ export const Categories: React.FC = () => {
           sx={{
             mt: 10,
             mb: 8,
-            fontSize: { xs: "32px", md: "56px" },
+            fontSize: "32px",
             color: "#282010",
           }}
         >

@@ -40,7 +40,7 @@ const UsersReview: React.FC<Props> = ({ reviews = [] }) => {
           marginBottom: "2rem",
         }}
       >
-        <Typography component="h3" variant="h4" sx={{ color: "#232946" }}>
+        <Typography component="h3" variant="h4" sx={{ color: "#232946", fontSize: "2rem" }}>
           Your reviews
         </Typography>
       </Box>

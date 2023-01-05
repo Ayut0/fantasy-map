@@ -1,6 +1,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import { Container, Grid, Box } from "@mui/material";
+import GithubLinks from "./GithubLinks";
 
 export const Footer: React.FC = () => {
   return (
@@ -32,17 +33,7 @@ export const Footer: React.FC = () => {
           <Grid item xs={4} sx={{ textAlign: 'right' }}>
             <TheBox>
               <Typography variant="body1">Made with ❤️ by:</Typography>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <li>
-                  <a href="https://github.com/Meg-1126" className="github-link" target="blank">Megumi Akama</a>
-                </li>
-                <li>
-                  <a href="https://github.com/Ayut0" className="github-link" target="blank">Yuto Yamakita</a>
-                </li>
-                <li>
-                  <a href="https://github.com/Mauriciots" className="github-link" target="blank">Maurício Tomaz</a>
-                </li>
-              </ul>
+              <GithubLinks />
             </TheBox>
           </Grid>
         </Grid>

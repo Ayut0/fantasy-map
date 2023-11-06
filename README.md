@@ -20,7 +20,7 @@ We created this app to show what we learned through our class such as React.js, 
 - Framer Motion(Animation)
 - Node.js/express
 - PostgresSQL
-- Sequelize
+- Sequelize (ORM)
 - Heroku
 - Supabase(Image storing and database hosting)
 
